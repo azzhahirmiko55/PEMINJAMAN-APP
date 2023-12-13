@@ -22,8 +22,8 @@
                     </div>
                 </div>
                 <ul class="nk-menu nk-menu-main ui-s2">
-                    <li class="nk-menu-item has-sub active">
-                        <a href="#" class="nk-menu-link">
+                    <li class="nk-menu-item has-sub {{ ($page === "Dashboard")  ? 'active' : '' }}">
+                        <a href="/" class="nk-menu-link">
                             <span class="nk-menu-text">Dashboards</span>
                         </a>
                     </li>
@@ -66,13 +66,13 @@
                             </li><!-- .nk-menu-item -->
                         </ul><!-- .nk-menu-sub -->
                     </li><!-- .nk-menu-item -->
-                    <li class="nk-menu-item has-sub">
+                    <li class="nk-menu-item has-sub {{ ($page === "Master Kendaraan")  ? 'active' : '' }}">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-text">Master</span>
                         </a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item">
-                                <a href="#" class="nk-menu-link"><span class="nk-menu-text">Kendaraan</span></a>
+                            <li class="nk-menu-item {{ ($page === "Master Kendaraan")  ? 'active' : '' }}">
+                                <a href="/master_kendaraan" class="nk-menu-link"><span class="nk-menu-text">Kendaraan</span></a>
                             </li>
                             <li class="nk-menu-item">
                                 <a href="#" class="nk-menu-link"><span class="nk-menu-text">Ruang Rapat</span></a>

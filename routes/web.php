@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\MasterController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,8 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard');
-});
+
+Route::get('/', [DashboardController::class, 'index']);
 
 Route::get('/master_kendaraan', [MasterController::class, 'master_kendaraan']);

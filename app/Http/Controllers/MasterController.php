@@ -10,7 +10,8 @@ class MasterController extends Controller
     public function master_kendaraan()
     {
         return view('master/kendaraan', [
-            "page"  => "Master Kendaraan"
+            "page"          => "Master Kendaraan",
+            "js_script"     => "/js/master.js"
         ]);
     }
 
