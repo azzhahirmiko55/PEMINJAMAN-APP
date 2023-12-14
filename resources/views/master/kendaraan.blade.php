@@ -28,13 +28,13 @@
                                                             <ul class="custom-control-group">    
                                                                 <li>       
                                                                     <div class="custom-control custom-control-sm custom-radio custom-control-pro">            
-                                                                        <input type="radio" class="custom-control-input" name="jenis_kendaraan" id="radioRoda2" value="Roda-2">            
+                                                                        <input type="radio" class="custom-control-input" name="jenis_kendaraan" id="radioRoda2" value="Roda 2" required>            
                                                                         <label class="custom-control-label" for="radioRoda2">Kendaraan Roda 2 | Motor</label>       
                                                                     </div>  
                                                                 </li>   
                                                                 <li>       
                                                                     <div class="custom-control custom-control-sm custom-radio custom-control-pro">            
-                                                                        <input type="radio" class="custom-control-input" name="jenis_kendaraan" id="radioRoda4" value="Roda-4">            
+                                                                        <input type="radio" class="custom-control-input" name="jenis_kendaraan" id="radioRoda4" value="Roda 4">            
                                                                         <label class="custom-control-label" for="radioRoda4">Kendaraan Roda 4 | Mobil</label>       
                                                                     </div>  
                                                                 </li>   
@@ -49,7 +49,7 @@
                                                         <div class="form-icon form-icon-left">
                                                             <em class="icon ni ni-money"></em>
                                                         </div>
-                                                        <input type="text" class="form-control" name="plat_nomor" id="inputPlatNomor" placeholder="Plat Nomor">
+                                                        <input type="text" class="form-control" name="plat_nomor" id="inputPlatNomor" placeholder="Plat Nomor" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -60,7 +60,7 @@
                                                         <div class="form-icon form-icon-left">
                                                             <em class="icon ni ni-article"></em>
                                                         </div>
-                                                        <input type="text" class="form-control" name="keterangan" id="inputKeterangan" placeholder="Keterangan">
+                                                        <input type="text" class="form-control" name="keterangan" id="inputKeterangan" placeholder="Keterangan" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -68,7 +68,7 @@
                                             <div class="col-sm-12 mt-0">
                                                 <div class="form-group float-end">
                                                     <div class="form-control-wrap">
-                                                        <a href="#" class="btn btn-primary"><em class="icon ni ni-plus"></em><span>Simpan Data</span> </a>
+                                                        <button type="submit" class="btn btn-primary"><em class="icon ni ni-plus"></em><span>Simpan Data</span> </button>
                                                     </div>
                                                 </div>
                                             </div>

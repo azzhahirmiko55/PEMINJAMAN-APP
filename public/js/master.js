@@ -1,9 +1,17 @@
+$(document).ready(function () {
+    $.ajaxSetup({
+        headers:{
+            'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+        }
+    })
+});
+
 $("#formKendaraan").submit(function(event) {
     event.preventDefault();
     dataFormKendaraan = new FormData($(this)[0]);
     $.ajax({
         type: "POST",
-        url: "/ajax_proses_master_kendaraan",
+        url: "/ajaxProsesMasterKendaraan",
         data: dataFormKendaraan,
         dataType: "JSON",
         async: false,
@@ -19,14 +27,18 @@ $("#formKendaraan").submit(function(event) {
         success: function (response) {
             Swal.fire({
                 title : response.message,
-                type: 'success',
                 icon: 'success',
                 timer: 2000,
                 showConfirmButton: false
             });
         },
         error: function (error) {
-            console.log(error);
+            Swal.fire({
+                title: 'Terjadi kesalahan saat menyimpan data!',
+                text: error.responseText, 
+                icon: 'error',
+                showConfirmButton: false
+            });
         }
     });
 });

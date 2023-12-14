@@ -17,7 +17,7 @@ class MasterController extends Controller
         ]);
     }
 
-    public function ajax_proses_master_kendaraan()
+    public function ajax_proses_master_kendaraan(Request $request)
     {
 
         $validator = Validator::make($request->all(), [
@@ -27,10 +27,10 @@ class MasterController extends Controller
         ]);
 
         if($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+            return response()->json(implode(',',$validator->errors()->all()), 422);
         }
 
-        Master::prosesKendaraan([
+        Master::prosesInputKendaraan([
             'jenis_kendaraan'   => $request->jenis_kendaraan,
             'plat_nomor'        => $request->plat_nomor,
             'keterangan'        => $request->keterangan
