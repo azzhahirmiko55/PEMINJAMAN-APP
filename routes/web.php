@@ -15,7 +15,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+# Halaman #
 
 Route::get('/', [DashboardController::class, 'index']);
 
 Route::get('/master_kendaraan', [MasterController::class, 'master_kendaraan']);
+
+# End Halaman #
+
+# Ajax Master #
+
+Route::get('/ajaxProsesMasterKendaraan', [MasterController::class, 'ajaxProsesMasterKendaraan']);
+
+# End Ajax Master #

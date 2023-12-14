@@ -19,59 +19,61 @@
                             <div class="card-inner">
                                 <div class="preview-block">
                                     <span class="preview-title-lg overline-title">Form Kendaraan</span>
-                                    <div class="row gy-4">
-                                        <div class="col-sm-12">
-                                            <div class="form-group">
-                                                <label class="form-label" for="inputPeminjam">Jenis Kendaraan</label>
+                                    <form action="#" method="post" id="formKendaraan" class="form-validate is-alter">
+                                        <div class="row gy-4">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="form-label" for="inputPeminjam">Jenis Kendaraan</label>
+                                                        <div class="form-control-wrap">
+                                                            <ul class="custom-control-group">    
+                                                                <li>       
+                                                                    <div class="custom-control custom-control-sm custom-radio custom-control-pro">            
+                                                                        <input type="radio" class="custom-control-input" name="jenis_kendaraan" id="radioRoda2" value="Roda-2">            
+                                                                        <label class="custom-control-label" for="radioRoda2">Kendaraan Roda 2 | Motor</label>       
+                                                                    </div>  
+                                                                </li>   
+                                                                <li>       
+                                                                    <div class="custom-control custom-control-sm custom-radio custom-control-pro">            
+                                                                        <input type="radio" class="custom-control-input" name="jenis_kendaraan" id="radioRoda4" value="Roda-4">            
+                                                                        <label class="custom-control-label" for="radioRoda4">Kendaraan Roda 4 | Mobil</label>       
+                                                                    </div>  
+                                                                </li>   
+                                                            </ul>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <label class="form-label" for="inputPlatNomor">Plat Nomor</label>
                                                     <div class="form-control-wrap">
-                                                        <ul class="custom-control-group">    
-                                                            <li>       
-                                                                <div class="custom-control custom-control-sm custom-radio custom-control-pro">            
-                                                                    <input type="radio" class="custom-control-input" name="jenisKendaraan" id="radioRoda2">            
-                                                                    <label class="custom-control-label" for="radioRoda2">Kendaraan Roda 2 | Motor</label>       
-                                                                </div>  
-                                                            </li>   
-                                                            <li>       
-                                                                <div class="custom-control custom-control-sm custom-radio custom-control-pro">            
-                                                                    <input type="radio" class="custom-control-input" name="jenisKendaraan" id="radioRoda4">            
-                                                                    <label class="custom-control-label" for="radioRoda4">Kendaraan Roda 4 | Mobil</label>       
-                                                                </div>  
-                                                            </li>   
-                                                        </ul>
+                                                        <div class="form-icon form-icon-left">
+                                                            <em class="icon ni ni-money"></em>
+                                                        </div>
+                                                        <input type="text" class="form-control" name="plat_nomor" id="inputPlatNomor" placeholder="Plat Nomor">
                                                     </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div class="form-group">
-                                                <label class="form-label" for="inputPlatNomor">Plat Nomor</label>
-                                                <div class="form-control-wrap">
-                                                    <div class="form-icon form-icon-left">
-                                                        <em class="icon ni ni-money"></em>
+                                            <div class="col-sm-9">
+                                                <div class="form-group">
+                                                    <label class="form-label" for="inputKeterangan">Keterangan</label>
+                                                    <div class="form-control-wrap">
+                                                        <div class="form-icon form-icon-left">
+                                                            <em class="icon ni ni-article"></em>
+                                                        </div>
+                                                        <input type="text" class="form-control" name="keterangan" id="inputKeterangan" placeholder="Keterangan">
                                                     </div>
-                                                    <input type="text" class="form-control" id="inputPlatNomor" placeholder="Plat Nomor">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mt-0"><hr class="preview-hr"></div>
+                                            <div class="col-sm-12 mt-0">
+                                                <div class="form-group float-end">
+                                                    <div class="form-control-wrap">
+                                                        <a href="#" class="btn btn-primary"><em class="icon ni ni-plus"></em><span>Simpan Data</span> </a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-9">
-                                            <div class="form-group">
-                                                <label class="form-label" for="inputKeterangan">Keterangan</label>
-                                                <div class="form-control-wrap">
-                                                    <div class="form-icon form-icon-left">
-                                                        <em class="icon ni ni-article"></em>
-                                                    </div>
-                                                    <input type="text" class="form-control" id="inputKeterangan" placeholder="Keterangan">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 mt-0"><hr class="preview-hr"></div>
-                                        <div class="col-sm-12 mt-0">
-                                            <div class="form-group float-end">
-                                                <div class="form-control-wrap">
-                                                    <a href="#" class="btn btn-primary"><em class="icon ni ni-plus"></em><span>Simpan Data</span> </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    </form>
                                 </div>
                             </div>
                         </div><!-- .card-preview -->
