@@ -52,10 +52,12 @@ $("#formKendaraan").submit(function(event) {
             Swal.fire({
                 title : response.message,
                 icon: 'success',
-                timer: 2000,
+                timer: 3000,
                 showConfirmButton: false,
                 onAfterClose: () => $('#addMasterKendaraan').modal('hide')
             });
+            DTMasterKendaraan();
+            $('#formKendaraan').trigger("reset");
         },
         error: function (error) {
             Swal.fire({
