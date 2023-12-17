@@ -9,8 +9,8 @@
     <link rel="icon" type="image/png" href="">
 
     <!-- Start CSS -->
-    <link rel="stylesheet"  href="{{ asset('/dashlite/css/dashlite.css?ver=3.1.0') }}">
-    <link id="skin-default" rel="stylesheet" href="{{ asset('/dashlite/css/theme.css?ver=3.1.0') }}">
+    <link rel="stylesheet"  href="{{ asset('/dashlite/css/dashlite.css') }}">
+    <link id="skin-default" rel="stylesheet" href="{{ asset('/dashlite/css/theme.css') }}">
     <link rel="stylesheet" href="{{ asset('custom/style.css') }}">
     <!-- End CSS -->
     
@@ -30,40 +30,6 @@
                     <div class="nk-footer-wrap">
                         <div class="nk-footer-copyright"> &copy; 2022 Dashlite. Template by <a href="https://softnio.com" target="_blank">Softnio</a>
                         </div>
-                        <div class="nk-footer-links">
-                            <ul class="nav nav-sm">
-                                <li class="nav-item dropup">
-                                    <a href="#" class="dropdown-toggle dropdown-indicator has-indicator nav-link text-base" data-bs-toggle="dropdown" data-offset="0,10"><span>English</span></a>
-                                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
-                                        <ul class="language-list">
-                                            <li>
-                                                <a href="#" class="language-item">
-                                                    <span class="language-name">English</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="language-item">
-                                                    <span class="language-name">Español</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="language-item">
-                                                    <span class="language-name">Français</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="language-item">
-                                                    <span class="language-name">Türkçe</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li class="nav-item">
-                                    <a data-bs-toggle="modal" href="#region" class="nav-link"><em class="icon ni ni-globe"></em><span class="ms-1">Select Region</span></a>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -75,8 +41,8 @@
 </body>
 
     <script src="{{ asset('/dashlite/js/bundle.js?ver=3.1.0') }}"></script>
-    {{-- <script src="{{ asset('/js/scripts.js?ver=3.1.0') }}"></script>
-    <script src="{{ asset('/js/charts/gd-invest.js?ver=3.1.0') }}"></script>
+    <script src="{{ asset('/dashlite/js/scripts.js?ver=3.1.0') }}"></script>
+    {{-- <script src="{{ asset('/js/charts/gd-invest.js?ver=3.1.0') }}"></script>
     <script src="{{ asset('/js/charts/gd-invest.js?ver=3.1.0') }}"></script> --}}
     <script type="text/javascript" src="{{ asset('/js/js/bundle.js?ver=3.1.0') }}"></script>
     <?= isset($js_script) ? '<script type="text/javascript" src="'.asset($js_script).'"></script>' : ""; ?>

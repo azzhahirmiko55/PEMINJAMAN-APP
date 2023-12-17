@@ -26,5 +26,5 @@ Route::get('/master_kendaraan', [MasterController::class, 'master_kendaraan']);
 # Ajax Master #
 
 Route::post('/ajaxProsesMasterKendaraan', [MasterController::class, 'ajax_proses_master_kendaraan']);
-
+Route::get('/ajaxDTMasterKendaraan', [MasterController::class, 'ajax_dt_master_kendaraan']);
 # End Ajax Master #
