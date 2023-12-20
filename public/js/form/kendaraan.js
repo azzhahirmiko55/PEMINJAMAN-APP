@@ -28,3 +28,41 @@ $('#inputKendaraan').select2({
         delay: 500
     }
 });
+
+$("#formKendaraan").submit(function(event) {
+    event.preventDefault();
+    dataFormKendaraan = new FormData($(this)[0]);
+    $.ajax({
+        type: "POST",
+        url: "/processPinjamKendaraan",
+        data: dataFormKendaraan,
+        dataType: "JSON",
+        async: false,
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function () {
+            Swal.showLoading();
+        },
+        complete: function() {
+            Swal.hideLoading();
+        },
+        success: function (response) {
+            Swal.fire({
+                title : response.message,
+                icon: 'success',
+                timer: 3000,
+                showConfirmButton: false,
+                onAfterClose: () => location.reload()
+            });
+        },
+        error: function (error) {
+            Swal.fire({
+                title: 'Terjadi kesalahan saat menyimpan data!',
+                text: error.responseText, 
+                icon: 'error',
+                showConfirmButton: false
+            });
+        }
+    });
+});

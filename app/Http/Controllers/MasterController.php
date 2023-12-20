@@ -114,7 +114,6 @@ class MasterController extends Controller
 
     public function ajax_select_kendaraan(Request $request)
     {
-
         if($request->ajax()) {
             $validator = Validator::make($request->all(), [
                 'page'   => 'required'

@@ -106,12 +106,12 @@
 
                                                 <div class="col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label" for="inputKeterangan">Keterangan</label>
+                                                        <label class="form-label" for="inputKeterangan">Keperluan</label>
                                                         <div class="form-control-wrap">
                                                             <div class="form-icon form-icon-left">
                                                                 <em class="icon ni ni-article"></em>
                                                             </div>
-                                                            <input type="text" class="form-control" name="keterangan" id="inputKeterangan" placeholder="Keterangan" required>
+                                                            <textarea type="text" class="form-control no-resize" name="keperluan" id="inputKeterangan" placeholder="Keterangan" required></textarea>
                                                         </div>
                                                     </div>
                                                 </div>

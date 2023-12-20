@@ -35,6 +35,7 @@ Route::get('/DTMasterKendaraan', [MasterController::class, 'ajax_dt_master_kenda
 
 # Ajax Form #
 Route::get('/formKendaraan', [FormController::class, 'form_kendaraan']);
+Route::post('/processPinjamKendaraan', [FormController::class, 'ajax_pcs_form_kendaraan']);
 # End Ajax Master #
 
 # Ajax Select #
