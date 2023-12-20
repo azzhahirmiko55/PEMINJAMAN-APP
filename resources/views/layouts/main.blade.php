@@ -19,6 +19,7 @@
 <body class="nk-body npc-invest bg-lighter ">
     
     <div class="nk-app-root">
+        <div class="nk-wrap">
         <!-- wrap @s -->
             @include('partials.navbar')
 
@@ -35,6 +36,7 @@
             </div>
             <!-- footer @e -->
         <!-- wrap @e -->
+        </div>
     </div>
     <!-- app-root @e -->
 

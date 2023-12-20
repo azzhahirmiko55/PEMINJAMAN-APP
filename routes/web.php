@@ -1,8 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FormController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\DashboardController;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,16 +16,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-# Halaman #
-
 Route::get('/', [DashboardController::class, 'index']);
 
-Route::get('/master_kendaraan', [MasterController::class, 'master_kendaraan']);
+# Halaman #
+
+Route::get('/index', [DashboardController::class, 'index']);
+
+Route::get('/masterKendaraan', [MasterController::class, 'master_kendaraan']);
 
 # End Halaman #
 
 # Ajax Master #
-
-Route::post('/ajaxProsesMasterKendaraan', [MasterController::class, 'ajax_proses_master_kendaraan']);
-Route::get('/ajaxDTMasterKendaraan', [MasterController::class, 'ajax_dt_master_kendaraan']);
+Route::get('/gtMasterKendaraan', [MasterController::class, 'ajax_gt_master_kendaraan']);
+Route::post('/processMasterKendaraan', [MasterController::class, 'ajax_pcs_master_kendaraan']);
+Route::get('/deleteMasterKendaraan', [MasterController::class, 'ajax_del_master_kendaraan']);
+Route::get('/DTMasterKendaraan', [MasterController::class, 'ajax_dt_master_kendaraan']);
 # End Ajax Master #
+
+# Ajax Form #
+Route::get('/formKendaraan', [FormController::class, 'form_kendaraan']);
+# End Ajax Master #
+
+# Ajax Select #
+Route::get('/selectKendaraan', [MasterController::class, 'ajax_select_kendaraan']);
+# End Ajax Select #
