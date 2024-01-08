@@ -43,13 +43,13 @@
                             </li>
                         </ul><!-- .nk-menu-sub -->
                     </li><!-- .nk-menu-item -->
-                    <li class="nk-menu-item has-sub">
+                    <li class="nk-menu-item has-sub {{ ($page === "Rekapitulasi Peminjaman Kendaraan")  ? 'active' : '' }}">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-text">Rekapitulasi</span>
                         </a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item">
-                                <a href="#" class="nk-menu-link"><span class="nk-menu-text">Peminjaman Kendaraan</span></a>
+                            <li class="nk-menu-item {{ ($page === "Rekapitulasi Peminjaman Kendaraan")  ? 'active' : '' }}">
+                                <a href="/rekapitulasiKendaraan" class="nk-menu-link"><span class="nk-menu-text">Peminjaman Kendaraan</span></a>
                             </li>
                             <li class="nk-menu-item">
                                 <a href="#" class="nk-menu-link"><span class="nk-menu-text">Peminjaman Ruang Rapat</span></a>

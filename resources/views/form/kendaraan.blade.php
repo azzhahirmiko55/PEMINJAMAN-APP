@@ -119,7 +119,7 @@
                                                 <div class="col-sm-12 mt-0">
                                                     <div class="form-group float-end">
                                                         <div class="form-control-wrap">
-                                                            <button type="submit" class="btn btn-primary"><em class="icon ni ni-plus"></em><span>Simpan Data</span> </button>
+                                                            <button type="submit" class="btn btn-primary" id="btnProsesPeminjaman"><em class="icon ni ni-save"></em><span>Proses Peminjaman</span> </button>
                                                         </div>
                                                     </div>
                                                 </div>

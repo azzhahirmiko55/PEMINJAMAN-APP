@@ -6,18 +6,20 @@ $(document).ready(function () {
     });
 });
 
-const DTMasterKendaraan = () => {
-    NioApp.DataTable('#tableKendaraan', {
+const DTRekapitulasiKendaraan = () => {
+    NioApp.DataTable('#tableRekapitulasiKendaraan', {
         processing: true,
         serverSide: true,
         bDestroy: true,
-        ajax: "/DTMasterKendaraan",
+        ajax: "/DTRekapitulasiKendaraan",
         columns: [
-            {data: 'DT_RowIndex', name: 'DT_RowIndex', class: 'text-center', width: '5%'},
+            {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, class: 'text-center', width: '5%'},
             {data: 'jenis', name: 'jenis', class: 'text-center', width: '10%'},
-            {data: 'plat', name: 'plat', class: 'text-center', width: '10%'},
-            {data: 'keterangan', name: 'keterangan', class: 'text-left', width: '25%'},
-            {data: 'status_pinjaman', name: 'status_pinjaman', class: 'text-center', width: '15%'},
+            {data: 'ket_kendaraan', name: 'ket_kendaraan', class: 'text-left', width: '10%'},
+            {data: 'peminjam', name: 'peminjam', class: 'text-left', width: '25%'},
+            {data: 'driver', name: 'driver', class: 'text-left', width: '15%'},
+            {data: 'tanggal', name: 'tanggal', class: 'text-center', width: '15%'},
+            {data: 'keperluan', name: 'keperluan', class: 'text-center', width: '15%'},
             {data: 'action', name: 'action', orderable: false, searchable: false, class: 'text-center', width:'5%'},
         ],
         responsive: {
@@ -26,7 +28,7 @@ const DTMasterKendaraan = () => {
     });
 }
 
-DTMasterKendaraan();
+DTRekapitulasiKendaraan();
 
 const clearFormKendaraan = () => {
     $('#formKendaraan').trigger('reset');

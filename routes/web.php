@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\RekapitulasiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,11 +20,19 @@ use App\Http\Controllers\DashboardController;
 Route::get('/', [DashboardController::class, 'index']);
 
 # Halaman #
-
 Route::get('/index', [DashboardController::class, 'index']);
 
+// Master
 Route::get('/masterKendaraan', [MasterController::class, 'master_kendaraan']);
+//
 
+// Form
+Route::get('/formKendaraan', [FormController::class, 'form_kendaraan']);
+//
+
+// Rekapitulasi
+Route::get('/rekapitulasiKendaraan', [RekapitulasiController::class, 'rekapitulasi_kendaraan']);
+//
 # End Halaman #
 
 # Ajax Master #
@@ -31,10 +40,10 @@ Route::get('/gtMasterKendaraan', [MasterController::class, 'ajax_gt_master_kenda
 Route::post('/processMasterKendaraan', [MasterController::class, 'ajax_pcs_master_kendaraan']);
 Route::get('/deleteMasterKendaraan', [MasterController::class, 'ajax_del_master_kendaraan']);
 Route::get('/DTMasterKendaraan', [MasterController::class, 'ajax_dt_master_kendaraan']);
+Route::get('/DTRekapitulasiKendaraan', [RekapitulasiController::class, 'ajax_dt_rekapitulasi_kendaraan']);
 # End Ajax Master #
 
 # Ajax Form #
-Route::get('/formKendaraan', [FormController::class, 'form_kendaraan']);
 Route::post('/processPinjamKendaraan', [FormController::class, 'ajax_pcs_form_kendaraan']);
 # End Ajax Master #
 
