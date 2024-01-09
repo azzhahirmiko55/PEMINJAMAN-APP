@@ -33,9 +33,12 @@ class RekapitulasiController extends Controller
                                     //     return $status_pinjaman;
                                     // })
                                     ->addColumn('action', function($row){
-                                        $button  =  '<a href="#" onClick="editMasterKendaraan('.$row->id.')" class="btn btn-icon btn-sm btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><em class="icon ni ni-pen2"></em></a>';
-                                        $button .= ' <a href="#" onClick="deleteMasterKendaraan('.$row->id.')" class="btn btn-icon btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><em class="icon ni ni-trash"></em></a>';
-                                        return $button;
+                                        if($row->status == 1) {
+                                            $button  =  '<a href="#" onClick="pembatalanPeminjaman('.$row->id.')" class="btn btn-icon btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Batal"><em class="icon ni ni-cross"></em></a>';
+                                            return $button;
+                                        } else if ($row->status == 5){
+                                            return '<span class="badge rounded-pill bg-outline-danger">Dibatalkan</span>';
+                                        }
                                     })->rawColumns(['action','status_pinjaman'])->make(true);
 
             return $DT_rekapitulasi_kendaraan;

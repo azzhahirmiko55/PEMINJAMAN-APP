@@ -44,4 +44,25 @@ class Form
         }
     }
 
+    public static function prosesBatalKendaraan($params = [])
+    {
+        $id = isset($params['id']) ? $params['id'] : 0;
+
+        DB::beginTransaction();
+
+        try {
+            
+            DB::table('tb_peminjaman_kendaraan')->where('id', $id)->update(['status' => 5]);
+            DB::commit();
+
+            return true;
+
+        }catch(\Exception $e){
+
+            DB::rollback();
+            return false;
+
+        }
+    }
+
 }

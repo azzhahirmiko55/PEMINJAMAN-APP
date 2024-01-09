@@ -48,4 +48,26 @@ class FormController extends Controller
         }
     }
 
+    public function ajax_cancel_form_kendaraan(Request $request)
+    {
+        if($request->ajax()) {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required'
+            ]);
+
+            if($validator->fails()) {
+                return response()->json(implode(',',$validator->errors()->all()), 422);
+            }
+
+            Form::prosesBatalKendaraan([
+                'id'  => $request->id
+            ]);
+
+            return response()->json([
+                'success'   => TRUE,
+                'message'   => 'Peminjaman kendaraan berhasil dibatalkan'
+            ]);
+        }
+    }
+
 }

@@ -41,6 +41,7 @@ Route::post('/processMasterKendaraan', [MasterController::class, 'ajax_pcs_maste
 Route::get('/deleteMasterKendaraan', [MasterController::class, 'ajax_del_master_kendaraan']);
 Route::get('/DTMasterKendaraan', [MasterController::class, 'ajax_dt_master_kendaraan']);
 Route::get('/DTRekapitulasiKendaraan', [RekapitulasiController::class, 'ajax_dt_rekapitulasi_kendaraan']);
+Route::get('/cancelPeminjamanKendaraan', [FormController::class, 'ajax_cancel_form_kendaraan']);
 # End Ajax Master #
 
 # Ajax Form #

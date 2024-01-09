@@ -24,69 +24,16 @@ const DTRekapitulasiKendaraan = () => {
         ],
         responsive: {
             details: true
-        }
+        },
     });
 }
 
 DTRekapitulasiKendaraan();
 
-const clearFormKendaraan = () => {
-    $('#formKendaraan').trigger('reset');
-    $('#idKendaraan').val('');
-}
-
-const showMasterKendaraan = () => {
-    clearFormKendaraan();
-    $('#modalMasterKendaraan').modal('show');
-}
-
-const hideMasterKendaraan = () => {
-    clearFormKendaraan();
-    $('#modalMasterKendaraan').modal('hide');
-}
-
-const editMasterKendaraan = (id_kendaraan) => {
-    clearFormKendaraan();
-    $.ajax({
-        type: 'GET',
-        url: '/gtMasterKendaraan',
-        data: {
-            id: id_kendaraan
-        },
-        dataType: 'JSON',
-        async: false,
-        cache: false,
-        success: function (response) {
-            $('#modalMasterKendaraan').modal('show');
-            $('#idKendaraan').val(response.id);
-            $('#inputPlatNomor').val(response.plat);
-            if(response.jenis === "Roda-2"){
-                $('#radioRoda2').prop('checked',true);
-            } else if (response.jenis === "Roda-4"){
-                $('#radioRoda4').prop('checked',true);
-            }
-            if(response.status === 1){
-                $('#statusPinjam1').prop('checked',true);
-            } else if (response.status === 5){
-                $('#statusPinjam5').prop('checked',true);
-            }
-            $('#inputKeterangan').val(response.keterangan);
-        },
-        error: function (error) {
-            Swal.fire({
-                title: 'Terjadi kesalahan saat mengambil data!',
-                text: error.responseText, 
-                icon: 'error',
-                showConfirmButton: false
-            });
-        }
-    });
-}
-
-const deleteMasterKendaraan = (id_kendaraan) => {
+const pembatalanPeminjaman = (id_peminjaman) => {
     Swal.fire({
         title: 'Apakah anda yakin ?',
-        text: 'Anda akan menghapusn data kendaraan, klik ya jika ingin melanjutkan',
+        text: 'Anda akan membatalkan peminjaman kendaraan',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -96,9 +43,9 @@ const deleteMasterKendaraan = (id_kendaraan) => {
         if(result.isConfirmed) {
             $.ajax({
                 type: 'GET',
-                url: '/deleteMasterKendaraan',
+                url: '/cancelPeminjamanKendaraan',
                 data: {
-                    id: id_kendaraan
+                    id: id_peminjaman
                 },
                 dataType: 'JSON',
                 async: false,
@@ -110,7 +57,7 @@ const deleteMasterKendaraan = (id_kendaraan) => {
                         timer: 3000,
                         showConfirmButton: false
                     });
-                    DTMasterKendaraan();
+                    DTRekapitulasiKendaraan();
                 },
                 error: function (error) {
                     Swal.fire({
@@ -124,43 +71,3 @@ const deleteMasterKendaraan = (id_kendaraan) => {
         }
     })   
 }
-
-$("#formKendaraan").submit(function(event) {
-    event.preventDefault();
-    dataFormKendaraan = new FormData($(this)[0]);
-    $.ajax({
-        type: "POST",
-        url: "/processMasterKendaraan",
-        data: dataFormKendaraan,
-        dataType: "JSON",
-        async: false,
-        cache: false,
-        contentType: false,
-        processData: false,
-        beforeSend: function () {
-            Swal.showLoading();
-        },
-        complete: function() {
-            Swal.hideLoading();
-        },
-        success: function (response) {
-            Swal.fire({
-                title : response.message,
-                icon: 'success',
-                timer: 3000,
-                showConfirmButton: false,
-                onAfterClose: () => $('#modalMasterKendaraan').modal('hide')
-            });
-            DTMasterKendaraan();
-            clearFormKendaraan();
-        },
-        error: function (error) {
-            Swal.fire({
-                title: 'Terjadi kesalahan saat menyimpan data!',
-                text: error.responseText, 
-                icon: 'error',
-                showConfirmButton: false
-            });
-        }
-    });
-});
