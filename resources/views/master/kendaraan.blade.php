@@ -21,7 +21,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6 mx-auto">
-                                            <a href="#" onClick="showMasterKendaraan()" class="btn btn-outline-dark float-end"><em class="icon ni ni-plus"></em><span>Tambah Data Kendaraan</span></a>
+                                            <a href="#" onClick="showMasterKendaraan()" class="btn btn-outline-primary float-end"><em class="icon ni ni-plus"></em><span>Tambah Data Kendaraan</span></a>
                                         </div>
                                     </div>
                                 </div>

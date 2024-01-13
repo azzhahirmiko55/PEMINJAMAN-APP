@@ -2,26 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Master;
+use Illuminate\Http\Request;
+use App\Models\Kendaraan;
 use DataTables;
 
-class MasterController extends Controller
+class KendaraanController extends Controller
 {
 
-    public function master_kendaraan()
+    public static function page_master_kendaraan()
     {
         return view('master/kendaraan', [
             'page'          => 'Master Kendaraan',
-            'js_script'     => '/js/master.js'
+            'js_script'     => '/js/master/kendaraan.js'
         ]);
     }
 
-    public function ajax_dt_master_kendaraan(Request $request)
+    public static function ajax_dt_master_kendaraan(Request $request)
     {
         if ($request->ajax()) {
-            $gt_master_kendaraan = Master::gt_ms_kendaraan();
+            $gt_master_kendaraan = Kendaraan::where('status','!=',0)->get();
 
             $DT_master_kendaraan = Datatables::of($gt_master_kendaraan)
                                     ->addIndexColumn()
@@ -44,9 +44,10 @@ class MasterController extends Controller
         }
     }
 
-    public function ajax_pcs_master_kendaraan(Request $request)
+    public static function ajax_pcs_master_kendaraan(Request $request)
     {
         if($request->ajax()) {
+
             $validator = Validator::make($request->all(), [
                 'jenis_kendaraan'   => 'required',
                 'plat_nomor'        => 'required',
@@ -54,22 +55,19 @@ class MasterController extends Controller
                 'status'            => 'required'
             ]);
 
-            if($validator->fails()) {
-                return response()->json(implode(',',$validator->errors()->all()), 422);
-            }
+            if($validator->fails()) return response()->json(implode(',',$validator->errors()->all()), 422);
 
-            Master::prosesInputKendaraan([
-                'id'                => $request->id,
-                'jenis_kendaraan'   => $request->jenis_kendaraan,
-                'plat_nomor'        => $request->plat_nomor,
-                'keterangan'        => $request->keterangan,
-                'status'            => $request->status
-            ]);
+            Kendaraan::updateOrCreate(
+                ['id'   => $request->id],
+                [
+                    'jenis'         => $request->jenis_kendaraan,
+                    'plat'          => $request->plat_nomor,
+                    'keterangan'    => $request->keterangan,
+                    'status'        => $request->status
+                ]
+            );
 
-            return response()->json([
-                'success'   => TRUE,
-                'message'   => 'Data master kendaraan berhasil disimpan'
-            ]);
+            return response()->json(['success' => TRUE, 'message'  => 'Data master kendaraan berhasil disimpan']);
         }
     }
 
@@ -80,13 +78,12 @@ class MasterController extends Controller
                 'id'   => 'required'
             ]);
 
-            if($validator->fails()) {
-                return response()->json(implode(',',$validator->errors()->all()), 422);
-            }
+            if($validator->fails()) return response()->json(implode(',',$validator->errors()->all()), 422);
             
-            $gt_master_kendaraan = Master::gt_ms_kendaraan($request->id);
-            return response()->json($gt_master_kendaraan);
+            
+            $gt_master_kendaraan = Kendaraan::firstWhere('id', $request->id);
 
+            return response()->json($gt_master_kendaraan);
         }
     }
 
@@ -97,13 +94,9 @@ class MasterController extends Controller
                 'id'   => 'required'
             ]);
 
-            if($validator->fails()) {
-                return response()->json(implode(',',$validator->errors()->all()), 422);
-            }
+            if($validator->fails()) return response()->json(implode(',',$validator->errors()->all()), 422);
 
-            Master::prosesHapusKendaraan([
-                'id'    => $request->id
-            ]);
+            Kendaraan::where('id', $request->id)->update(['status' => 0]);
 
             return response()->json([
                 'success'   => TRUE,
@@ -119,9 +112,7 @@ class MasterController extends Controller
                 'page'   => 'required'
             ]);
 
-            if($validator->fails()) {
-                return response()->json(implode(',',$validator->errors()->all()), 422);
-            }
+            if($validator->fails()) return response()->json(implode(',',$validator->errors()->all()), 422);
 
             $start = $request->page;
             $limit = 20;
@@ -130,7 +121,7 @@ class MasterController extends Controller
                 $start = 1;
             }
 
-            $select_master_kendaraan = Master::select_kendaraan([
+            $select_master_kendaraan = Kendaraan::select2_kendaraan([
                 'start'     => ceil($start - 1) * 20,
                 'limit'     => $limit,
                 'search'    => $request->search,

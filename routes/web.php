@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KendaraanController;
+use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\RekapitulasiController;
 
 /*
@@ -23,11 +25,11 @@ Route::get('/', [DashboardController::class, 'index']);
 Route::get('/index', [DashboardController::class, 'index']);
 
 // Master
-Route::get('/masterKendaraan', [MasterController::class, 'master_kendaraan']);
+Route::get('/masterKendaraan', [KendaraanController::class, 'page_master_kendaraan']);
 //
 
 // Form
-Route::get('/formKendaraan', [FormController::class, 'form_kendaraan']);
+Route::get('/formKendaraan', [PeminjamanController::class, 'form_kendaraan']);
 //
 
 // Rekapitulasi
@@ -36,18 +38,18 @@ Route::get('/rekapitulasiKendaraan', [RekapitulasiController::class, 'rekapitula
 # End Halaman #
 
 # Ajax Master #
-Route::get('/gtMasterKendaraan', [MasterController::class, 'ajax_gt_master_kendaraan']);
-Route::post('/processMasterKendaraan', [MasterController::class, 'ajax_pcs_master_kendaraan']);
-Route::get('/deleteMasterKendaraan', [MasterController::class, 'ajax_del_master_kendaraan']);
-Route::get('/DTMasterKendaraan', [MasterController::class, 'ajax_dt_master_kendaraan']);
-Route::get('/DTRekapitulasiKendaraan', [RekapitulasiController::class, 'ajax_dt_rekapitulasi_kendaraan']);
-Route::get('/cancelPeminjamanKendaraan', [FormController::class, 'ajax_cancel_form_kendaraan']);
+Route::get('/gtMasterKendaraan', [KendaraanController::class, 'ajax_gt_master_kendaraan']);
+Route::post('/processMasterKendaraan', [KendaraanController::class, 'ajax_pcs_master_kendaraan']);
+Route::get('/deleteMasterKendaraan', [KendaraanController::class, 'ajax_del_master_kendaraan']);
+Route::get('/DTMasterKendaraan', [KendaraanController::class, 'ajax_dt_master_kendaraan']);
+Route::get('/DTRekapitulasiKendaraan', [PeminjamanController::class, 'ajax_dt_rekapitulasi_kendaraan']);
+Route::get('/cancelPeminjamanKendaraan', [PeminjamanController::class, 'ajax_cancel_form_kendaraan']);
 # End Ajax Master #
 
 # Ajax Form #
-Route::post('/processPinjamKendaraan', [FormController::class, 'ajax_pcs_form_kendaraan']);
+Route::post('/processPinjamKendaraan', [PeminjamanController::class, 'ajax_pcs_form_kendaraan']);
 # End Ajax Master #
 
 # Ajax Select #
-Route::get('/selectKendaraan', [MasterController::class, 'ajax_select_kendaraan']);
+Route::get('/selectKendaraan', [KendaraanController::class, 'ajax_select_kendaraan']);
 # End Ajax Select #
