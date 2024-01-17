@@ -109,7 +109,8 @@ class KendaraanController extends Controller
     {
         if($request->ajax()) {
             $validator = Validator::make($request->all(), [
-                'page'   => 'required'
+                'page'      => 'required',
+                'tanggal'   => 'required'
             ]);
 
             if($validator->fails()) return response()->json(implode(',',$validator->errors()->all()), 422);
@@ -125,7 +126,8 @@ class KendaraanController extends Controller
                 'start'     => ceil($start - 1) * 20,
                 'limit'     => $limit,
                 'search'    => $request->search,
-                'jenis_kendaraan'   => $request->jenis_kendaraan
+                'jenis_kendaraan'   => $request->jenis_kendaraan,
+                'tanggal'   => $request->tanggal
             ]);
 
             $response = [

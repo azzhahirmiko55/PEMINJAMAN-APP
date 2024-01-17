@@ -64,6 +64,17 @@
 
                                                 <div class="col-sm-4">
                                                     <div class="form-group">
+                                                        <label class="form-label" for="inputPlatNomor">Tanggal Pinjam</label>
+                                                        <div class="form-control-wrap">
+                                                            <div class="form-icon form-icon-left">
+                                                                <em class="icon ni ni-calender-date"></em>
+                                                            </div>
+                                                            <input type="text" class="form-control" name="tanggal" id="inputTanggal" placeholder="Tanggal Pinjam" value="{{ date('Y-m-d') }}" readonly required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
                                                         <label class="form-label" for="inpuJenisKendaraan">Jenis Kendaraan</label>
                                                         <ul class="custom-control-group g-2 align-center flex-wrap mt-0">
                                                             <li>
@@ -89,17 +100,6 @@
                                                                 <em class="icon ni ni-money"></em>
                                                             </div>
                                                             <select name="kendaraan" id="inputKendaraan" class="form-control"></select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-4">
-                                                    <div class="form-group">
-                                                        <label class="form-label" for="inputPlatNomor">Tanggal Pinjam</label>
-                                                        <div class="form-control-wrap">
-                                                            <div class="form-icon form-icon-left">
-                                                                <em class="icon ni ni-calender-date"></em>
-                                                            </div>
-                                                            <input type="text" class="form-control" name="tanggal" id="inputTanggal" placeholder="Tanggal Pinjam" value="{{ date('Y-m-d') }}" readonly required>
                                                         </div>
                                                     </div>
                                                 </div>

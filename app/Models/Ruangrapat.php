@@ -11,6 +11,8 @@ class Ruangrapat extends Model
 
     protected $guarded = ['id'];
 
+    protected $table = 'ruangrapat';
+
     public static function select2_ruangrapat($params = [])
     {
         $start = isset($params['start']) ? $params['start'] : 0;

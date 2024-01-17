@@ -4,12 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
-use App\Models\Peminjaman;
+use App\Models\PeminjamanKendaraan;
 use DataTables;
 
-class PeminjamanController extends Controller
+class PeminjamanKendaraanController extends Controller
 {
-
     public function form_kendaraan()
     {
         return view('peminjaman/kendaraan', [
@@ -31,7 +30,7 @@ class PeminjamanController extends Controller
 
             if($validator->fails()) return response()->json(implode(',',$validator->errors()->all()), 422);
 
-            Peminjaman::create([
+            PeminjamanKendaraan::create([
                 'id_user'       => 0,
                 'peminjam'      => $request->peminjam,
                 'driver'        => $request->driver,
@@ -58,7 +57,7 @@ class PeminjamanController extends Controller
                 return response()->json(implode(',',$validator->errors()->all()), 422);
             }
 
-            Peminjaman::where('id', $request->id)->update(['status' => 0]);
+            PeminjamanKendaraan::where('id', $request->id)->update(['status' => 0]);
 
             return response()->json([
                 'success'   => TRUE,
@@ -78,7 +77,7 @@ class PeminjamanController extends Controller
     public function ajax_dt_rekapitulasi_kendaraan(Request $request)
     {
         if ($request->ajax()) {
-            $gt_tb_peminjaman_kendaraan = Peminjaman::query_peminjaman_kendaraan();
+            $gt_tb_peminjaman_kendaraan = PeminjamanKendaraan::query_peminjaman_kendaraan();
 
             $DT_rekapitulasi_kendaraan = Datatables::of($gt_tb_peminjaman_kendaraan)
                                     ->addIndexColumn()
@@ -94,6 +93,4 @@ class PeminjamanController extends Controller
             return $DT_rekapitulasi_kendaraan;
         }
     }
-
-
 }

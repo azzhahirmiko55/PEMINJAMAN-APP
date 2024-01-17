@@ -23,7 +23,7 @@ const DTMasterRuangRapat = () => {
     });
 }
 
-DTMasterRuangRapats();
+DTMasterRuangRapat();
 
 const clearFormRuangRapat = () => {
     $('#formRuangRapat').trigger('reset');

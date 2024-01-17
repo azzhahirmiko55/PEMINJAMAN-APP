@@ -59,7 +59,7 @@
                             </li>
                         </ul><!-- .nk-menu-sub -->
                     </li><!-- .nk-menu-item -->
-                    <li class="nk-menu-item has-sub {{ ($page === "Master Kendaraan")  ? 'active' : '' }}">
+                    <li class="nk-menu-item has-sub {{ ($page === "Master Kendaraan" || "Master Ruang Rapat")  ? 'active' : '' }}">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-text">Master</span>
                         </a>
@@ -67,8 +67,8 @@
                             <li class="nk-menu-item {{ ($page === "Master Kendaraan")  ? 'active' : '' }}">
                                 <a href="/masterKendaraan" class="nk-menu-link"><span class="nk-menu-text">Kendaraan</span></a>
                             </li>
-                            <li class="nk-menu-item">
-                                <a href="#" class="nk-menu-link"><span class="nk-menu-text">Ruang Rapat</span></a>
+                            <li class="nk-menu-item {{ ($page === "Master Ruang Rapat")  ? 'active' : '' }}">
+                                <a href="/masterRuangRapat" class="nk-menu-link"><span class="nk-menu-text">Ruang Rapat</span></a>
                             </li>
                             <li class="nk-menu-item">
                                 <a href="#" class="nk-menu-link"><span class="nk-menu-text">Alat Ukur</span></a>

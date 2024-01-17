@@ -24,6 +24,7 @@ class Kendaraan extends Model
         $limit = isset($params['limit']) ? $params['limit'] : 20;
         $search = isset($params['search']) ? $params['search'] : '';
         $jenis_kendaraan = isset($params['jenis_kendaraan']) ? $params['jenis_kendaraan'] : '';
+        $tanggal = isset($params['tanggal']) ? $params['tanggal'] : date('Y-m-d');
 
         $condition = '';
 
@@ -35,6 +36,13 @@ class Kendaraan extends Model
                         })
                         ->where(function ($query) use ($jenis_kendaraan) {
                             if(!empty($jenis_kendaraan)) $query->where('jenis','=',$jenis_kendaraan);
+                        })
+                        ->whereNotExists(function ($query) use ($tanggal) {
+                            $query->select('peminjaman_kendaraan.id')
+                                    ->from('peminjaman_kendaraan')
+                                    ->where('peminjaman_kendaraan.status', '=', '1')
+                                    ->whereRaw('peminjaman_kendaraan.id_kendaraan = kendaraan.id')
+                                    ->where('peminjaman_kendaraan.tanggal', '=', $tanggal);
                         })
                         ->orderBy('keterangan', 'ASC')
                         ->offset($start)
