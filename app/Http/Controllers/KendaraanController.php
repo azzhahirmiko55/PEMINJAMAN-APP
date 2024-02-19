@@ -6,16 +6,22 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\Kendaraan;
 use DataTables;
+use Illuminate\Support\Facades\Auth;
+use Session;
 
 class KendaraanController extends Controller
 {
 
     public static function page_master_kendaraan()
     {
-        return view('master/kendaraan', [
-            'page'          => 'Master Kendaraan',
-            'js_script'     => '/js/master/kendaraan.js'
-        ]);
+        if(Auth::check()){
+            return view('master/kendaraan', [
+                'page'          => 'Master Kendaraan',
+                'js_script'     => '/js/master/kendaraan.js'
+            ]);
+        } else {
+            abort(404);
+        }
     }
 
     public static function ajax_dt_master_kendaraan(Request $request)

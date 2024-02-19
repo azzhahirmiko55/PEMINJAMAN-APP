@@ -32,7 +32,7 @@
                                         <thead>
                                             <tr class="text-center">
                                                 <th>No</th>
-                                                <th>Jenis Kendaraan</th>
+                                                {{-- <th>Jenis Kendaraan</th> --}}
                                                 <th>Kendaraan</th>
                                                 <th>Peminjam</th>
                                                 <th>Driver</th>

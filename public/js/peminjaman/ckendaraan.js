@@ -48,18 +48,19 @@ const hideModalPeminjaman = () => {
 }
 
 const clearPreviewPeminjaman = () => {
-    $('#preview-event-header').removeClass().addClass('modal-header');
-    $('#preview-event-title').text('');
-    $('#preview-event-start').text('');
-    $('#preview-event-end').text('');
-    $('#preview-event-description').text('');
+    $('#preview-peminjaman-header').removeClass().addClass('modal-header');
+    $('#preview-peminjaman-title').text('');
+    $('#preview-tanggal-peminjaman').text('');
+    $('#preview-peminjam').text('');
+    $('#preview-driver').text('');
+    $('#preview-keperluan').text('');
     $('#id-peminjaman-preview').val('');
 } 
 
 const showPreviewPeminjaman = (id_peminjaman) => {
     $.ajax({
         type: 'GET',
-        url: '/gtPeminjaman',
+        url: '/gtPeminjamanKendaraan',
         data: {
             id: id_peminjaman
         },
@@ -72,12 +73,12 @@ const showPreviewPeminjaman = (id_peminjaman) => {
             $('#modal-preview-peminjaman').modal('show');
 
             $('#id-peminjaman-preview').val(response.id);
-            $('#preview-event-header').addClass(response.warna);
-            $('#preview-event-title').text(response.title);
-            $('#preview-event-start').text(response.convert_start);
-            $('#preview-event-end').text(response.convert_end);
-            $('#preview-event-description').text(response.description);
-            $('#preview-event-room').text(response.ruangan);
+            $('#preview-peminjaman-header').addClass(response.warna);
+            $('#preview-peminjaman-title').text(response.ket_kendaraan);
+            $('#preview-tanggal-peminjaman').text(response.convert_tanggal);
+            $('#preview-peminjam').text(response.peminjam);
+            $('#preview-driver').text(response.driver);
+            $('#preview-keperluan').text(response.keperluan);
         },
     });
 }
@@ -95,13 +96,13 @@ const loadCalendar = () => {
             center: null,
             right: 'today dayGridMonth,timeGridWeek,timeGridDay,listWeek'
         },
-        events: '/gtCalendarPeminjaman',
+        events: '/gtCalendarPeminjamanKendaraan',
         height: 800,
         eventRender: [], 
         contentHeight: 780,
         aspectRatio: 3,
-        editable: true,
-        droppable: true,
+        // editable: true,
+        // droppable: true,
         views: {
             dayGridMonth: {
                 dayMaxEventRows: 2
@@ -109,9 +110,19 @@ const loadCalendar = () => {
         },
         selectable: true,
         select: function (res) {
-            $('#modalPenjadwalan').modal('show'); 
-            $('#event-start-date').val(res.startStr);
-            $('#event-end-date').val(res.endStr);
+            let currentDate = new Date().toJSON().slice(0, 10);
+            
+            if(res.startStr < currentDate){
+                Swal.fire({
+                    title: "Perhatian!",
+                    text: "Tidak boleh meminjam kendaraan kurang dari tanggal saat ini!",
+                    icon: "warning"
+                });
+            } else {
+                $('#modal-peminjaman').modal('show'); 
+                $('#id-tanggal-peminjaman').val(res.startStr);
+            }
+
         },
         eventDrop: function (res) {
             // console.log(res);
@@ -126,7 +137,7 @@ const loadCalendar = () => {
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: "/processJadwal",
+                        url: "/processPindahPeminjaman",
                         type : "POST",
                         data :{
                             id: res.event._def.publicId,
@@ -135,14 +146,26 @@ const loadCalendar = () => {
                         },
                         dataType : "json",
                         success: function(response) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: response.message,
-                                timer: 2000,
-                                showCancelButton: false,
-                                showConfirmButton: false,
-                                allowOutsideClick: false
-                            });
+                            if(response.success == true){
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: response.message,
+                                    timer: 2000,
+                                    showCancelButton: false,
+                                    showConfirmButton: false,
+                                    allowOutsideClick: false
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: response.message,
+                                    timer: 3000,
+                                    showCancelButton: false,
+                                    showConfirmButton: false,
+                                    allowOutsideClick: false
+                                });
+                                loadCalendar();
+                            }
                         },
                         error: function (error) {
                             Swal.fire({
@@ -159,94 +182,17 @@ const loadCalendar = () => {
             });
         },
         eventClick: function (res) {
-            showPreviewPenjadwalan(res.event._def.publicId);
+            showPreviewPeminjaman(res.event._def.publicId);
         }
     });
     calendar.render();
 }
 
-const deleteJadwal = () => {
-    $('#modalPreviewPenjadwalan').modal('hide');
-    Swal.fire({
-        title: 'Apakah Anda Yakin ?',
-        text: "Anda akan menghapus jadwal",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ya'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: "/deleteJadwal",
-                type : "POST",
-                data :{
-                    id: $('#idPenjadwalanPreview').val()
-                },
-                dataType : "json",
-                success: function(response) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: response.message,
-                        timer: 2000,
-                        showCancelButton: false,
-                        showConfirmButton: false,
-                        allowOutsideClick: false
-                    });
-                    loadCalendar();
-                },
-                error: function (error) {
-                    Swal.fire({
-                        title: 'Terjadi kesalahan saat menyimpan data!',
-                        text: error.responseText, 
-                        icon: 'error',
-                        showConfirmButton: false
-                    });
-                }
-            });
-        } else {
-            $('#modalPreviewPenjadwalan').modal('show');
-        }
-    });
-}
-
-const editJadwal = () => {
-    $.ajax({
-        type: 'GET',
-        url: '/gtPenjadwalan',
-        data: {
-            id: $('#idPenjadwalanPreview').val()
-        },
-        dataType: 'JSON',
-        async: false,
-        cache: false,
-        success: function (response) {
-            $('#modalPreviewPenjadwalan').modal('hide');
-            showFormPenjadwalan();
-
-            $('#idPenjadwalan').val($('#idPenjadwalanPreview').val());
-
-            $('#event-title').val(response.title);
-            $('#event-description').val(response.description);
-
-            $('#event-start-date').val(response.start_date);
-            $('#event-start-time').val(response.start_time);
-            $('#event-end-date').val(response.end_date);
-            $('#event-end-time').val(response.end_time);
-
-            $("#event-room").val(response.id_room).trigger("change");
-            
-            $('input.warna-checkbox[value="'+response.warna+'"]').prop('checked', true);
-        
-        },
-    });
-}
-
-$('#formAddPenjadwalan').submit(function(event) {
+$('#form-peminjaman').submit(function(event) {
     event.preventDefault();
     formData = new FormData($(this)[0]);
     $.ajax({
-        url: "/processJadwal",
+        url: "/processPinjamKendaraan",
         type: "post",
         data: formData,
         async: false,
@@ -268,7 +214,7 @@ $('#formAddPenjadwalan').submit(function(event) {
                 showCancelButton: false,
                 showConfirmButton: false,
                 allowOutsideClick: false,
-                onAfterClose: () => $('#modalPenjadwalan').modal('hide')
+                onAfterClose: () => $('#modal-peminjaman').modal('hide')
             });
             loadCalendar();
         },

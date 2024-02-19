@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\PeminjamanKendaraanController;
 use App\Http\Controllers\RuangrapatController;
+use App\Http\Controllers\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,10 @@ Route::get('/', [DashboardController::class, 'index']);
 
 # Halaman #
 Route::get('/index', [DashboardController::class, 'index']);
+
+Route::get('/login', [LoginController::class, 'index']);
+Route::get('/logout', [LoginController::class, 'logout']);
+Route::post('/processLogin', [LoginController::class, 'ajax_process_login']);
 
 # End Halaman #
 
@@ -55,7 +60,9 @@ Route::get('/index', [DashboardController::class, 'index']);
     Route::get('/cancelPeminjamanKendaraan', [PeminjamanKendaraanController::class, 'ajax_cancel_form_kendaraan']); // Proses Cancel Peminjaman
 
     Route::get('/calendarKendaraan', [PeminjamanKendaraanController::class, 'calendar_kendaraan']); // Kalender Kendaraan
-    Route::get('/gtCalendarPeminjaman', [PeminjamanKendaraanController::class, 'ajax_gt_calendar_kendaraan']); // Calendar Peminjaman
+    Route::get('/gtCalendarPeminjamanKendaraan', [PeminjamanKendaraanController::class, 'ajax_gt_calendar_kendaraan']); // Calendar Peminjaman
+    Route::get('/gtPeminjamanKendaraan', [PeminjamanKendaraanController::class, 'ajax_gt_peminjaman_kendaraan']); // Ambil Data Peminjaman Preview
+    Route::post('/processPindahPeminjaman', [PeminjamanKendaraanController::class, 'ajax_process_pindah_kendaraan']);
     
 # End Ajax Peminjaman #
 

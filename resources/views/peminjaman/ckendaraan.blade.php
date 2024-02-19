@@ -51,7 +51,7 @@
                                         <div class="form-icon form-icon-left">
                                             <em class="icon ni ni-users"></em>
                                         </div>
-                                        <input type="text" name="title" class="form-control" id="id-peminjam" placeholder="Peminjam" required>
+                                        <input type="text" name="peminjam" class="form-control" id="id-peminjam" placeholder="Peminjam" required>
                                     </div>
                                 </div>
                             </div>
@@ -62,7 +62,7 @@
                                         <div class="form-icon form-icon-left">
                                             <em class="icon ni ni-account-setting"></em>
                                         </div>
-                                        <input type="text" name="title" class="form-control" id="id-driver" placeholder="Peminjam" required>
+                                        <input type="text" name="driver" class="form-control" id="id-driver" placeholder="Peminjam" required>
                                     </div>
                                 </div>
                             </div>
@@ -73,7 +73,7 @@
                                         <div class="form-icon form-icon-left">
                                             <em class="icon ni ni-calendar"></em>
                                         </div>
-                                        <input type="text" name="tanggal_peminjaman" id="id-tanggal-peminjaman" class="form-control" data-date-format="yyyy-mm-dd" value="{{ date('Y-m-d') }}" required readonly>
+                                        <input type="text" name="tanggal" id="id-tanggal-peminjaman" class="form-control" data-date-format="yyyy-mm-dd" value="{{ date('Y-m-d') }}" required readonly>
                                     </div>
                                 </div>
                             </div>
@@ -83,13 +83,13 @@
                                     <ul class="custom-control-group g-2 align-center flex-wrap mt-0">
                                         <li>
                                             <div class="custom-control custom-radio">
-                                                <input type="radio" class="custom-control-input" id="radioRoda2" name="jenis_kendaraan" value="Roda-2" required>
+                                                <input type="radio" class="custom-control-input jen-ken" id="radioRoda2" name="jenis_kendaraan" value="Roda-2" required>
                                                 <label for="radioRoda2" class="custom-control-label">Roda 2 | Motor</label>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="custom-control custom-radio">
-                                                <input type="radio" class="custom-control-input" id="radioRoda4" name="jenis_kendaraan" value="Roda-4">
+                                                <input type="radio" class="custom-control-input jen-ken" id="radioRoda4" name="jenis_kendaraan" value="Roda-4">
                                                 <label for="radioRoda4" class="custom-control-label">Roda 4 | Mobil</label>
                                             </div>
                                         </li>
@@ -122,10 +122,10 @@
                             <div class="col-12">
                                 <ul class="d-flex justify-content-between gx-4 mt-1">
                                     <li>
-                                        <button id="btnAddEvent" type="submit" class="btn btn-primary"><em class="icon ni ni-save"></em><span>Simpan Data</span></button>
+                                        <button id="btn-simpan-peminjaman" type="submit" class="btn btn-primary"><em class="icon ni ni-save"></em><span>Simpan Data</span></button>
                                     </li>
                                     <li>
-                                        <button onclick="hideModalPenjadwalan()" type="buttton" class="btn btn-danger btn-dim">Tutup Form</button>
+                                        <a href="#" data-bs-dismiss="modal" class="btn btn-danger btn-dim">Tutup Form</a>
                                     </li>
                                 </ul>
                             </div>
@@ -141,8 +141,8 @@
     <div class="modal fade" id="modal-preview-peminjaman">
         <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
-                <div id="preview-event-header" class="modal-header">
-                    <h5 id="preview-event-title" class="modal-title">Placeholder Title</h5>
+                <div id="preview-peminjaman-header" class="modal-header">
+                    <h5 id="preview-peminjaman-title" class="modal-title">Placeholder Title</h5>
                     <a href="#" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <em class="icon ni ni-cross"></em>
                     </a>
@@ -150,31 +150,23 @@
                 <div class="modal-body">
                     <input type="hidden" id="id-peminjaman-preview">
                     <div class="row gy-3 py-1">
+                        <div class="col-sm-12">
+                            <h6 class="overline-title">Tanggal Peminjaman</h6>
+                            <p id="preview-tanggal-peminjaman"></p>
+                        </div>
                         <div class="col-sm-6">
-                            <h6 class="overline-title">Tanggal Mulai</h6>
-                            <p id="preview-event-start"></p>
+                            <h6 class="overline-title">Peminjam</h6>
+                            <p id="preview-peminjam" style="text-align: justify;"></p>
                         </div>
-                        <div class="col-sm-6" id="preview-event-end-check">
-                            <h6 class="overline-title">Tanggal Selesai</h6>
-                            <p id="preview-event-end"></p>
+                        <div class="col-sm-6">
+                            <h6 class="overline-title">Driver</h6>
+                            <p id="preview-driver"></p>
                         </div>
-                        <div class="col-sm-12" id="preview-event-description-check">
-                            <h6 class="overline-title">Deskripsi</h6>
-                            <p id="preview-event-description" style="text-align: justify;"></p>
-                        </div>
-                        <div class="col-sm-12" id="preview-event-room-check">
-                            <h6 class="overline-title">Ruangan</h6>
-                            <p id="preview-event-room"></p>
+                        <div class="col-sm-12">
+                            <h6 class="overline-title">Keperluan</h6>
+                            <p id="preview-keperluan"></p>
                         </div>
                     </div>
-                    <ul class="d-flex justify-content-between gx-4 mt-3">
-                        <li>
-                            <button type="button" onclick="editPeminjaman()" class="btn btn-primary">Ubah Data Peminjaman</button>
-                        </li>
-                        <li>
-                            <button type="button" onclick="deletePeminjaman()" class="btn btn-danger btn-dim">Hapus Data Peminjaman</button>
-                        </li>
-                    </ul>
                 </div>
             </div>
         </div>

@@ -14,7 +14,7 @@ const DTRekapitulasiKendaraan = () => {
         ajax: "/DTRekapitulasiKendaraan",
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, class: 'text-center', width: '5%'},
-            {data: 'jenis', name: 'jenis', class: 'text-center', width: '10%'},
+            // {data: 'jenis', name: 'jenis', class: 'text-center', width: '10%'},
             {data: 'ket_kendaraan', name: 'ket_kendaraan', class: 'text-left', width: '10%'},
             {data: 'peminjam', name: 'peminjam', class: 'text-left', width: '25%'},
             {data: 'driver', name: 'driver', class: 'text-left', width: '15%'},
