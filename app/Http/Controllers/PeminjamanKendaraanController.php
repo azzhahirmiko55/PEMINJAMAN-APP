@@ -17,6 +17,43 @@ class PeminjamanKendaraanController extends Controller
         ]);
     }
 
+    public function calendar_kendaraan()
+    {
+        return view('peminjaman/ckendaraan', [
+            'page'      => 'Kalender Peminjaman Kendaraan',
+            'js_script' => 'js/peminjaman/ckendaraan.js'
+        ]);
+    }
+
+    public function ajax_gt_calendar_kendaraan(Request $request)
+    {
+
+        // if($request->ajax()) {
+        
+            $arr_peminjaman = [];
+
+                $gt_data_peminjaman = PeminjamanKendaraan::query_peminjaman_kendaraan();
+
+                if(!empty($gt_data_peminjaman)){
+                    foreach($gt_data_peminjaman as $row){
+
+                        $arr_peminjaman[] = [
+                            'id'        => $row->id,
+                            'title'     => $row->plat.' - '.$row->peminjam,
+                            'start'     => $row->tanggal.' 00:00:00',
+                            'end'       => $row->tanggal.' 23:59:59',
+                            'className' => $row->warna
+                        ];
+
+                    }
+                }
+
+            return $arr_peminjaman;
+
+        // }
+
+    }
+
     public function ajax_pcs_form_kendaraan(Request $request)
     {
         if($request->ajax()) {

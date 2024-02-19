@@ -131,6 +131,55 @@
                                 </div>
                             </div>
                             <div class="col-12">
+                                <div class="form-group">
+                                    <label class="form-label" for="event-room">Warna Tampilan</label>
+                                    <ul class="custom-control-group g-2 align-center flex-wrap mt-0">
+                                        <li>
+                                            <div class="custom-control custom-radio custom-control-sm">
+                                                <input type="radio" class="custom-control-input warna-checkbox" id="radioWarnaUngu" name="warna_tampilan" value="fc-event-primary-dim" required>
+                                                <label for="radioWarnaUngu" class="custom-control-label"><span class="badge badge-dim rounded-pill bg-primary">Ungu</span></label>
+                                            </div>
+                                        </li>
+                                        |
+                                        <li>
+                                            <div class="custom-control custom-radio custom-control-sm">
+                                                <input type="radio" class="custom-control-input warna-checkbox" id="radioWarnaHijau" name="warna_tampilan" value="fc-event-success-dim">
+                                                <label for="radioWarnaHijau" class="custom-control-label"><span class="badge badge-dim rounded-pill bg-success">Hijau</span></label>
+                                            </div>
+                                        </li>
+                                        |
+                                        <li>
+                                            <div class="custom-control custom-radio custom-control-sm">
+                                                <input type="radio" class="custom-control-input warna-checkbox" id="radioWarnaJingga" name="warna_tampilan" value="fc-event-warning-dim">
+                                                <label for="radioWarnaJingga" class="custom-control-label"><span class="badge badge-dim rounded-pill bg-warning">Jingga</span></label>
+                                            </div>
+                                        </li>
+                                        |
+                                        <li>
+                                            <div class="custom-control custom-radio custom-control-sm">
+                                                <input type="radio" class="custom-control-input warna-checkbox" id="radioWarnaMerah" name="warna_tampilan" value="fc-event-danger-dim">
+                                                <label for="radioWarnaMerah" class="custom-control-label"><span class="badge badge-dim rounded-pill bg-danger">Merah</span></label>
+                                            </div>
+                                        </li>
+                                        |
+                                        <li>
+                                            <div class="custom-control custom-radio custom-control-sm">
+                                                <input type="radio" class="custom-control-input warna-checkbox" id="radioWarnaBiru" name="warna_tampilan" value="fc-event-info-dim">
+                                                <label for="radioWarnaBiru" class="custom-control-label"><span class="badge badge-dim rounded-pill bg-info">Biru</span></label>
+                                            </div>
+                                        </li>
+                                        |
+                                        <li>
+                                            <div class="custom-control custom-radio custom-control-sm">
+                                                <input type="radio" class="custom-control-input warna-checkbox" id="radioWarnaAbu" name="warna_tampilan" value="fc-event-dark-dim">
+                                                <label for="radioWarnaAbu" class="custom-control-label"><span class="badge badge-dim rounded-pill bg-dark">Abu-Abu</span></label>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-12"><hr></div>
+                            <div class="col-12">
                                 <ul class="d-flex justify-content-between gx-4 mt-1">
                                     <li>
                                         <button type="submit" class="btn btn-primary"><em class="icon ni ni-save"></em><span>Simpan Data</span></button>

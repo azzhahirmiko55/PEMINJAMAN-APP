@@ -18,6 +18,7 @@ class CreateKendaraanTable extends Migration
             $table->string('plat');
             $table->enum('jenis', ['Roda-2', 'Roda-4']);
             $table->text('keterangan');
+            $table->text('warna');
             $table->boolean('status')->default(true);
             $table->timestamps();
         });

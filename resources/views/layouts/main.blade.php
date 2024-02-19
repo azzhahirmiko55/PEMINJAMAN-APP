@@ -47,6 +47,7 @@
     {{-- <script src="{{ asset('/js/charts/gd-invest.js?ver=3.1.0') }}"></script>
     <script src="{{ asset('/js/charts/gd-invest.js?ver=3.1.0') }}"></script> --}}
     <script type="text/javascript" src="{{ asset('/js/js/bundle.js?ver=3.1.0') }}"></script>
+    <script src="{{ asset('/dashlite/js/libs/fullcalendar.js?ver=3.1.0') }}"></script>
     <?= isset($js_script) ? '<script type="text/javascript" src="'.asset($js_script).'"></script>' : ""; ?>
 
 </html>

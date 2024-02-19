@@ -24,7 +24,7 @@ class PeminjamanKendaraan extends Model
     public static function query_peminjaman_kendaraan()
     {
         return static::leftJoin('kendaraan','kendaraan.id', '=', 'peminjaman_kendaraan.id_kendaraan')
-                ->select('peminjaman_kendaraan.*', DB::raw('CONCAT(kendaraan.plat, " - ", kendaraan.keterangan) as ket_kendaraan, kendaraan.jenis'))->get();
+                ->select('peminjaman_kendaraan.*', DB::raw('CONCAT(kendaraan.plat, " - ", kendaraan.keterangan) as ket_kendaraan, kendaraan.jenis, kendaraan.warna, kendaraan.plat'))->get();
     }
 
 }

@@ -13,7 +13,7 @@ class Kendaraan extends Model
     protected $guarded = ['id'];
 
     protected $fillable = [
-        'keterangan', 'plat', 'jenis', 'status'
+        'keterangan', 'plat', 'jenis', 'status', 'warna'
     ];
 
     protected $table = 'kendaraan';

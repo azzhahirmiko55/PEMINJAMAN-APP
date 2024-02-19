@@ -69,6 +69,7 @@ const editMasterKendaraan = (id_kendaraan) => {
                 $('#statusPinjam5').prop('checked',true);
             }
             $('#inputKeterangan').val(response.keterangan);
+            $('input.warna-checkbox[value="'+response.warna+'"]').prop('checked', true);
         },
         error: function (error) {
             Swal.fire({

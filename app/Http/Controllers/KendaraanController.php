@@ -52,7 +52,8 @@ class KendaraanController extends Controller
                 'jenis_kendaraan'   => 'required',
                 'plat_nomor'        => 'required',
                 'keterangan'        => 'required',
-                'status'            => 'required'
+                'status'            => 'required',
+                'warna_tampilan'    => 'required'
             ]);
 
             if($validator->fails()) return response()->json(implode(',',$validator->errors()->all()), 422);
@@ -63,7 +64,8 @@ class KendaraanController extends Controller
                     'jenis'         => $request->jenis_kendaraan,
                     'plat'          => $request->plat_nomor,
                     'keterangan'    => $request->keterangan,
-                    'status'        => $request->status
+                    'status'        => $request->status,
+                    'warna'         => $request->warna_tampilan
                 ]
             );
 
