@@ -16,6 +16,7 @@ class CreateRuangrapatTable extends Migration
         Schema::create('ruangrapat', function (Blueprint $table) {
             $table->id();
             $table->string('ruangan');
+            $table->text('warna');
             $table->boolean('status')->default(true);
             $table->timestamps();
         });

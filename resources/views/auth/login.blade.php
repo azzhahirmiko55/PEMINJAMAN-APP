@@ -28,7 +28,7 @@
                             <div class="brand-logo pb-4 text-center">
                                 <a href="html/index.html" class="logo-link">
                                     <h3 class="title-for-logo" style="color: black !important;">
-                                        <em class="ni ni-calendar-alt"></em> Aplikasi Penjadwalan
+                                        <em class="ni ni-calendar-alt"></em> Aplikasi Peminjaman
                                     </h3>
                                 </a>
                             </div>
@@ -79,7 +79,7 @@
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="nk-block-content text-center text-lg-left">
-                                            <p class="text-soft">&copy; {{ date('Y') }} Aplikasi Penjadwalan</p>
+                                            <p class="text-soft">&copy; {{ date('Y') }} Aplikasi Peminjaman</p>
                                         </div>
                                     </div>
                                 </div>

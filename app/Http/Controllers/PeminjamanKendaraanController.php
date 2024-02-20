@@ -21,10 +21,17 @@ class PeminjamanKendaraanController extends Controller
 
     public function calendar_kendaraan()
     {
-        return view('peminjaman/ckendaraan', [
-            'page'      => 'Kalender Peminjaman Kendaraan',
-            'js_script' => 'js/peminjaman/ckendaraan.js'
-        ]);
+        if(Auth::check()){
+            return view('peminjaman/auth/ckendaraan', [
+                'page'      => 'Kalender Peminjaman Kendaraan',
+                'js_script' => 'js/peminjaman/auth/ckendaraan.js'
+            ]);
+        } else {
+             return view('peminjaman/ckendaraan', [
+                'page'      => 'Kalender Peminjaman Kendaraan',
+                'js_script' => 'js/peminjaman/ckendaraan.js'
+            ]);
+        }
     }
 
     public function ajax_gt_calendar_kendaraan(Request $request)
@@ -110,12 +117,14 @@ class PeminjamanKendaraanController extends Controller
             {
                 $dt_peminjaman_kendaraan = [
                     'id'        => $gt_peminjaman_kendaraan->id,
+                    'id_kendaraan'  => $gt_peminjaman_kendaraan->id_kendaraan,
                     'peminjam'  => $gt_peminjaman_kendaraan->peminjam,
                     'driver'    => $gt_peminjaman_kendaraan->driver,
                     'tanggal'   => $gt_peminjaman_kendaraan->tanggal,
                     'warna'     => $gt_peminjaman_kendaraan->warna,
                     'jenis'     => $gt_peminjaman_kendaraan->jenis,
                     'plat'      => $gt_peminjaman_kendaraan->plat,
+                    'keterangan'=> $gt_peminjaman_kendaraan->keterangan,
                     'keperluan' => $gt_peminjaman_kendaraan->keperluan,
                     'ket_kendaraan'     => $gt_peminjaman_kendaraan->keterangan.' ( '.$gt_peminjaman_kendaraan->plat.' )',
                     'convert_tanggal'   => date("d", strtotime($gt_peminjaman_kendaraan->tanggal)).' '.$this->convert_nama_bulan(date("m", strtotime($gt_peminjaman_kendaraan->tanggal))).' '.date("Y", strtotime($gt_peminjaman_kendaraan->tanggal))
@@ -140,7 +149,11 @@ class PeminjamanKendaraanController extends Controller
 
             if($validator->fails()) return response()->json(implode(',',$validator->errors()->all()), 422);
 
-            PeminjamanKendaraan::create([
+            PeminjamanKendaraan::updateOrCreate(
+            [
+                'id'            => $request->id
+            ],
+            [
                 'id_user'       => 0,
                 'peminjam'      => $request->peminjam,
                 'driver'        => $request->driver,
@@ -210,7 +223,7 @@ class PeminjamanKendaraanController extends Controller
     public function ajax_dt_rekapitulasi_kendaraan(Request $request)
     {
         if ($request->ajax()) {
-            $gt_tb_peminjaman_kendaraan = PeminjamanKendaraan::query_peminjaman_kendaraan()->get();
+            $gt_tb_peminjaman_kendaraan = PeminjamanKendaraan::query_peminjaman_kendaraan(0,1)->get();
 
             $DT_rekapitulasi_kendaraan = Datatables::of($gt_tb_peminjaman_kendaraan)
                                     ->addIndexColumn()

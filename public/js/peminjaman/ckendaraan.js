@@ -101,8 +101,6 @@ const loadCalendar = () => {
         eventRender: [], 
         contentHeight: 780,
         aspectRatio: 3,
-        // editable: true,
-        // droppable: true,
         views: {
             dayGridMonth: {
                 dayMaxEventRows: 2
@@ -123,63 +121,6 @@ const loadCalendar = () => {
                 $('#id-tanggal-peminjaman').val(res.startStr);
             }
 
-        },
-        eventDrop: function (res) {
-            // console.log(res);
-            Swal.fire({
-                title: 'Apakah Anda Yakin ?',
-                text: "Anda akan memindahkan jadwal",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: "/processPindahPeminjaman",
-                        type : "POST",
-                        data :{
-                            id: res.event._def.publicId,
-                            days: res.delta.days,
-                            eventtype: 'drop'
-                        },
-                        dataType : "json",
-                        success: function(response) {
-                            if(response.success == true){
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: response.message,
-                                    timer: 2000,
-                                    showCancelButton: false,
-                                    showConfirmButton: false,
-                                    allowOutsideClick: false
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: response.message,
-                                    timer: 3000,
-                                    showCancelButton: false,
-                                    showConfirmButton: false,
-                                    allowOutsideClick: false
-                                });
-                                loadCalendar();
-                            }
-                        },
-                        error: function (error) {
-                            Swal.fire({
-                                title: 'Terjadi kesalahan saat menyimpan data!',
-                                text: error.responseText, 
-                                icon: 'error',
-                                showConfirmButton: false
-                            });
-                        }
-                    });
-                } else {
-                    loadCalendar();
-                }
-            });
         },
         eventClick: function (res) {
             showPreviewPeminjaman(res.event._def.publicId);

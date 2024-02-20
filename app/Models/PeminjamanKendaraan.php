@@ -56,11 +56,13 @@ class PeminjamanKendaraan extends Model
         return $text;
     }
 
-    public static function query_peminjaman_kendaraan($id = 0)
+    public static function query_peminjaman_kendaraan($id = 0,$type = 0)
     {
         $query = static::leftJoin('kendaraan','kendaraan.id', '=', 'peminjaman_kendaraan.id_kendaraan')
                 ->select('peminjaman_kendaraan.*', DB::raw('CONCAT(kendaraan.plat, " - ", kendaraan.keterangan) as ket_kendaraan, kendaraan.jenis, kendaraan.warna, kendaraan.plat, kendaraan.keterangan'))
-                // ->where('peminjaman_kendaraan.status','=','1')
+                ->where(function ($query) use ($type) {
+                    if(empty($type)) $query->where('peminjaman_kendaraan.status','=','1');
+                })
                 ->where(function ($query) use ($id) {
                     if(!empty($id)) $query->where('peminjaman_kendaraan.id','=',$id);
                 });
