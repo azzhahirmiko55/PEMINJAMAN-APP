@@ -11,13 +11,13 @@ use Session;
 
 class PeminjamanKendaraanController extends Controller
 {
-    public function form_kendaraan()
-    {
-        return view('peminjaman/kendaraan', [
-            'page'      => 'Form Peminjaman Kendaraan',
-            'js_script' => 'js/peminjaman/kendaraan.js'
-        ]);
-    }
+    // public function form_kendaraan()
+    // {
+    //     return view('peminjaman/kendaraan', [
+    //         'page'      => 'Form Peminjaman Kendaraan',
+    //         'js_script' => 'js/peminjaman/kendaraan.js'
+    //     ]);
+    // }
 
     public function calendar_kendaraan()
     {

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Ruangrapat extends Model
 {
@@ -18,6 +19,8 @@ class Ruangrapat extends Model
         $start = isset($params['start']) ? $params['start'] : 0;
         $limit = isset($params['limit']) ? $params['limit'] : 20;
         $search = isset($params['search']) ? $params['search'] : '';
+        $start_datetime = isset($params['start_datetime']) ? $params['start_datetime'] : '';
+        $end_datetime = isset($params['end_datetime']) ? $params['end_datetime'] : '';
 
         $condition = '';
 
@@ -25,6 +28,13 @@ class Ruangrapat extends Model
                         ->where('status','=',1)
                         ->where(function ($query) use ($search) {
                             $query->where('ruangan','like','%'.$search.'%');
+                        })
+                        ->whereNotExists(function ($query) use ($start_datetime,$end_datetime) {
+                            $query->select('peminjaman_ruangrapat.id')
+                                    ->from('peminjaman_ruangrapat')
+                                    ->where('peminjaman_ruangrapat.status', '=', '1')
+                                    ->whereRaw('peminjaman_ruangrapat.id_ruangrapat = ruangrapat.id')
+                                    ->whereRaw('(("'.$start_datetime.'" >= peminjaman_ruangrapat.start_datetime and "'.$start_datetime.'" <= peminjaman_ruangrapat.end_datetime) OR ("'.$end_datetime.'" >= peminjaman_ruangrapat.start_datetime and "'.$end_datetime.'" <= peminjaman_ruangrapat.end_datetime))');
                         })
                         ->orderBy('ruangan', 'ASC')
                         ->offset($start)

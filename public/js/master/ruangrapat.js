@@ -55,6 +55,7 @@ const editMasterRuangRapat = (id_ruangrapat) => {
             $('#modalMasterRuangRapat').modal('show');
             $('#idRuangRapat').val(response.id);
             $('#inputRuangan').val(response.ruangan);
+            $('input.warna-checkbox[value="'+response.warna+'"]').prop('checked', true);
         },
         error: function (error) {
             Swal.fire({
