@@ -36,11 +36,11 @@
                                 <a href="/calendarKendaraan" class="nk-menu-link"><span class="nk-menu-text">Form Kendaraan</span></a>
                             </li>
                             <li class="nk-menu-item">
-                                <a href="#" class="nk-menu-link"><span class="nk-menu-text">Form Ruang Rapat</span></a>
+                                <a href="/calendarRuangrapat" class="nk-menu-link"><span class="nk-menu-text">Form Ruang Rapat</span></a>
                             </li>
-                            <li class="nk-menu-item">
+                            {{-- <li class="nk-menu-item">
                                 <a href="#" class="nk-menu-link"><span class="nk-menu-text">Form Alat Ukur</span></a>
-                            </li>
+                            </li> --}}
                         </ul><!-- .nk-menu-sub -->
                     </li><!-- .nk-menu-item -->
                     <li class="nk-menu-item has-sub {{ ($page === "Rekapitulasi Peminjaman Kendaraan")  ? 'active' : '' }}">
@@ -52,11 +52,11 @@
                                 <a href="/rekapitulasiKendaraan" class="nk-menu-link"><span class="nk-menu-text">Peminjaman Kendaraan</span></a>
                             </li>
                             <li class="nk-menu-item">
-                                <a href="#" class="nk-menu-link"><span class="nk-menu-text">Peminjaman Ruang Rapat</span></a>
+                                <a href="/rekapitulasiRuangrapat" class="nk-menu-link"><span class="nk-menu-text">Peminjaman Ruang Rapat</span></a>
                             </li>
-                            <li class="nk-menu-item">
+                            {{-- <li class="nk-menu-item">
                                 <a href="#" class="nk-menu-link"><span class="nk-menu-text">Peminjaman Alat Ukur</span></a>
-                            </li>
+                            </li> --}}
                         </ul><!-- .nk-menu-sub -->
                     </li><!-- .nk-menu-item -->
                     @if (Auth::check())
@@ -71,9 +71,9 @@
                                 <li class="nk-menu-item {{ ($page === "Master Ruang Rapat")  ? 'active' : '' }}">
                                     <a href="/masterRuangRapat" class="nk-menu-link"><span class="nk-menu-text">Ruang Rapat</span></a>
                                 </li>
-                                <li class="nk-menu-item">
+                                {{-- <li class="nk-menu-item">
                                     <a href="#" class="nk-menu-link"><span class="nk-menu-text">Alat Ukur</span></a>
-                                </li>
+                                </li> --}}
                             </ul><!-- .nk-menu-sub -->
                         </li><!-- .nk-menu-item -->
                     @endif

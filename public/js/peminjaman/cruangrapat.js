@@ -5,7 +5,7 @@ $(document).ready(function () {
         }
     });
 
-    $("#event-start-date").datepicker({
+    $("#id-tanggal-peminjaman").datepicker({
         format : 'yyyy-mm-dd',
         startDate: new Date()
     });
@@ -14,11 +14,6 @@ $(document).ready(function () {
       timeFormat: 'HH:mm:ss'
     });
   
-    $("#event-end-date").datepicker({
-        format : 'yyyy-mm-dd',
-        startDate: new Date()
-    });
-    
     $("#event-end-time").timepicker({
       timeFormat: 'HH:mm:ss'
     });
@@ -33,11 +28,17 @@ $('#id-ruangrapat').select2({
         type: 'GET',
         url: '/selectRuangRapat',
         data: function(params) {
-            let query = {
-                search: params.term,
-                page: params.page || 1,
-                start_datetime: $('#event-start-date').val()+' '+$('#event-start-time').val(),
-                end_datetime: $('#event-end-date').val()+' '+$('#event-end-time').val()
+            let query = {};
+            if($('#event-start-time').val() && $('#event-end-time').val()){
+                query = {
+                    search: params.term,
+                    page: params.page || 1,
+                    tanggal : $('#id-tanggal-peminjaman').val(),
+                    start_time: $('#event-start-time').val(),
+                    end_time: $('#event-end-time').val()
+                }
+            } else {
+                alert('Silahkan input tanggal & jam mulai dan tanggal & jam selesai peminjaman');
             }
 
             return query;
@@ -64,6 +65,8 @@ const clearPreviewPeminjaman = () => {
     $('#preview-peminjaman-header').removeClass().addClass('modal-header');
     $('#preview-peminjaman-title').text('');
     $('#preview-tanggal-peminjaman').text('');
+    $('#preview-jam-mulai').text('');
+    $('#preview-jam-selesai').text('');
     $('#preview-peminjam').text('');
     $('#preview-driver').text('');
     $('#preview-keperluan').text('');
@@ -73,7 +76,7 @@ const clearPreviewPeminjaman = () => {
 const showPreviewPeminjaman = (id_peminjaman) => {
     $.ajax({
         type: 'GET',
-        url: '/gtPeminjamanKendaraan',
+        url: '/gtPeminjamanRuangrapat',
         data: {
             id: id_peminjaman
         },
@@ -87,10 +90,12 @@ const showPreviewPeminjaman = (id_peminjaman) => {
 
             $('#id-peminjaman-preview').val(response.id);
             $('#preview-peminjaman-header').addClass(response.warna);
-            $('#preview-peminjaman-title').text(response.ket_kendaraan);
+            $('#preview-peminjaman-title').text(response.ruangan);
             $('#preview-tanggal-peminjaman').text(response.convert_tanggal);
+            $('#preview-jam-mulai').text(response.jam_mulai);
+            $('#preview-jam-selesai').text(response.jam_selesai);
             $('#preview-peminjam').text(response.peminjam);
-            $('#preview-driver').text(response.driver);
+            $('#preview-jumlah').text(response.jumlah_peserta);
             $('#preview-keperluan').text(response.keperluan);
         },
     });
@@ -109,7 +114,7 @@ const loadCalendar = () => {
             center: null,
             right: 'today dayGridMonth,timeGridWeek,timeGridDay,listWeek'
         },
-        events: '/gtCalendarPeminjamanKendaraan',
+        events: '/gtCalendarPeminjamanRuangrapat',
         height: 800,
         eventRender: [], 
         contentHeight: 780,
@@ -146,7 +151,7 @@ $('#form-peminjaman').submit(function(event) {
     event.preventDefault();
     formData = new FormData($(this)[0]);
     $.ajax({
-        url: "/processPinjamKendaraan",
+        url: "/processPinjamRuangrapat",
         type: "post",
         data: formData,
         async: false,

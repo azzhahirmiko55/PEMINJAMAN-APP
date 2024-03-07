@@ -21,41 +21,6 @@ class PeminjamanKendaraan extends Model
         return $this->belongsTo(Kendaraan::class, 'id_kendaraan');
     }
 
-    public function convert_nama_bulan($bulan = 0)
-    {
-        $text = '';
-        
-        if(!empty($bulan)){
-            if($bulan == '1'){
-                $text = 'Januari';
-            } else if($bulan == '2'){
-                $text = 'Februari';
-            } else if($bulan == '3'){
-                $text = 'Maret';
-            } else if($bulan == '4'){
-                $text = 'April';
-            } else if($bulan == '5'){
-                $text = 'Mei';
-            } else if($bulan == '6'){
-                $text = 'Juni';
-            } else if($bulan == '7'){
-                $text = 'Juli';
-            } else if($bulan == '8'){
-                $text = 'Agustus';
-            } else if($bulan == '9'){
-                $text = 'September';
-            } else if($bulan == '10'){
-                $text = 'Oktober';
-            } else if($bulan == '11'){
-                $text = 'November';
-            } else if($bulan == '12'){
-                $text = 'Desember';
-            }
-        }
-
-        return $text;
-    }
-
     public static function query_peminjaman_kendaraan($id = 0,$type = 0)
     {
         $query = static::leftJoin('kendaraan','kendaraan.id', '=', 'peminjaman_kendaraan.id_kendaraan')
