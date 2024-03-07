@@ -35,7 +35,7 @@
         <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Tambah Penjadwalan</h5>
+                    <h5 class="modal-title">Tambah Peminjaman</h5>
                     <a href="#" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <em class="icon ni ni-cross"></em>
                     </a>
@@ -44,7 +44,7 @@
                     <form action="#" id="form-peminjaman" method="POST" class="form-validate is-alter">
                         <input type="hidden" id="id-peminjaman" name="id">
                         <div class="row gx-4 gy-3">
-                            <div class="col-sm-12">
+                            <div class="col-sm-8">
                                 <div class="form-group">
                                     <label class="form-label" for="id-peminjam">Peminjam</label>
                                     <div class="form-control-wrap">
@@ -55,20 +55,35 @@
                                     </div>
                                 </div>
                             </div>
-                            
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="form-label" for="id-peminjam">Jumlah Peserta</label>
+                                    <div class="form-control-wrap">
+                                        <div class="form-icon form-icon-left">
+                                            <em class="icon ni ni-users"></em>
+                                        </div>
+                                        <input type="number" name="jumlah_peserta" class="form-control" id="id-jumlah-peserta" placeholder="Jumlah Peserta" required>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="form-label">Tanggal & Jam Mulai</label>
-                                    <div class="row gx-2">
-                                        <div class="w-55">
-                                            <div class="form-control-wrap">
-                                                <div class="form-icon form-icon-left">
-                                                    <em class="icon ni ni-calendar"></em>
-                                                </div>
-                                                <input type="text" name="start_date" id="event-start-date" class="form-control" data-date-format="yyyy-mm-dd" required readonly>
-                                            </div>
+                                    <label class="form-label" for="id-tanggal-peminjaman">Tanggal Peminjaman</label>
+                                    <div class="form-control-wrap">
+                                        <div class="form-icon form-icon-left">
+                                            <em class="icon ni ni-calendar"></em>
                                         </div>
-                                        <div class="w-45">
+                                        <input type="text" name="tanggal" id="id-tanggal-peminjaman" class="form-control" data-date-format="yyyy-mm-dd" value="{{ date('Y-m-d') }}" required readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="form-label">Jam Mulai & Selesai</label>
+                                    <div class="row gx-2">
+                                        <div class="w-50">
                                             <div class="form-control-wrap">
                                                 <div class="form-icon form-icon-left">
                                                     <em class="icon ni ni-clock"></em>
@@ -76,22 +91,7 @@
                                                 <input type="text" name="start_time" id="event-start-time" data-time-format="HH:mm" class="form-control" required readonly>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="form-label">Tanggal & Jam Selesai</label>
-                                    <div class="row gx-2">
-                                        <div class="w-55">
-                                            <div class="form-control-wrap">
-                                                <div class="form-icon form-icon-left">
-                                                    <em class="icon ni ni-calendar"></em>
-                                                </div>
-                                                <input type="text" name="end_date" id="event-end-date" class="form-control" data-date-format="yyyy-mm-dd" required readonly>
-                                            </div>
-                                        </div>
-                                        <div class="w-45">
+                                        <div class="w-50">
                                             <div class="form-control-wrap">
                                                 <div class="form-icon form-icon-left">
                                                     <em class="icon ni ni-clock"></em>
@@ -156,17 +156,25 @@
                 <div class="modal-body">
                     <input type="hidden" id="id-peminjaman-preview">
                     <div class="row gy-3 py-1">
-                        <div class="col-sm-12">
+                        <div class="col-sm-4">
                             <h6 class="overline-title">Tanggal Peminjaman</h6>
                             <p id="preview-tanggal-peminjaman"></p>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
+                            <h6 class="overline-title">Jam Mulai</h6>
+                            <p id="preview-jam-mulai"></p>
+                        </div>
+                        <div class="col-sm-4">
+                            <h6 class="overline-title">Jam Selesai</h6>
+                            <p id="preview-jam-selesai"></p>
+                        </div>
+                        <div class="col-sm-4">
                             <h6 class="overline-title">Peminjam</h6>
                             <p id="preview-peminjam" style="text-align: justify;"></p>
                         </div>
-                        <div class="col-sm-6">
-                            <h6 class="overline-title">Driver</h6>
-                            <p id="preview-driver"></p>
+                        <div class="col-sm-8">
+                            <h6 class="overline-title">Jumlah Peserta</h6>
+                            <p id="preview-jumlah"></p>
                         </div>
                         <div class="col-sm-12">
                             <h6 class="overline-title">Keperluan</h6>

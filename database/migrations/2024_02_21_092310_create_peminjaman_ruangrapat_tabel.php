@@ -17,10 +17,12 @@ class CreatePeminjamanRuangrapatTabel extends Migration
             $table->id();
             $table->foreignId('id_user');
             $table->foreignId('id_ruangrapat');
-            $table->string('jumlah_peserta');
-            $table->string('start_datetime');
-            $table->string('end_datetime');
-            $table->date('keperluan');
+            $table->string('peminjam');
+            $table->integer('jumlah_peserta');
+            $table->date('tanggal');
+            $table->time('jam_mulai');
+            $table->time('jam_selesai');
+            $table->string('keperluan');
             $table->boolean('status')->default(true);
             $table->timestamps();
         });

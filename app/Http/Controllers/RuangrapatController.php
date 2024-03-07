@@ -94,8 +94,9 @@ class RuangrapatController extends Controller
         if($request->ajax()) {
             $validator = Validator::make($request->all(), [
                 'page'           => 'required',
-                'start_datetime' => 'required',
-                'end_datetime'   => 'required'
+                'tanggal'        => 'required',
+                'start_time'     => 'required',
+                'end_time'       => 'required'
             ]);
 
             if($validator->fails()) return response()->json(implode(',',$validator->errors()->all()), 422);
@@ -111,8 +112,9 @@ class RuangrapatController extends Controller
                 'start'     => ceil($start - 1) * 20,
                 'limit'     => $limit,
                 'search'    => $request->search,
-                'start_datetime'    => $request->start_datetime,
-                'end_datetime'      => $request->end_datetime
+                'tanggal'   => $request->tanggal,
+                'start_time'    => $request->start_time,
+                'end_time'      => $request->end_time
             ]);
 
             $response = [

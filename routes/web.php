@@ -67,8 +67,14 @@ Route::post('/processLogin', [LoginController::class, 'ajax_process_login']);
     # #########
 
     # Ruang Rapat
-    Route::get('/calendarRuangrapat', [PeminjamanRuangrapatController::class, 'calendar_ruangrapat']); // Kalender Kendaraan
+    Route::get('/calendarRuangrapat', [PeminjamanRuangrapatController::class, 'calendar_ruangrapat']); // Kalender Ruang Rapat
+    Route::get('/gtCalendarPeminjamanRuangrapat', [PeminjamanRuangrapatController::class, 'ajax_gt_calendar_ruangrapat']); // Calendar Ruang Rapat
+    Route::get('/gtPeminjamanRuangrapat', [PeminjamanRuangrapatController::class, 'ajax_gt_peminjaman_ruangrapat']); // Ambil Data Peminjaman Preview
+    Route::post('/processPinjamRuangrapat', [PeminjamanRuangrapatController::class, 'ajax_pcs_form_ruangrapat']); // Proses Peminjaman Kendaraan
 
+    Route::get('/rekapitulasiRuangrapat', [PeminjamanRuangrapatController::class, 'rekapitulasi_ruangrapat']); // Rekapitulasi Ruang Rapat
+    Route::get('/DTRekapitulasiRuangrapat', [PeminjamanRuangrapatController::class, 'ajax_dt_rekapitulasi_ruangrapat']); // Tabel Rekapitulasi Ruang Rapat
+    Route::get('/cancelPeminjamanRuangrapat', [PeminjamanRuangrapatController::class, 'ajax_cancel_form_ruangrapat']); // Proses Cancel Peminjaman
     # ###########
     
 # End Ajax Peminjaman #
