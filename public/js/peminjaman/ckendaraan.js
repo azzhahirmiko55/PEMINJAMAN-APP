@@ -7,7 +7,8 @@ $(document).ready(function () {
 
     $("#id-tanggal-peminjaman").datepicker({
         format : 'yyyy-mm-dd',
-        startDate: new Date()
+        startDate: new Date(),
+        endDate: '+1d'
     });
   
     loadCalendar();
@@ -106,10 +107,22 @@ const loadCalendar = () => {
                 dayMaxEventRows: 2
             }
         },
+        dayRender: function(date, cell){
+            var tomorrow = new Date.today().addDays(1).toString("dd-mm-yyyy"); 
+            if (date > tomorrow){
+                $(cell).addClass('disabled');
+            }
+        },
         selectable: true,
         select: function (res) {
             let currentDate = new Date().toJSON().slice(0, 10);
-            
+
+            var tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            let format_tomorrow = tomorrow.toJSON().slice(0, 10);
+
+            // console.log(format_tomorrow);
+
             if(res.startStr < currentDate){
                 Swal.fire({
                     title: "Perhatian!",
@@ -117,8 +130,16 @@ const loadCalendar = () => {
                     icon: "warning"
                 });
             } else {
-                $('#modal-peminjaman').modal('show'); 
-                $('#id-tanggal-peminjaman').val(res.startStr);
+                if(res.startStr > format_tomorrow){
+                    Swal.fire({
+                        title: "Perhatian!",
+                        text: "Peminjaman hanya boleh dilakukan sehari sebelum tanggal pinjam!",
+                        icon: "warning"
+                    });
+                } else {
+                    $('#modal-peminjaman').modal('show'); 
+                    $('#id-tanggal-peminjaman').val(res.startStr);
+                }
             }
 
         },
@@ -130,6 +151,7 @@ const loadCalendar = () => {
 }
 
 $('#form-peminjaman').submit(function(event) {
+    $('#btn-simpan-peminjaman').prop('disabled', true);
     event.preventDefault();
     formData = new FormData($(this)[0]);
     $.ajax({
@@ -158,6 +180,7 @@ $('#form-peminjaman').submit(function(event) {
                 onAfterClose: () => $('#modal-peminjaman').modal('hide')
             });
             loadCalendar();
+            $('#btn-simpan-peminjaman').prop('disabled', false);
         },
         error: function (error) {
             Swal.fire({
@@ -166,6 +189,7 @@ $('#form-peminjaman').submit(function(event) {
                 icon: 'error',
                 showConfirmButton: false
             });
+            $('#btn-simpan-peminjaman').prop('disabled', false);
         }
   });
   return false;

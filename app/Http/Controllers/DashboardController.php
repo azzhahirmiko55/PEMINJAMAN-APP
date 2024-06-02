@@ -18,7 +18,8 @@ class DashboardController extends Controller
         return view('dashboard', [
             "page"  => "Dashboard",
             "total" => $total_peminjaman,
-            "arr_bg"    => $arr
+            "arr_bg"    => $arr,
+            'js_script' => 'js/peminjaman/dashboard.js'
         ]);
     }
 
