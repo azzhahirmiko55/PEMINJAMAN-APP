@@ -27,7 +27,7 @@
                             <div class="card card-bordered card-preview">
                                 <div class="card-inner">
                                     <div class="preview-block">
-                                       
+
                                         <form action="#" method="post" id="formKendaraan" class="form-validate is-alter">
 
                                             <span class="preview-title-lg overline-title">Data Peminjam</span>
@@ -40,7 +40,7 @@
                                                             <div class="form-icon form-icon-left">
                                                                 <em class="icon ni ni-users"></em>
                                                             </div>
-                                                            <input type="text" class="form-control" name="peminjam" id="inputPeminjamr" placeholder="Peminjam" required>
+                                                            {{-- <input type="text" class="form-control" name="peminjam" id="inputPeminjamr" placeholder="Peminjam" required> --}}
                                                         </div>
                                                     </div>
                                                 </div>

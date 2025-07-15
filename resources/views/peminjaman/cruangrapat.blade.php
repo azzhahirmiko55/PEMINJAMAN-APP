@@ -13,7 +13,7 @@
                                 <h3 class="nk-block-title page-title">Kalender Peminjaman Ruang Rapat</h3>
                             </div><!-- .nk-block-head-content -->
                             <div class="nk-block-head-content">
-                                <a href="#" onClick="showFormPeminjaman()" class="btn btn-primary"><em class="icon ni ni-plus"></em><span>Tambah Data Peminjaman</span></a>
+                                <a href="#" onClick="showFormPeminjaman()" class="btn btn-primary"><em class="icon ni ni-plus"></em><span>Tambah Data Pemijaman</span></a>
                             </div><!-- .nk-block-head-content -->
                         </div><!-- .nk-block-between -->
                     </div><!-- .nk-block-head -->
@@ -51,7 +51,8 @@
                                         <div class="form-icon form-icon-left">
                                             <em class="icon ni ni-users"></em>
                                         </div>
-                                        <input type="text" name="peminjam" class="form-control" id="id-peminjam" placeholder="Peminjam" required>
+                                        {{-- <input type="text" name="peminjam" class="form-control" id="id-peminjam" placeholder="Peminjam" required> --}}
+                                        <select name="peminjam" id="id-karyawan" class="form-control"></select>
                                     </div>
                                 </div>
                             </div>

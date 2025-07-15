@@ -26,7 +26,7 @@ class PeminjamanKendaraan extends Model
         $query = static::leftJoin('kendaraan','kendaraan.id', '=', 'peminjaman_kendaraan.id_kendaraan')
                 ->select('peminjaman_kendaraan.*', DB::raw('CONCAT(kendaraan.plat, " - ", kendaraan.keterangan) as ket_kendaraan, kendaraan.jenis, kendaraan.warna, kendaraan.plat, kendaraan.keterangan'))
                 ->where(function ($query) use ($type) {
-                    if(empty($type)) $query->where('peminjaman_kendaraan.status','=','1');
+                    if(empty($type)) $query->where('peminjaman_kendaraan.status','=','2')->orWhere('peminjaman_kendaraan.status','=','9');
                 })
                 ->where(function ($query) use ($id) {
                     if(!empty($id)) $query->where('peminjaman_kendaraan.id','=',$id);
@@ -50,7 +50,7 @@ class PeminjamanKendaraan extends Model
                 $id_kendaraan = $get_peminjaman_kendaraan->id_kendaraan;
 
                 $update_tanggal = date("Y-m-d", strtotime("".$days." day", strtotime($tanggal)));
-                
+
                 $check_kendaraan = DB::table('peminjaman_kendaraan')->where(['id_kendaraan' => $id_kendaraan,'tanggal' => $update_tanggal,'status' => 1])->first();
 
                 if(!empty($check_kendaraan)){

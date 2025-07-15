@@ -13,7 +13,7 @@
     <link id="skin-default" rel="stylesheet" href="{{ asset('/dashlite/css/theme.css?ver=3.1.0') }}">
     <link rel="stylesheet" href="{{ asset('custom/style.css') }}">
     <!-- End CSS -->
-    
+
 </head>
 
     <body class="nk-body bg-white npc-general pg-auth">
@@ -28,7 +28,7 @@
                             <div class="brand-logo pb-4 text-center">
                                 <a href="html/index.html" class="logo-link">
                                     <h3 class="title-for-logo" style="color: black !important;">
-                                        <em class="ni ni-calendar-alt"></em> Aplikasi Peminjaman
+                                        <em class="ni ni-calendar-alt"></em> Aplikasi Peminjaman Kendaraan dan Ruang Rapat
                                     </h3>
                                 </a>
                             </div>

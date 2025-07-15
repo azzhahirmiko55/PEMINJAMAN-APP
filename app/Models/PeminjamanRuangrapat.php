@@ -26,7 +26,7 @@ class PeminjamanRuangrapat extends Model
         $query = static::leftJoin('ruangrapat','ruangrapat.id', '=', 'peminjaman_ruangrapat.id_ruangrapat')
                 ->select('peminjaman_ruangrapat.*','ruangrapat.ruangan','ruangrapat.warna',DB::raw('CONCAT(peminjaman_ruangrapat.jam_mulai, " - ", peminjaman_ruangrapat.jam_selesai) as jam'))
                 ->where(function ($query) use ($type) {
-                    if(empty($type)) $query->where('peminjaman_ruangrapat.status','=','1');
+                    if(empty($type)) $query->where('peminjaman_ruangrapat.status','=','2');
                 })
                 ->where(function ($query) use ($id) {
                     if(!empty($id)) $query->where('peminjaman_ruangrapat.id','=',$id);

@@ -17,7 +17,7 @@
                                         <div class="col-md-6">
                                             <h4 class="nk-block-title">Master Kendaraan</h4>
                                             <div class="nk-block-des">
-                                                <p>Data kendaraan kantor pertanahan kabupaten cilacap</p>
+                                                <p>Data Kendaraan Kantor Pertanahan Kabupaten Cilacap</p>
                                             </div>
                                         </div>
                                         <div class="col-md-6 mx-auto">
@@ -72,19 +72,19 @@
                                 <div class="form-group">
                                     <label class="form-label" for="inputJenisKendaraan">Jenis Kendaraan</label>
                                         <div class="form-control-wrap">
-                                            <ul class="custom-control-group">    
-                                                <li>       
-                                                    <div class="custom-control custom-control-sm custom-radio custom-control-pro">            
-                                                        <input type="radio" class="custom-control-input" name="jenis_kendaraan" id="radioRoda2" value="Roda-2" required>            
-                                                        <label class="custom-control-label" for="radioRoda2">Kendaraan Roda 2 | Motor</label>       
-                                                    </div>  
-                                                </li>   
-                                                <li>       
-                                                    <div class="custom-control custom-control-sm custom-radio custom-control-pro">            
-                                                        <input type="radio" class="custom-control-input" name="jenis_kendaraan" id="radioRoda4" value="Roda-4">            
-                                                        <label class="custom-control-label" for="radioRoda4">Kendaraan Roda 4 | Mobil</label>       
-                                                    </div>  
-                                                </li>   
+                                            <ul class="custom-control-group">
+                                                <li>
+                                                    <div class="custom-control custom-control-sm custom-radio custom-control-pro">
+                                                        <input type="radio" class="custom-control-input" name="jenis_kendaraan" id="radioRoda2" value="Roda-2" required>
+                                                        <label class="custom-control-label" for="radioRoda2">Kendaraan Roda 2 | Motor</label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="custom-control custom-control-sm custom-radio custom-control-pro">
+                                                        <input type="radio" class="custom-control-input" name="jenis_kendaraan" id="radioRoda4" value="Roda-4">
+                                                        <label class="custom-control-label" for="radioRoda4">Kendaraan Roda 4 | Mobil</label>
+                                                    </div>
+                                                </li>
                                             </ul>
                                         </div>
                                 </div>
@@ -102,7 +102,7 @@
                             </div>
                             <div class="col-sm-8">
                                 <div class="form-group">
-                                    <label class="form-label" for="inputPeminjam">Status Pinjaman</label>
+                                    <label class="form-label" for="inputPeminjam">Status Peminjaman</label>
                                     <ul class="custom-control-group g-2 align-center flex-wrap mt-0">
                                         <li>
                                             <div class="custom-control custom-radio">
@@ -185,7 +185,7 @@
                                         <button type="submit" class="btn btn-primary"><em class="icon ni ni-save"></em><span>Simpan Data</span></button>
                                     </li>
                                     <li>
-                                        <button type="button" onClick="hideMasterKendaraan()" class="btn btn-danger btn-dim">Discard</button>
+                                        <button type="button" onClick="hideMasterKendaraan()" class="btn btn-danger btn-dim">Close</button>
                                     </li>
                                 </ul>
                             </div>

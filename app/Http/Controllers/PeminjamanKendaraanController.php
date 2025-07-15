@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\PeminjamanKendaraan;
+use App\Models\Karyawan;
 use DataTables;
 use Illuminate\Support\Facades\Auth;
 use Session;
@@ -38,7 +39,7 @@ class PeminjamanKendaraanController extends Controller
     {
 
         // if($request->ajax()) {
-        
+
             $arr_peminjaman = [];
 
                 $gt_data_peminjaman = PeminjamanKendaraan::query_peminjaman_kendaraan()->get();
@@ -66,7 +67,7 @@ class PeminjamanKendaraanController extends Controller
     public function convert_nama_bulan($bulan = 0)
     {
         $text = '';
-        
+
         if(!empty($bulan)){
             if($bulan == '1'){
                 $text = 'Januari';
@@ -108,7 +109,7 @@ class PeminjamanKendaraanController extends Controller
             if($validator->fails()) {
                 return response()->json(implode(',',$validator->errors()->all()), 422);
             }
-            
+
             $gt_peminjaman_kendaraan = PeminjamanKendaraan::query_peminjaman_kendaraan($request->id)->first();
 
             $arr_peminjaman_kendaraan = [];
@@ -149,14 +150,18 @@ class PeminjamanKendaraanController extends Controller
 
             if($validator->fails()) return response()->json(implode(',',$validator->errors()->all()), 422);
 
+            $karyawan = Karyawan::where('id', $request->peminjam)->first();
+
+            $driver = Karyawan::where('id', $request->driver)->first();
+
             PeminjamanKendaraan::updateOrCreate(
             [
                 'id'            => $request->id
             ],
             [
                 'id_user'       => 0,
-                'peminjam'      => $request->peminjam,
-                'driver'        => $request->driver,
+                'peminjam'      => $karyawan->karyawan.' - '.$karyawan->jabatan,
+                'driver'        => $driver->karyawan.' - '.$driver->jabatan,
                 'id_kendaraan'  => $request->kendaraan,
                 'tanggal'       => $request->tanggal,
                 'keperluan'     => $request->keperluan
@@ -182,7 +187,7 @@ class PeminjamanKendaraanController extends Controller
 
             $check = PeminjamanKendaraan::process_pindah_jadwal([
                 'id'            => $request->id,
-                'days'          => $request->days 
+                'days'          => $request->days
             ]);
 
             return response()->json([
@@ -212,6 +217,46 @@ class PeminjamanKendaraanController extends Controller
         }
     }
 
+    public function ajax_kembalikan_form_peminjaman(Request $request)
+    {
+        if($request->ajax()) {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required'
+            ]);
+
+            if($validator->fails()) {
+                return response()->json(implode(',',$validator->errors()->all()), 422);
+            }
+
+            PeminjamanKendaraan::where('id', $request->id)->update(['status' => 9]);
+
+            return response()->json([
+                'success'   => TRUE,
+                'message'   => 'Peminjaman kendaraan berhasil dikembalikan'
+            ]);
+        }
+    }
+
+     public function ajax_verif_form_peminjaman(Request $request)
+    {
+        if($request->ajax()) {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required'
+            ]);
+
+            if($validator->fails()) {
+                return response()->json(implode(',',$validator->errors()->all()), 422);
+            }
+
+            PeminjamanKendaraan::where('id', $request->id)->update(['status' => 2]);
+
+            return response()->json([
+                'success'   => TRUE,
+                'message'   => 'Peminjaman kendaraan berhasil diverifikasi'
+            ]);
+        }
+    }
+
     public function rekapitulasi_kendaraan()
     {
         return view('rekapitulasi/kendaraan', [
@@ -230,13 +275,35 @@ class PeminjamanKendaraanController extends Controller
                                     ->addColumn('action', function($row){
                                         if($row->status == 1) {
                                             if(Auth::check()){
-                                                $button  =  '<a href="#" onClick="pembatalanPeminjaman('.$row->id.')" class="btn btn-icon btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Batal"><em class="icon ni ni-cross"></em></a>';
+                                                $button = '';
+                                                // Admin
+                                                if(Auth::user()->username == "admin"){
+                                                    $button  =  '<a href="#" onClick="pembatalanPeminjaman('.$row->id.')" class="btn btn-icon btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Batal"><em class="icon ni ni-cross"></em></a>';
+                                                } else if (Auth::user()->username == "satpam") { // Satpam
+                                                    // $button  =  '<a href="#" onClick="kembalikanPeminjaman('.$row->id.')" class="btn btn-icon btn-sm btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Batal"><em class="icon ni ni-pen2"></em></a>';
+                                                } else if (Auth::user()->username == "kasubag") {
+                                                    $button  =  '<a href="#" onClick="verifPeminjaman('.$row->id.')" class="btn btn-icon btn-sm btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Batal"><em class="icon ni ni-pen2"></em></a>';
+                                                } else if(Auth::user()->username == "pengguna") {
+                                                    $button  = "Menunggu Verifikasi";
+                                                }
                                             } else {
                                                 $button = '<span class="badge rounded-pill bg-outline-success">Aktif</span>';
                                             }
                                             return $button;
                                         } else if ($row->status == 0){
                                             return '<span class="badge rounded-pill bg-outline-danger">Dibatalkan</span>';
+                                        } else if ($row->status == 9){
+                                            return '<span class="badge rounded-pill bg-outline-info">Sudah Dikembalikan</span>';
+                                        } else if ($row->status == 2){
+                                            if(Auth::check()){
+                                                if (Auth::user()->username == "satpam") {
+                                                    return '<span class="badge rounded-pill bg-outline-success">Diverifikasi</span>'.' '.'<a href="#" onClick="kembalikanPeminjaman('.$row->id.')" class="btn btn-icon btn-sm btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Batal"><em class="icon ni ni-pen2"></em></a>';
+                                                } else {
+                                                    return '<span class="badge rounded-pill bg-outline-success">Diverifikasi</span>';
+                                                }
+                                            } else {
+                                                return '<span class="badge rounded-pill bg-outline-success">Diverifikasi</span>';
+                                            }
                                         }
                                     })->rawColumns(['action','status_pinjaman'])->make(true);
 

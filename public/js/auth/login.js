@@ -42,11 +42,38 @@ $('#formLogin').submit(function(event) {
         error: function (error) {
             Swal.fire({
                 title: 'Terjadi kesalahan saat login!',
-                text: error.message, 
+                text: error.message,
                 icon: 'error',
                 showConfirmButton: false
             });
         }
   });
   return false;
+
+  document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        let formData = new FormData(this);
+
+        fetch(this.action, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': formData.get('_token')
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status) {
+                window.location.href = data.redirect;
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+});
+
 });

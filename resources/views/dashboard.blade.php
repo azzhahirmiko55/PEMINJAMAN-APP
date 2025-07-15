@@ -12,7 +12,7 @@
                         <div class="nk-block-head-content">
                             <h3 class="nk-block-title page-title">Dashboard</h3>
                             <div class="nk-block-des text-soft">
-                                <p>Statistik peminjaman BMN Kantor Pertanahan Kabupaten Cilacap</p>
+                                <p>Statistik Peminjaman Kendaraan dan Ruang Rapat Kantor Pertanahan Kabupaten Cilacap</p>
                             </div>
                         </div><!-- .nk-block-head-content -->
                         <div class="nk-block-head-content">
@@ -155,7 +155,7 @@
                                 <div class="card-inner border-bottom">
                                     <div class="card-title-group">
                                         <div class="card-title">
-                                            <h6 class="title">Kendaraan yang belum di pinjam hari ini</h6>
+                                            <h6 class="title">Kendaraan yang belum di pakai hari ini</h6>
                                         </div>
                                         <div class="card-tools">
                                             <ul class="card-tools-nav">
@@ -167,22 +167,22 @@
                                 <ul class="nk-activity">
                                     @foreach($total['kendaraan_available'] as $key => $row)
                                     <li class="nk-activity-item">
-                                        <div class="nk-activity-media user-avatar {{ $arr_bg[$key]; }}">{{ substr($row->plat,0,1); }}</div>
+                                        <div class="nk-activity-media user-avatar {{ $arr_bg[$key] ?? 'default-bg-class' }}">{{ substr($row->plat, 0, 1) }}</div>
                                         <div class="nk-activity-data">
-                                            <div class="label">{{ $row->text; }}</div>
+                                            <div class="label">{{ $row->text }}</div>
                                         </div>
                                     </li>
                                     @endforeach
                                 </ul>
-                            </div><!-- .card -->
-                        </div><!-- .col -->
-                        <div class="col-md-6 col-xxl-4">
-                            <div class="card card-bordered card-full">
-                                <div class="card-inner border-bottom">
-                                    <div class="card-title-group">
-                                        <div class="card-title">
-                                            <h6 class="title">Ruangrapat yang belum di pinjam hari ini</h6>
-                                        </div>
+                                </div><!-- .card -->
+                                </div><!-- .col -->
+                                <div class="col-md-6 col-xxl-4">
+                                    <div class="card card-bordered card-full">
+                                        <div class="card-inner border-bottom">
+                                            <div class="card-title-group">
+                                                <div class="card-title">
+                                                    <h6 class="title">Ruangrapat yang belum di pakai hari ini</h6>
+                                                </div>
                                         <div class="card-tools">
                                             <ul class="card-tools-nav">
                                                 <li><a href="/calendarRuangrapat" target="_blank"><span>Form Ruang Rapat</span></a></li>

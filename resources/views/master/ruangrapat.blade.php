@@ -17,7 +17,7 @@
                                         <div class="col-md-6">
                                             <h4 class="nk-block-title">Master Ruang Rapat</h4>
                                             <div class="nk-block-des">
-                                                <p>Data ruang rapat kantor pertanahan kabupaten cilacap</p>
+                                                <p>Data Ruang Rapat Kantor Pertanahan Kabupaten Cilacap</p>
                                             </div>
                                         </div>
                                         <div class="col-md-6 mx-auto">
@@ -131,7 +131,7 @@
                                         <button type="submit" class="btn btn-primary"><em class="icon ni ni-save"></em><span>Simpan Data</span></button>
                                     </li>
                                     <li>
-                                        <button type="button" onClick="hideMasterRuangRapat()" class="btn btn-danger btn-dim">Discard</button>
+                                        <button type="button" onClick="hideMasterRuangRapat()" class="btn btn-danger btn-dim">Close</button>
                                     </li>
                                 </ul>
                             </div>

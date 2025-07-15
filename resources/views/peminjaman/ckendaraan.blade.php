@@ -13,7 +13,7 @@
                                 <h3 class="nk-block-title page-title">Kalender Peminjaman Kendaraan</h3>
                             </div><!-- .nk-block-head-content -->
                             <div class="nk-block-head-content">
-                                <a href="#" onClick="showFormPeminjaman()" class="btn btn-primary"><em class="icon ni ni-plus"></em><span>Tambah Data Peminjaman</span></a>
+                                <a href="#" onClick="showFormPeminjaman()" class="btn btn-primary"><em class="icon ni ni-plus"></em><span>Tambah Data Peminjamaan</span></a>
                             </div><!-- .nk-block-head-content -->
                         </div><!-- .nk-block-between -->
                     </div><!-- .nk-block-head -->
@@ -35,7 +35,7 @@
         <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Tambah Peminjaman</h5>
+                    <h5 class="modal-title">Tambah Peminjam</h5>
                     <a href="#" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <em class="icon ni ni-cross"></em>
                     </a>
@@ -156,7 +156,7 @@
                         </div>
                         <div class="col-sm-6">
                             <h6 class="overline-title">Peminjam</h6>
-                            <p id="preview-peminjam" style="text-align: justify;"></p>
+                            <p id="preview-pemakai" style="text-align: justify;"></p>
                         </div>
                         <div class="col-sm-6">
                             <h6 class="overline-title">Driver</h6>

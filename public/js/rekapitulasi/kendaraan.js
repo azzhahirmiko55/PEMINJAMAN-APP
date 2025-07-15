@@ -31,6 +31,7 @@ const DTRekapitulasiKendaraan = () => {
 DTRekapitulasiKendaraan();
 
 const pembatalanPeminjaman = (id_peminjaman) => {
+
     Swal.fire({
         title: 'Apakah anda yakin ?',
         text: 'Anda akan membatalkan peminjaman kendaraan',
@@ -62,12 +63,98 @@ const pembatalanPeminjaman = (id_peminjaman) => {
                 error: function (error) {
                     Swal.fire({
                         title: 'Terjadi kesalahan saat mengambil data!',
-                        text: error.responseText, 
+                        text: error.responseText,
                         icon: 'error',
                         showConfirmButton: false
                     });
                 }
             });
         }
-    })   
+    })
+}
+
+const kembalikanPeminjaman = (id_peminjaman) => {
+
+    Swal.fire({
+        title: 'Apakah anda yakin ?',
+        text: 'peminjaman kendaraan sudah di kembalikan',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya'
+    }).then((result) => {
+        if(result.isConfirmed) {
+            $.ajax({
+                type: 'GET',
+                url: '/kembalikanPeminjamanKendaraan',
+                data: {
+                    id: id_peminjaman
+                },
+                dataType: 'JSON',
+                async: false,
+                cache: false,
+                success: function (response) {
+                    Swal.fire({
+                        title : response.message,
+                        icon: 'success',
+                        timer: 3000,
+                        showConfirmButton: false
+                    });
+                    DTRekapitulasiKendaraan();
+                },
+                error: function (error) {
+                    Swal.fire({
+                        title: 'Terjadi kesalahan saat mengambil data!',
+                        text: error.responseText,
+                        icon: 'error',
+                        showConfirmButton: false
+                    });
+                }
+            });
+        }
+    })
+}
+
+const verifPeminjaman = (id_peminjaman) => {
+
+    Swal.fire({
+        title: 'Apakah anda yakin ?',
+        text: 'Anda akan memverifikasi peminjaman',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya'
+    }).then((result) => {
+        if(result.isConfirmed) {
+            $.ajax({
+                type: 'GET',
+                url: '/verifPeminjamanKendaraan',
+                data: {
+                    id: id_peminjaman
+                },
+                dataType: 'JSON',
+                async: false,
+                cache: false,
+                success: function (response) {
+                    Swal.fire({
+                        title : response.message,
+                        icon: 'success',
+                        timer: 3000,
+                        showConfirmButton: false
+                    });
+                    DTRekapitulasiKendaraan();
+                },
+                error: function (error) {
+                    Swal.fire({
+                        title: 'Terjadi kesalahan saat mengambil data!',
+                        text: error.responseText,
+                        icon: 'error',
+                        showConfirmButton: false
+                    });
+                }
+            });
+        }
+    })
 }

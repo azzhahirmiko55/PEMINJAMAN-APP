@@ -6,6 +6,22 @@ $(document).ready(function () {
     });
 });
 
+$('#id-karyawan').select2({
+    placeholder: '- Pilih Karyawan -',
+    // allowClear: true,
+    ajax: {
+        type: 'GET',
+        url: '/selectKaryawan',
+        data: function (params) {
+            return {
+                search: params.term,
+                page: params.page || 1,
+            };
+        },
+        delay: 500
+    }
+});
+
 const DTMasterRuangRapat = () => {
     NioApp.DataTable('#tableRuangRapat', {
         processing: true,
@@ -60,7 +76,7 @@ const editMasterRuangRapat = (id_ruangrapat) => {
         error: function (error) {
             Swal.fire({
                 title: 'Terjadi kesalahan saat mengambil data!',
-                text: error.responseText, 
+                text: error.responseText,
                 icon: 'error',
                 showConfirmButton: false
             });
@@ -100,14 +116,14 @@ const deleteMasterRuangRapat = (id_ruangrapat) => {
                 error: function (error) {
                     Swal.fire({
                         title: 'Terjadi kesalahan saat mengambil data!',
-                        text: error.responseText, 
+                        text: error.responseText,
                         icon: 'error',
                         showConfirmButton: false
                     });
                 }
             });
         }
-    })   
+    })
 }
 
 $("#formRuangRapat").submit(function(event) {
@@ -142,7 +158,7 @@ $("#formRuangRapat").submit(function(event) {
         error: function (error) {
             Swal.fire({
                 title: 'Terjadi kesalahan saat menyimpan data!',
-                text: error.responseText, 
+                text: error.responseText,
                 icon: 'error',
                 showConfirmButton: false
             });

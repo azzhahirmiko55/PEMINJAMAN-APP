@@ -74,7 +74,7 @@ const editMasterKendaraan = (id_kendaraan) => {
         error: function (error) {
             Swal.fire({
                 title: 'Terjadi kesalahan saat mengambil data!',
-                text: error.responseText, 
+                text: error.responseText,
                 icon: 'error',
                 showConfirmButton: false
             });
@@ -85,7 +85,7 @@ const editMasterKendaraan = (id_kendaraan) => {
 const deleteMasterKendaraan = (id_kendaraan) => {
     Swal.fire({
         title: 'Apakah anda yakin ?',
-        text: 'Anda akan menghapusn data kendaraan, klik ya jika ingin melanjutkan',
+        text: 'Anda akan menghapus data kendaraan, klik ya jika ingin melanjutkan',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -114,14 +114,14 @@ const deleteMasterKendaraan = (id_kendaraan) => {
                 error: function (error) {
                     Swal.fire({
                         title: 'Terjadi kesalahan saat mengambil data!',
-                        text: error.responseText, 
+                        text: error.responseText,
                         icon: 'error',
                         showConfirmButton: false
                     });
                 }
             });
         }
-    })   
+    })
 }
 
 $("#formKendaraan").submit(function(event) {
@@ -156,7 +156,7 @@ $("#formKendaraan").submit(function(event) {
         error: function (error) {
             Swal.fire({
                 title: 'Terjadi kesalahan saat menyimpan data!',
-                text: error.responseText, 
+                text: error.responseText,
                 icon: 'error',
                 showConfirmButton: false
             });

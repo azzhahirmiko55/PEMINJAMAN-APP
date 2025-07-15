@@ -17,7 +17,7 @@ class Kendaraan extends Model
     ];
 
     protected $table = 'kendaraan';
-    
+
     public static function select2_kendaraan($params = [])
     {
         $start = isset($params['start']) ? $params['start'] : 0;
@@ -40,14 +40,14 @@ class Kendaraan extends Model
                         ->whereNotExists(function ($query) use ($tanggal) {
                             $query->select('peminjaman_kendaraan.id')
                                     ->from('peminjaman_kendaraan')
-                                    ->where('peminjaman_kendaraan.status', '=', '1')
+                                    ->where('peminjaman_kendaraan.status', '=', '2')
                                     ->whereRaw('peminjaman_kendaraan.id_kendaraan = kendaraan.id')
                                     ->where('peminjaman_kendaraan.tanggal', '=', $tanggal);
                         })
                         ->orderBy('keterangan', 'ASC')
                         ->offset($start)
                         ->limit($limit);
-        
+
         $response = [
             'query' => $query->get(),
             'count' => $query->count()

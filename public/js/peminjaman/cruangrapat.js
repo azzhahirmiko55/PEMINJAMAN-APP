@@ -13,17 +13,16 @@ $(document).ready(function () {
     $("#event-start-time").timepicker({
       timeFormat: 'HH:mm:ss'
     });
-  
+
     $("#event-end-time").timepicker({
       timeFormat: 'HH:mm:ss'
     });
-  
+
     loadCalendar();
 });
 
 $('#id-ruangrapat').select2({
     placeholder: '- Pilih Ruang Rapat -',
-    // allowClear: true,
     ajax: {
         type: 'GET',
         url: '/selectRuangRapat',
@@ -40,12 +39,28 @@ $('#id-ruangrapat').select2({
             } else {
                 alert('Silahkan input tanggal & jam mulai dan tanggal & jam selesai peminjaman');
             }
-
             return query;
         },
         delay: 500
     }
 });
+
+$('#id-karyawan').select2({
+    placeholder: '- Pilih Karyawan -',
+    // allowClear: true,
+    ajax: {
+        type: 'GET',
+        url: '/selectKaryawan',
+        data: function (params) {
+            return {
+                search: params.term,
+                page: params.page || 1,
+            };
+        },
+        delay: 500
+    }
+});
+
 
 const clearFormPeminjaman = () => {
     $('#form-peminjaman').trigger('reset');
@@ -71,7 +86,7 @@ const clearPreviewPeminjaman = () => {
     $('#preview-driver').text('');
     $('#preview-keperluan').text('');
     $('#id-peminjaman-preview').val('');
-} 
+}
 
 const showPreviewPeminjaman = (id_peminjaman) => {
     $.ajax({
@@ -81,7 +96,6 @@ const showPreviewPeminjaman = (id_peminjaman) => {
             id: id_peminjaman
         },
         dataType: 'JSON',
-        async: false,
         cache: false,
         success: function (response) {
             clearPreviewPeminjaman();
@@ -101,9 +115,8 @@ const showPreviewPeminjaman = (id_peminjaman) => {
     });
 }
 
-  
 const loadCalendar = () => {
-  
+
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
         timeZone: 'local',
@@ -116,7 +129,6 @@ const loadCalendar = () => {
         },
         events: '/gtCalendarPeminjamanRuangrapat',
         height: 800,
-        eventRender: [], 
         contentHeight: 780,
         aspectRatio: 3,
         views: {
@@ -127,15 +139,15 @@ const loadCalendar = () => {
         selectable: true,
         select: function (res) {
             let currentDate = new Date().toJSON().slice(0, 10);
-            
+
             if(res.startStr < currentDate){
                 Swal.fire({
                     title: "Perhatian!",
-                    text: "Tidak boleh meminjam kendaraan kurang dari tanggal saat ini!",
+                    text: "Tidak boleh meminjam ruangan kurang dari tanggal saat ini!",
                     icon: "warning"
                 });
             } else {
-                $('#modal-peminjaman').modal('show'); 
+                $('#modal-peminjaman').modal('show');
                 $('#id-tanggal-peminjaman').val(res.startStr);
             }
 
@@ -154,8 +166,6 @@ $('#form-peminjaman').submit(function(event) {
         url: "/processPinjamRuangrapat",
         type: "post",
         data: formData,
-        async: false,
-        cache: false,
         dataType: "json",
         contentType: false,
         processData: false,
@@ -173,14 +183,17 @@ $('#form-peminjaman').submit(function(event) {
                 showCancelButton: false,
                 showConfirmButton: false,
                 allowOutsideClick: false,
-                onAfterClose: () => $('#modal-peminjaman').modal('hide')
+                onAfterClose: function () {
+                    $('#modal-peminjaman').modal('hide');
+                    clearFormPeminjaman();  // Clear the form after success
+                }
             });
             loadCalendar();
         },
         error: function (error) {
             Swal.fire({
                 title: 'Terjadi kesalahan saat menyimpan data!',
-                text: error.responseText, 
+                text: error.responseText,
                 icon: 'error',
                 showConfirmButton: false
             });

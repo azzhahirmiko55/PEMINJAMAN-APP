@@ -1,16 +1,16 @@
 $(document).ready(function () {
     $.ajaxSetup({
-        headers:{
-            'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
 
     $("#id-tanggal-peminjaman").datepicker({
-        format : 'yyyy-mm-dd',
+        format: 'yyyy-mm-dd',
         startDate: new Date(),
-        endDate: '+1d'
+        endDate: new Date(new Date().getTime() + 24 * 60 * 60 * 1000)  // Tomorrow's date
     });
-  
+
     loadCalendar();
 });
 
@@ -20,15 +20,45 @@ $('#id-kendaraan').select2({
     ajax: {
         type: 'GET',
         url: '/selectKendaraan',
-        data: function(params) {
-            let query = {
+        data: function (params) {
+            return {
                 search: params.term,
                 page: params.page || 1,
                 jenis_kendaraan: $("input[name='jenis_kendaraan']:checked").val(),
                 tanggal: $("#id-tanggal-peminjaman").val()
-            }
+            };
+        },
+        delay: 500
+    }
+});
 
-            return query;
+$('#id-karyawan').select2({
+    placeholder: '- Pilih Karyawan -',
+    // allowClear: true,
+    ajax: {
+        type: 'GET',
+        url: '/selectKaryawan',
+        data: function (params) {
+            return {
+                search: params.term,
+                page: params.page || 1,
+            };
+        },
+        delay: 500
+    }
+});
+
+$('#id-driver').select2({
+    placeholder: '- Pilih Driver -',
+    // allowClear: true,
+    ajax: {
+        type: 'GET',
+        url: '/selectKaryawan',
+        data: function (params) {
+            return {
+                search: params.term,
+                page: params.page || 1,
+            };
         },
         delay: 500
     }
@@ -56,17 +86,14 @@ const clearPreviewPeminjaman = () => {
     $('#preview-driver').text('');
     $('#preview-keperluan').text('');
     $('#id-peminjaman-preview').val('');
-} 
+}
 
 const showPreviewPeminjaman = (id_peminjaman) => {
     $.ajax({
         type: 'GET',
         url: '/gtPeminjamanKendaraan',
-        data: {
-            id: id_peminjaman
-        },
+        data: { id: id_peminjaman },
         dataType: 'JSON',
-        async: false,
         cache: false,
         success: function (response) {
             clearPreviewPeminjaman();
@@ -81,16 +108,22 @@ const showPreviewPeminjaman = (id_peminjaman) => {
             $('#preview-driver').text(response.driver);
             $('#preview-keperluan').text(response.keperluan);
         },
+        error: function () {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Failed to load peminjaman preview!',
+                icon: 'error',
+            });
+        }
     });
 }
 
-  
 const loadCalendar = () => {
-  
+
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
         timeZone: 'local',
-        initialView : 'dayGridMonth',
+        initialView: 'dayGridMonth',
         themeSystem: 'bootstrap',
         headerToolbar: {
             left: 'title prev,next',
@@ -99,7 +132,7 @@ const loadCalendar = () => {
         },
         events: '/gtCalendarPeminjamanKendaraan',
         height: 800,
-        eventRender: [], 
+        eventRender: [],
         contentHeight: 780,
         aspectRatio: 3,
         views: {
@@ -107,41 +140,33 @@ const loadCalendar = () => {
                 dayMaxEventRows: 2
             }
         },
-        dayRender: function(date, cell){
-            var tomorrow = new Date.today().addDays(1).toString("dd-mm-yyyy"); 
-            if (date > tomorrow){
+        dayRender: function (date, cell) {
+            var tomorrow = moment().add(1, 'days');
+            if (moment(date).isAfter(tomorrow, 'day')) {
                 $(cell).addClass('disabled');
             }
         },
         selectable: true,
         select: function (res) {
-            let currentDate = new Date().toJSON().slice(0, 10);
+            let currentDate = moment().format('YYYY-MM-DD');
+            let tomorrow = moment().add(1, 'days').format('YYYY-MM-DD');
 
-            var tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            let format_tomorrow = tomorrow.toJSON().slice(0, 10);
-
-            // console.log(format_tomorrow);
-
-            if(res.startStr < currentDate){
+            if (res.startStr < currentDate) {
                 Swal.fire({
                     title: "Perhatian!",
                     text: "Tidak boleh meminjam kendaraan kurang dari tanggal saat ini!",
                     icon: "warning"
                 });
+            } else if (res.startStr > tomorrow) {
+                Swal.fire({
+                    title: "Perhatian!",
+                    text: "Peminjaman hanya boleh dilakukan sehari sebelum tanggal pinjam!",
+                    icon: "warning"
+                });
             } else {
-                if(res.startStr > format_tomorrow){
-                    Swal.fire({
-                        title: "Perhatian!",
-                        text: "Peminjaman hanya boleh dilakukan sehari sebelum tanggal pinjam!",
-                        icon: "warning"
-                    });
-                } else {
-                    $('#modal-peminjaman').modal('show'); 
-                    $('#id-tanggal-peminjaman').val(res.startStr);
-                }
+                $('#modal-peminjaman').modal('show');
+                $('#id-tanggal-peminjaman').val(res.startStr);
             }
-
         },
         eventClick: function (res) {
             showPreviewPeminjaman(res.event._def.publicId);
@@ -150,16 +175,14 @@ const loadCalendar = () => {
     calendar.render();
 }
 
-$('#form-peminjaman').submit(function(event) {
+$('#form-peminjaman').submit(function (event) {
     $('#btn-simpan-peminjaman').prop('disabled', true);
     event.preventDefault();
-    formData = new FormData($(this)[0]);
+    let formData = new FormData($(this)[0]);
     $.ajax({
         url: "/processPinjamKendaraan",
         type: "post",
         data: formData,
-        async: false,
-        cache: false,
         dataType: "json",
         contentType: false,
         processData: false,
@@ -177,7 +200,10 @@ $('#form-peminjaman').submit(function(event) {
                 showCancelButton: false,
                 showConfirmButton: false,
                 allowOutsideClick: false,
-                onAfterClose: () => $('#modal-peminjaman').modal('hide')
+                onAfterClose: () => {
+                    $('#modal-peminjaman').modal('hide');
+                    clearFormPeminjaman();  // Clear the form after success
+                }
             });
             loadCalendar();
             $('#btn-simpan-peminjaman').prop('disabled', false);
@@ -185,12 +211,13 @@ $('#form-peminjaman').submit(function(event) {
         error: function (error) {
             Swal.fire({
                 title: 'Terjadi kesalahan saat menyimpan data!',
-                text: error.responseText, 
+                text: error.responseText,
                 icon: 'error',
                 showConfirmButton: false
             });
             $('#btn-simpan-peminjaman').prop('disabled', false);
         }
-  });
-  return false;
+    });
+    return false;
 });
+

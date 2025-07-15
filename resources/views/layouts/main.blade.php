@@ -13,11 +13,11 @@
     <link id="skin-default" rel="stylesheet" href="{{ asset('/dashlite/css/theme.css') }}">
     <link rel="stylesheet" href="{{ asset('custom/style.css') }}">
     <!-- End CSS -->
-    
+
 </head>
 
 <body class="nk-body npc-invest bg-lighter ">
-    
+
     <div class="nk-app-root">
         <div class="nk-wrap">
         <!-- wrap @s -->
@@ -29,8 +29,8 @@
             <div class="nk-footer bg-white">
                 <div class="container-fluid">
                     <div class="nk-footer-wrap">
-                        <div class="nk-footer-copyright"> &copy; 2022 Dashlite. Template by <a href="https://softnio.com" target="_blank">Softnio</a>
-                        </div>
+                        {{-- <div class="nk-footer-copyright"> &copy; 2022 Dashlite. Template by <a href="https://softnio.com" target="_blank">Softnio</a>
+                        </div> --}}
                     </div>
                 </div>
             </div>

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -10,17 +13,18 @@ use Session;
 
 class LoginController extends Controller
 {
-    
+
     public function index()
     {
         if(Auth::check()){
-            return Redirect('home');
+            return Redirect('/index');
         } else {
             return view('auth/login', [
                 'page'      => 'Login',
-                'js_script' => '/js/auth/login.js' 
+                'js_script' => '/js/auth/login.js'
             ]);
         }
+
     }
 
     public function ajax_process_login(Request $request)
@@ -36,7 +40,10 @@ class LoginController extends Controller
                 return response()->json(implode(",",$validator->errors()->all()), 401);
             }
 
-            if(!Auth::attempt($request->only(["username", "password"]))) {
+            \Log::info('Attempting login for user', ['username' => $request->username]);
+
+            if(!Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
+                \Log::warning('Login failed', ['username' => $request->username]);
                 return response()->json([
                     "status"    => false,
                     "message"   => "Invalid credentials"
@@ -50,7 +57,6 @@ class LoginController extends Controller
             ],200);
         }
     }
-
     public function logout()
     {
         Session::flush();

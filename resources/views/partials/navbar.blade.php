@@ -7,7 +7,7 @@
             </div>
             <div class="nk-header-brand">
                 <a href="#" class="logo-link">
-                   <h4>Aplikasi Peminjaman</h4>
+                   <h4>Aplikasi Peminjaman Kendaraan dan Ruang Rapat</h4>
                 </a>
             </div><!-- .nk-header-brand -->
             <div class="nk-header-menu ms-auto" data-content="headerNav">
@@ -27,6 +27,9 @@
                             <span class="nk-menu-text">Dashboards</span>
                         </a>
                     </li>
+                    @if (Auth::check())
+                    @if (Auth::user()->username != "kepala_kantor")
+                    @if (Auth::user()->username != "satpam")
                     <li class="nk-menu-item has-sub {{ ($page === "Form Peminjaman Kendaraan")  ? 'active' : '' }}">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-text">Form</span>
@@ -43,6 +46,9 @@
                             </li> --}}
                         </ul><!-- .nk-menu-sub -->
                     </li><!-- .nk-menu-item -->
+                    @endif
+                     @endif
+                    @endif
                     <li class="nk-menu-item has-sub {{ ($page === "Rekapitulasi Peminjaman Kendaraan")  ? 'active' : '' }}">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-text">Rekapitulasi</span>
@@ -51,16 +57,24 @@
                             <li class="nk-menu-item {{ ($page === "Rekapitulasi Peminjaman Kendaraan")  ? 'active' : '' }}">
                                 <a href="/rekapitulasiKendaraan" class="nk-menu-link"><span class="nk-menu-text">Peminjaman Kendaraan</span></a>
                             </li>
+                            @if (Auth::check())
+                            @if (Auth::user()->username != "satpam")
                             <li class="nk-menu-item">
                                 <a href="/rekapitulasiRuangrapat" class="nk-menu-link"><span class="nk-menu-text">Peminjaman Ruang Rapat</span></a>
                             </li>
+                            @endif
+                            @endif
                             {{-- <li class="nk-menu-item">
                                 <a href="#" class="nk-menu-link"><span class="nk-menu-text">Peminjaman Alat Ukur</span></a>
                             </li> --}}
                         </ul><!-- .nk-menu-sub -->
                     </li><!-- .nk-menu-item -->
                     @if (Auth::check())
-                        <li class="nk-menu-item has-sub {{ ($page === "Master Kendaraan" || "Master Ruang Rapat")  ? 'active' : '' }}">
+                     @if (Auth::user()->username != "pengguna")
+                     @if (Auth::user()->username != "kepala_kantor")
+                      @if (Auth::user()->username != "kasubag")
+                       @if (Auth::user()->username != "satpam")
+                        <li class="nk-menu-item has-sub {{ ($page === "Master Kendaraan"  || "Master Ruang Rapat" || "Master Karyawan")  ? 'active' : '' }}">
                             <a href="#" class="nk-menu-link nk-menu-toggle">
                                 <span class="nk-menu-text">Master</span>
                             </a>
@@ -71,11 +85,18 @@
                                 <li class="nk-menu-item {{ ($page === "Master Ruang Rapat")  ? 'active' : '' }}">
                                     <a href="/masterRuangRapat" class="nk-menu-link"><span class="nk-menu-text">Ruang Rapat</span></a>
                                 </li>
+                                <li class="nk-menu-item {{ ($page === "Master Karyawan")  ? 'active' : '' }}">
+                                    <a href="/masterKaryawan" class="nk-menu-link"><span class="nk-menu-text">Karyawan</span></a>
+                                </li>
                                 {{-- <li class="nk-menu-item">
                                     <a href="#" class="nk-menu-link"><span class="nk-menu-text">Alat Ukur</span></a>
                                 </li> --}}
                             </ul><!-- .nk-menu-sub -->
                         </li><!-- .nk-menu-item -->
+                        @endif
+                        @endif
+                        @endif
+                    @endif
                     @endif
                 </ul><!-- .nk-menu -->
             </div><!-- .nk-header-menu -->
@@ -88,10 +109,32 @@
                                     <div class="user-avatar sm">
                                         <em class="icon ni ni-user-alt"></em>
                                     </div>
+                                    @if (Auth::user()->username == "kepala_kantor")
                                     <div class="user-info d-none d-xl-block">
-                                        <div class="user-status">Administrator</div>
-                                        <div class="user-name dropdown-indicator">Administrator</div>
+                                        <div class="user-status">Kepala Kantor</div>
+                                        <div class="user-name dropdown-indicator">Kepala Kantor</div>
                                     </div>
+                                    @elseif (Auth::user()->username == "kasubag")
+                                    <div class="user-info d-none d-xl-block">
+                                        <div class="user-status">Kasubag</div>
+                                        <div class="user-name dropdown-indicator">Kasubag</div>
+                                    </div>
+                                    @elseif (Auth::user()->username == "satpam")
+                                    <div class="user-info d-none d-xl-block">
+                                        <div class="user-status">Satpam</div>
+                                        <div class="user-name dropdown-indicator">Satpam</div>
+                                    </div>
+                                    @elseif (Auth::user()->username == "admin")
+                                    <div class="user-info d-none d-xl-block">
+                                        <div class="user-status">Admin</div>
+                                        <div class="user-name dropdown-indicator">Admin</div>
+                                    </div>
+                                    @else
+                                    <div class="user-info d-none d-xl-block">
+                                        <div class="user-status">Pengguna</div>
+                                        <div class="user-name dropdown-indicator">Pengguna</div>
+                                    </div>
+                                    @endif
                                 </div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-md dropdown-menu-end dropdown-menu-s1 is-light">
@@ -100,10 +143,17 @@
                                         <div class="user-avatar">
                                             <span>A</span>
                                         </div>
+                                        @if (Auth::user()->username != "pengguna")
                                         <div class="user-info">
-                                            <span class="lead-text">Administrator</span>
-                                            <span class="sub-text">Admin Aplikasi</span>
+                                            {{-- <span class="lead-text">Administrator</span>
+                                            <span class="sub-text">Admin Aplikasi</span> --}}
                                         </div>
+                                        @else
+                                        <div class="user-info">
+                                            {{-- <span class="lead-text">Pengguna</span>
+                                            <span class="sub-text">Pengguna Aplikasi</span> --}}
+                                        </div>
+                                        @endif
                                         <div class="user-action">
                                             <a class="btn btn-icon me-n2" href="#"><em class="icon ni ni-setting"></em></a>
                                         </div>
@@ -128,8 +178,8 @@
                                         <em class="icon ni ni-user-alt"></em>
                                     </div>
                                     <div class="user-info d-none d-xl-block">
-                                        <div class="user-status">User</div>
-                                        <div class="user-name">Pengguna Aplikasi</div>
+                                        <div class="user-status">-</div>
+                                        <div class="user-name"><a href="/login">Login Pengguna</a></div>
                                     </div>
                                 </div>
                             </a>

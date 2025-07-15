@@ -9,7 +9,7 @@ $(document).ready(function () {
         format : 'yyyy-mm-dd',
         startDate: new Date()
     });
-  
+
     loadCalendar();
 });
 
@@ -32,6 +32,39 @@ $('#id-kendaraan').select2({
         delay: 500
     }
 });
+
+$('#id-karyawan').select2({
+    placeholder: '- Pilih Karyawan -',
+    // allowClear: true,
+    ajax: {
+        type: 'GET',
+        url: '/selectKaryawan',
+        data: function (params) {
+            return {
+                search: params.term,
+                page: params.page || 1,
+            };
+        },
+        delay: 500
+    }
+});
+
+$('#id-driver').select2({
+    placeholder: '- Pilih Driver -',
+    // allowClear: true,
+    ajax: {
+        type: 'GET',
+        url: '/selectKaryawan',
+        data: function (params) {
+            return {
+                search: params.term,
+                page: params.page || 1,
+            };
+        },
+        delay: 500
+    }
+});
+
 
 const clearFormPeminjaman = () => {
     $('#form-peminjaman').trigger('reset');
@@ -56,7 +89,7 @@ const clearPreviewPeminjaman = () => {
     $('#preview-driver').text('');
     $('#preview-keperluan').text('');
     $('#id-peminjaman-preview').val('');
-} 
+}
 
 const showPreviewPeminjaman = (id_peminjaman) => {
     $.ajax({
@@ -84,9 +117,9 @@ const showPreviewPeminjaman = (id_peminjaman) => {
     });
 }
 
-  
+
 const loadCalendar = () => {
-  
+
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
         timeZone: 'local',
@@ -99,7 +132,7 @@ const loadCalendar = () => {
         },
         events: '/gtCalendarPeminjamanKendaraan',
         height: 800,
-        eventRender: [], 
+        eventRender: [],
         contentHeight: 780,
         aspectRatio: 3,
         editable: true,
@@ -112,7 +145,7 @@ const loadCalendar = () => {
         selectable: true,
         select: function (res) {
             let currentDate = new Date().toJSON().slice(0, 10);
-            
+
             if(res.startStr < currentDate){
                 Swal.fire({
                     title: "Perhatian!",
@@ -121,7 +154,7 @@ const loadCalendar = () => {
                 });
             } else {
                 clearFormPeminjaman();
-                $('#modal-peminjaman').modal('show'); 
+                $('#modal-peminjaman').modal('show');
                 $('#id-tanggal-peminjaman').val(res.startStr);
             }
 
@@ -172,7 +205,7 @@ const loadCalendar = () => {
                         error: function (error) {
                             Swal.fire({
                                 title: 'Terjadi kesalahan saat menyimpan data!',
-                                text: error.responseText, 
+                                text: error.responseText,
                                 icon: 'error',
                                 showConfirmButton: false
                             });
@@ -223,7 +256,7 @@ const deletePeminjaman = () => {
                 error: function (error) {
                     Swal.fire({
                         title: 'Terjadi kesalahan saat menyimpan data!',
-                        text: error.responseText, 
+                        text: error.responseText,
                         icon: 'error',
                         showConfirmButton: false
                     });
@@ -268,7 +301,7 @@ const editPeminjaman = () => {
                     selected: true
                 })
             ).trigger('change');
-            
+
         },
     });
 }
@@ -306,7 +339,7 @@ $('#form-peminjaman').submit(function(event) {
         error: function (error) {
             Swal.fire({
                 title: 'Terjadi kesalahan saat menyimpan data!',
-                text: error.responseText, 
+                text: error.responseText,
                 icon: 'error',
                 showConfirmButton: false
             });
