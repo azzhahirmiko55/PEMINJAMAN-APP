@@ -28,6 +28,7 @@ use Maatwebsite\Excel\Facades\Excel;
 Route::get('/', [LoginController::class, 'index']);
 
 # Halaman #
+// Route::get('/', [DashboardController::class, 'index']);
 Route::get('/index', [DashboardController::class, 'index']);
 
 Route::get('/login', [LoginController::class, 'index']);

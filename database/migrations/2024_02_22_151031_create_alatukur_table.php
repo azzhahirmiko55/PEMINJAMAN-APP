@@ -11,27 +11,27 @@ class CreateAlatukurTable extends Migration
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('alatukur', function (Blueprint $table) {
-            $table->id();
-            $table->string('plat');
-            $table->enum('jenis', ['GPS-Receiver', 'Alat-Ukur']);
-            $table->text('nup');
-            $table->text('keterangan');
-            $table->text('warna');
-            $table->boolean('status')->default(true);
-            $table->timestamps();
-        });
-    }
+    // public function up()
+    // {
+    //     Schema::create('alatukur', function (Blueprint $table) {
+    //         $table->id();
+    //         $table->string('plat');
+    //         $table->enum('jenis', ['GPS-Receiver', 'Alat-Ukur']);
+    //         $table->text('nup');
+    //         $table->text('keterangan');
+    //         $table->text('warna');
+    //         $table->boolean('status')->default(true);
+    //         $table->timestamps();
+    //     });
+    // }
 
     /**
      * Reverse the migrations.
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::dropIfExists('alatukur');
-    }
+    // public function down()
+    // {
+    //     Schema::dropIfExists('alatukur');
+    // }
 }

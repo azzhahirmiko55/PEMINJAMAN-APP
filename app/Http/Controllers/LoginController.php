@@ -19,10 +19,13 @@ class LoginController extends Controller
         if(Auth::check()){
             return Redirect('/index');
         } else {
-            return view('auth/login', [
+            return view('auth/login_mantis', [
                 'page'      => 'Login',
                 'js_script' => '/js/auth/login.js'
             ]);
+            // return view('auth/login', [
+            //     'page'      => 'Login',
+            // ]);
         }
 
     }
@@ -61,7 +64,6 @@ class LoginController extends Controller
     {
         Session::flush();
         Auth::logout();
-
         return Redirect('login');
     }
 

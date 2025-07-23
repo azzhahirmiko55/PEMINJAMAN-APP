@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,7 @@
     <link rel="icon" type="image/png" href="">
 
     <!-- Start CSS -->
-    <link rel="stylesheet"  href="{{ asset('/dashlite/css/dashlite.css') }}">
+    <link rel="stylesheet" href="{{ asset('/dashlite/css/dashlite.css') }}">
     <link id="skin-default" rel="stylesheet" href="{{ asset('/dashlite/css/theme.css') }}">
     <link rel="stylesheet" href="{{ asset('custom/style.css') }}">
     <!-- End CSS -->
@@ -20,7 +21,7 @@
 
     <div class="nk-app-root">
         <div class="nk-wrap">
-        <!-- wrap @s -->
+            <!-- wrap @s -->
             @include('partials.navbar')
 
             @yield('container')
@@ -35,19 +36,19 @@
                 </div>
             </div>
             <!-- footer @e -->
-        <!-- wrap @e -->
+            <!-- wrap @e -->
         </div>
     </div>
     <!-- app-root @e -->
 
 </body>
 
-    <script src="{{ asset('/dashlite/js/bundle.js?ver=3.1.0') }}"></script>
-    <script src="{{ asset('/dashlite/js/scripts.js?ver=3.1.0') }}"></script>
-    {{-- <script src="{{ asset('/js/charts/gd-invest.js?ver=3.1.0') }}"></script>
-    <script src="{{ asset('/js/charts/gd-invest.js?ver=3.1.0') }}"></script> --}}
-    <script type="text/javascript" src="{{ asset('/js/js/bundle.js?ver=3.1.0') }}"></script>
-    <script src="{{ asset('/dashlite/js/libs/fullcalendar.js?ver=3.1.0') }}"></script>
-    <?= isset($js_script) ? '<script type="text/javascript" src="'.asset($js_script).'"></script>' : ""; ?>
+<script src="{{ asset('/dashlite/js/bundle.js?ver=3.1.0') }}"></script>
+<script src="{{ asset('/dashlite/js/scripts.js?ver=3.1.0') }}"></script>
+{{-- <script src="{{ asset('/js/charts/gd-invest.js?ver=3.1.0') }}"></script>
+<script src="{{ asset('/js/charts/gd-invest.js?ver=3.1.0') }}"></script> --}}
+<script type="text/javascript" src="{{ asset('/js/js/bundle.js?ver=3.1.0') }}"></script>
+<script src="{{ asset('/dashlite/js/libs/fullcalendar.js?ver=3.1.0') }}"></script>
+<?= isset($js_script) ? '<script type="text/javascript" src="'.asset($js_script).'"></script>' : ""; ?>
 
 </html>

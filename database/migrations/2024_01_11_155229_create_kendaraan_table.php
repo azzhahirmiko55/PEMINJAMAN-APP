@@ -13,13 +13,14 @@ class CreateKendaraanTable extends Migration
      */
     public function up()
     {
-        Schema::create('kendaraan', function (Blueprint $table) {
-            $table->id();
-            $table->string('plat');
-            $table->enum('jenis', ['Roda-2', 'Roda-4']);
+        Schema::create('tb_kendaraan', function (Blueprint $table) {
+            $table->id('id_kendaraan');
+            $table->string('no_plat')->unique();
+            $table->enum('jenis_kendaraan', ['Roda-2', 'Roda-4']);
+            $table->text('warna_kendaraan');
             $table->text('keterangan');
-            $table->text('warna');
-            $table->boolean('status')->default(true);
+            $table->boolean('tersedia_st')->default(1);
+            $table->boolean('active_st')->default(1);
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ class CreateKendaraanTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kendaraan');
+        Schema::dropIfExists('tb_kendaraan');
     }
 }

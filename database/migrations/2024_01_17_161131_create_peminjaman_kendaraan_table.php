@@ -11,28 +11,28 @@ class CreatePeminjamanKendaraanTable extends Migration
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('peminjaman_kendaraan', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('id_user');
-            $table->foreignId('id_kendaraan');
-            $table->string('peminjam');
-            $table->string('driver');
-            $table->string('keperluan');
-            $table->date('tanggal');
-            $table->boolean('status')->default(true);
-            $table->timestamps();
-        });
-    }
+    // public function up()
+    // {
+    //     Schema::create('peminjaman_kendaraan', function (Blueprint $table) {
+    //         $table->id();
+    //         $table->foreignId('id_user');
+    //         $table->foreignId('id_kendaraan');
+    //         $table->string('peminjam');
+    //         $table->string('driver');
+    //         $table->string('keperluan');
+    //         $table->date('tanggal');
+    //         $table->boolean('status')->default(true);
+    //         $table->timestamps();
+    //     });
+    // }
 
     /**
      * Reverse the migrations.
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::dropIfExists('peminjaman_kendaraan');
-    }
+    // public function down()
+    // {
+    //     Schema::dropIfExists('peminjaman_kendaraan');
+    // }
 }

@@ -1,21 +1,19 @@
 $(document).ready(function () {
-
     $.ajaxSetup({
-        headers:{
-            'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
-        }
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
     });
-
 });
 
-$('#formLogin').submit(function(event) {
-    $('#btnLogin').prop('disabled', true);
-    $('#btnLogin').html('...Login');
+$("#formLogin").submit(function (event) {
+    $("#btnLogin").prop("disabled", true);
+    $("#btnLogin").html("...Login");
     event.preventDefault();
     formData = new FormData($(this)[0]);
     $.ajax({
         url: "/processLogin",
-        type: "post",
+        type: "POST",
         data: formData,
         async: false,
         cache: false,
@@ -30,50 +28,51 @@ $('#formLogin').submit(function(event) {
         },
         success: function (response) {
             Swal.fire({
-                icon: 'success',
+                icon: "success",
                 title: response.message,
                 timer: 2000,
                 showCancelButton: false,
                 showConfirmButton: false,
                 allowOutsideClick: false,
-                onAfterClose: () => window.location = response.redirect
+                onAfterClose: () => (window.location = response.redirect),
             });
         },
         error: function (error) {
             Swal.fire({
-                title: 'Terjadi kesalahan saat login!',
+                title: "Username dan Password Salah!",
                 text: error.message,
-                icon: 'error',
-                showConfirmButton: false
+                icon: "error",
+                showConfirmButton: true,
             });
-        }
-  });
-  return false;
-
-  document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        let formData = new FormData(this);
-
-        fetch(this.action, {
-            method: 'POST',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN': formData.get('_token')
-            },
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status) {
-                window.location.href = data.redirect;
-            } else {
-                alert(data.message);
-            }
-        })
-        .catch(error => console.error('Error:', error));
+        },
     });
-});
+    return false;
 
+    document.addEventListener("DOMContentLoaded", function () {
+        document
+            .getElementById("loginForm")
+            .addEventListener("submit", function (e) {
+                e.preventDefault();
+
+                let formData = new FormData(this);
+
+                fetch(this.action, {
+                    method: "POST",
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest",
+                        "X-CSRF-TOKEN": formData.get("_token"),
+                    },
+                    body: formData,
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.status) {
+                            window.location.href = data.redirect;
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                    .catch((error) => console.error("Error:", error));
+            });
+    });
 });

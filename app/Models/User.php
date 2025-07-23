@@ -18,10 +18,19 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
+    protected $table = 'tb_user';
+
+    protected $primaryKey = 'id_user';
+
+    public $incrementing = true;
+    protected $keyType = 'int';
+
+      protected $fillable = [
+        'id_pegawai',
         'username',
         'password',
-        'fullname',
+        'role',
+        'active_st',
     ];
 
     /**
@@ -31,8 +40,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
-        'is_admin'
+        'remember_token'
     ];
 
     /**
@@ -41,6 +49,7 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'active_st' => 'boolean',
+        'role' => 'integer',
     ];
 }

@@ -13,11 +13,12 @@ class CreateRuangrapatTable extends Migration
      */
     public function up()
     {
-        Schema::create('ruangrapat', function (Blueprint $table) {
-            $table->id();
-            $table->string('ruangan');
-            $table->text('warna');
-            $table->boolean('status')->default(true);
+        Schema::create('tb_ruang_rapat', function (Blueprint $table) {
+            $table->id('id_ruangrapat');
+            $table->text('nama_ruangan');
+            $table->text('warna_ruangan');
+            $table->boolean('tersedia_st')->default(1);
+            $table->boolean('active_st')->default(1);
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class CreateRuangrapatTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ruangrapat');
+        Schema::dropIfExists('tb_ruang_rapat');
     }
 }
