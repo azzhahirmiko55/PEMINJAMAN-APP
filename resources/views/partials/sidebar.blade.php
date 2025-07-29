@@ -2,15 +2,17 @@
 <nav class="pc-sidebar">
     <div class="navbar-wrapper">
         <div class="m-header">
-            <a href="../dashboard/index.html" class="b-brand text-primary">
+            <a href="{{ route('dashboard') }}" class="b-brand text-primary d-flex align-items-center">
                 <!-- ========   Change your logo from here   ============ -->
-                <img src="../assets/images/logo-dark.svg" class="img-fluid logo-lg" alt="logo">
+                {{-- <img src="{{asset('/assets/images/Logo_BPN.png') }}" class="img-fluid logo-lg" alt="logo"> --}}
+                <img src="{{asset('/assets/images/Logo_BPN.png') }}" class="img-fluid" width="50" height="50" alt="logo">
+                <h2 class="mb-0 ms-2">&nbsp;BPN</h2>
             </a>
         </div>
         <div class="navbar-content">
             <ul class="pc-navbar">
                 <li class="pc-item">
-                    <a href="../dashboard/index.html" class="pc-link">
+                    <a href="{{ route('dashboard') }}" class="pc-link">
                         <span class="pc-micon">
                             <svg class="pc-icon">
                                 <use xlink:href="#dashboard"></use>
@@ -19,8 +21,56 @@
                         <span class="pc-mtext">Dashboard</span>
                     </a>
                 </li>
-
                 <li class="pc-item pc-caption">
+                    <label data-i18n="Widget">Master Data</label>
+                    <i class="pc-micon">
+                        <svg class="pc-icon">
+                            <use xlink:href="#line-chart"></use>
+                        </svg>
+                    </i>
+                </li>
+                <li class="pc-item">
+                    <a href="../elements/bc_typography.html" class="pc-link">
+                        <span class="pc-micon">
+                            <svg class="pc-icon">
+                                <use xlink:href="#user"></use>
+                            </svg>
+                        </span>
+                        <span class="pc-mtext">Data User</span>
+                    </a>
+                </li>
+                <li class="pc-item">
+                    <a href="../elements/bc_typography.html" class="pc-link">
+                        <span class="pc-micon">
+                            <svg class="pc-icon">
+                                <use xlink:href="#profile"></use>
+                            </svg>
+                        </span>
+                        <span class="pc-mtext">Data Pegawai</span>
+                    </a>
+                </li>
+                <li class="pc-item">
+                    <a href="../elements/bc_typography.html" class="pc-link">
+                        <span class="pc-micon">
+                            <svg class="pc-icon">
+                                <use xlink:href="#border-inner"></use>
+                            </svg>
+                        </span>
+                        <span class="pc-mtext">Data Ruangan</span>
+                    </a>
+                </li>
+                <li class="pc-item">
+                    <a href="../elements/bc_typography.html" class="pc-link">
+                        <span class="pc-micon">
+                            <svg class="pc-icon">
+                                <use xlink:href="#car"></use>
+                            </svg>
+                        </span>
+                        <span class="pc-mtext">Data Kendaraan</span>
+                    </a>
+                </li>
+
+                {{-- <li class="pc-item pc-caption">
                     <label data-i18n="Widget">UI Components</label>
                     <i class="pc-micon">
                         <svg class="pc-icon">
@@ -164,9 +214,9 @@
                         </span>
                         <span class="pc-mtext" data-i18n="Sample Page">Sample page</span>
                     </a>
-                </li>
+                </li> --}}
             </ul>
-            <div class="card text-center">
+            {{-- <div class="card text-center">
                 <div class="card-body">
                     <img src="../assets/images/img-navbar-card.png" alt="images" class="img-fluid mb-2">
                     <h5>Upgrade To Pro</h5>
@@ -174,7 +224,7 @@
                     <a href="https://codedthemes.com/item/mantis-bootstrap-admin-dashboard/" target="_blank"
                         class="btn btn-success">Buy Now</a>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 </nav>

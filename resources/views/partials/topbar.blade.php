@@ -1,5 +1,5 @@
 <!-- [ Header Topbar ] start -->
-<header class="pc-header">
+<header class="pc-header" id="header-topbar">
     <div class="header-wrapper">
         <!-- [Mobile Media Block] start -->
         <div class="me-auto pc-mob-drp">
@@ -21,27 +21,27 @@
                         <i class="ti ti-search"></i>
                     </a>
                     <div class="dropdown-menu pc-h-dropdown drp-search">
-                        <form class="px-3">
+                        {{-- <form class="px-3">
                             <div class="form-group mb-0 d-flex align-items-center">
                                 <i data-feather="search"></i>
                                 <input type="search" class="form-control border-0 shadow-none"
                                     placeholder="Search here. . .">
                             </div>
-                        </form>
+                        </form> --}}
                     </div>
                 </li>
                 <li class="pc-h-item d-none d-md-inline-flex">
-                    <form class="header-search">
+                    {{-- <form class="header-search">
                         <i data-feather="search" class="icon-search"></i>
                         <input type="search" class="form-control" placeholder="Search here. . .">
-                    </form>
+                    </form> --}}
                 </li>
             </ul>
         </div>
         <!-- [Mobile Media Block end] -->
         <div class="ms-auto">
             <ul class="list-unstyled">
-                <li class="dropdown pc-h-item">
+                {{-- <li class="dropdown pc-h-item">
                     <a class="pc-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#"
                         role="button" aria-haspopup="false" aria-expanded="false">
                         <i>
@@ -119,25 +119,26 @@
                             <a href="#!" class="link-primary">View all</a>
                         </div>
                     </div>
-                </li>
+                </li> --}}
                 <li class="dropdown pc-h-item header-user-profile">
                     <a class="pc-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#"
                         role="button" aria-haspopup="false" data-bs-auto-close="outside" aria-expanded="false">
-                        <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar">
-                        <span>Stebin Ben</span>
+                        <img src="../assets/images/user/{{ $user->jenis_kelamin ===1?'avatar-2':'avatar-9' }}.jpg"
+                            alt="user-image" class="user-avtar">
+                        <span>{{ $user->nama_pegawai }}</span>
                     </a>
                     <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
                         <div class="dropdown-header">
                             <div class="d-flex mb-1">
                                 <div class="flex-shrink-0">
-                                    <img src="../assets/images/user/avatar-2.jpg" alt="user-image"
-                                        class="user-avtar wid-35">
+                                    <img src="../assets/images/user/{{ $user->jenis_kelamin ===1?'avatar-2':'avatar-9' }}.jpg"
+                                        alt="user-image" class="user-avtar wid-35">
                                 </div>
                                 <div class="flex-grow-1 ms-3">
-                                    <h6 class="mb-1">Stebin Ben</h6>
-                                    <span>UI/UX Designer</span>
+                                    <h6 class="mb-1">{{ $user->nama_pegawai }}</h6>
+                                    <span>{{ $user->jabatan }}</span>
                                 </div>
-                                <a href="#!" class="pc-head-link bg-transparent"><i
+                                <a href="{{ route('logout') }}" class="pc-head-link bg-transparent"><i
                                         class="ti ti-power text-danger"></i></a>
                             </div>
                         </div>
@@ -145,39 +146,29 @@
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="drp-t1" data-bs-toggle="tab"
                                     data-bs-target="#drp-tab-1" type="button" role="tab" aria-controls="drp-tab-1"
-                                    aria-selected="true"><i class="ti ti-user"></i> Profile</button>
+                                    aria-selected="true" data-toggle="modal" data-target="#ModalProfile">
+                                    <i class="ti ti-user"></i> Profile
+                                </button>
                             </li>
-                            <li class="nav-item" role="presentation">
+                            {{-- <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="drp-t2" data-bs-toggle="tab" data-bs-target="#drp-tab-2"
                                     type="button" role="tab" aria-controls="drp-tab-2" aria-selected="false"><i
                                         class="ti ti-settings"></i> Setting</button>
-                            </li>
+                            </li> --}}
                         </ul>
                         <div class="tab-content" id="mysrpTabContent">
                             <div class="tab-pane fade show active" id="drp-tab-1" role="tabpanel"
                                 aria-labelledby="drp-t1" tabindex="0">
-                                <a href="#!" class="dropdown-item">
+                                <a href="#!" class="dropdown-item" id="btn-edit-profile">
                                     <i class="ti ti-edit-circle"></i>
                                     <span>Edit Profile</span>
                                 </a>
-                                <a href="#!" class="dropdown-item">
-                                    <i class="ti ti-user"></i>
-                                    <span>View Profile</span>
-                                </a>
-                                <a href="#!" class="dropdown-item">
-                                    <i class="ti ti-clipboard-list"></i>
-                                    <span>Social Profile</span>
-                                </a>
-                                <a href="#!" class="dropdown-item">
-                                    <i class="ti ti-wallet"></i>
-                                    <span>Billing</span>
-                                </a>
-                                <a href="#!" class="dropdown-item">
+                                <a href="{{ route('logout') }}" class="dropdown-item">
                                     <i class="ti ti-power"></i>
                                     <span>Logout</span>
                                 </a>
                             </div>
-                            <div class="tab-pane fade" id="drp-tab-2" role="tabpanel" aria-labelledby="drp-t2"
+                            {{-- <div class="tab-pane fade" id="drp-tab-2" role="tabpanel" aria-labelledby="drp-t2"
                                 tabindex="0">
                                 <a href="#!" class="dropdown-item">
                                     <i class="ti ti-help"></i>
@@ -199,7 +190,7 @@
                                     <i class="ti ti-list"></i>
                                     <span>History</span>
                                 </a>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </li>

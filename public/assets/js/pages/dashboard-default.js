@@ -1,7 +1,7 @@
 'use strict';
 document.addEventListener('DOMContentLoaded', function () {
   setTimeout(function () {
-    floatchart();
+    // floatchart();
   }, 500);
 });
 
@@ -113,7 +113,7 @@ function floatchart() {
     chart.render();
   })();
 
-  
+
   (function () {
     var options = {
       chart: {

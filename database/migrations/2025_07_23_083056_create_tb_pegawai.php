@@ -17,6 +17,7 @@ class CreateTbPegawai extends Migration
             $table->id('id_pegawai');
             $table->text('nama_pegawai');
             $table->string('jabatan');
+            $table->boolean('jenis_kelamin')->default(1);
             $table->boolean('active_st')->default(1);
             $table->timestamps();
         });

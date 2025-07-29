@@ -38,7 +38,6 @@ class LoginController extends Controller
                 'username'  => 'required',
                 'password'  => 'required'
             ]);
-
             if ($validator->fails()) {
                 return response()->json(implode(",",$validator->errors()->all()), 401);
             }
@@ -49,14 +48,14 @@ class LoginController extends Controller
                 \Log::warning('Login failed', ['username' => $request->username]);
                 return response()->json([
                     "status"    => false,
-                    "message"   => "Invalid credentials"
+                    "message"   => "Username dan Password Salah!"
                 ], 401);
             }
 
             return response()->json([
                 'status'    => TRUE,
                 'message'   => 'Login berhasil!',
-                'redirect'  => url("index")
+                'redirect'  => url("dashboard")
             ],200);
         }
     }
@@ -64,7 +63,7 @@ class LoginController extends Controller
     {
         Session::flush();
         Auth::logout();
-        return Redirect('login');
+        return redirect()->route('login');
     }
 
 }

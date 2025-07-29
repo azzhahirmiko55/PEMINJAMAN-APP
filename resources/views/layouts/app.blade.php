@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Penjadwalan App | {{ isset($page) ? $page : "Page"; }}</title>
+    <title>Peminjaman App | {{ isset($page) ? $page : "Page"; }}</title>
     <!-- [Meta] -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
@@ -30,6 +30,9 @@
     <!-- [Template CSS Files] -->
     <link rel="stylesheet" href="{{ asset('/assets/css/style.css') }}" id="main-style-link">
     <link rel="stylesheet" href="{{ asset('/assets/css/style-preset.css') }}">
+    <!-- Toastr CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+
 
 </head>
 
@@ -47,12 +50,34 @@
     <!-- topbar @s -->
     @include('partials.topbar')
     <!-- topbar @s -->
-
-    @yield('content')
+    <div class="content">
+        @yield('content')
+    </div>
 
     <!-- footer @s -->
     @include('partials.footer')
     <!-- footer @e -->
+
+    <!-- Modal Profile -->
+    <div class="modal fade" id="ModalProfile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                        style="background: none !important;border: none !important;">
+                        <svg class="pc-icon">
+                            <use xlink:href="#close"></use>
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-content" id="modal-profile-content">
+
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 
@@ -71,6 +96,13 @@
 <script src="{{ asset('/assets/js/plugins/feather.min.js') }}"></script>
 <!-- Buy Now Link  -->
 <script defer src="https://fomo.codedthemes.com/pixel/Oo2pYDncP8R8qhhETpWKGA04b8jPhUjF"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Toastr JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 
 
 <script>
@@ -93,5 +125,78 @@
     font_change('Public-Sans');
 </script>
 <?= isset($js_script) ? '<script type="text/javascript" src="'.asset($js_script).'"></script>' : ""; ?>
+
+
+@stack('scripts')
+<script>
+    $(document).ready(function () {
+
+    $(document).on('click', '#btn-edit-profile', function () {
+        $.get("/profile/edit", function (res) {
+            $("#modal-profile-content").html(res);
+
+            const modalEl = document.getElementById('ModalProfile');
+            const modalInstance = new bootstrap.Modal(modalEl);
+            modalInstance.show();;
+        });
+    });
+
+    $(document).on('click', '#submit-profile', function () {
+        let formData = $("#form-edit-profile").serialize();
+
+        $.post("/profile/update", formData)
+            .done(function (response) {
+                // alert(response.message); // ganti swal atau toastr jika mau
+                $("#ModalProfile").modal('hide');
+            })
+            .fail(function (xhr) {
+                alert("Gagal menyimpan data: " + xhr.responseJSON.message);
+            });
+    });
+});
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('[data-dismiss="modal"]').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+
+                    let modalElement = btn.closest('.modal');
+                    if (modalElement) {
+                        let modalInstance = bootstrap.Modal.getInstance(modalElement);
+                        if (modalInstance) {
+                            modalInstance.hide();
+                        } else {
+                            new bootstrap.Modal(modalElement).hide();
+                        }
+                    }
+                });
+            });
+        });
+
+        function hideAllModals() {
+            const modalProfile = document.getElementById('ModalProfile');
+            if (modalProfile) {
+                const instance = bootstrap.Modal.getInstance(modalProfile) || new bootstrap.Modal(modalProfile);
+                instance.hide();
+            }
+
+            document.querySelectorAll('.modal.show').forEach(function (modalEl) {
+                const modalInstance = bootstrap.Modal.getInstance(modalEl);
+                if (modalInstance) {
+                    modalInstance.hide();
+                } else {
+                    new bootstrap.Modal(modalEl).hide();
+                }
+            });
+        }
+
+        function refreshContent() {
+            $("#content").load(window.location.pathname + " #content > *");
+            $("#header-topbar").load(window.location.pathname + " #header-topbar > *");
+        }
+
+</script>
+
 
 </html>

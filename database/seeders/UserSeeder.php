@@ -11,9 +11,10 @@ class UserSeeder extends Seeder
     public function run()
     {
         User::create([
-            'username' => 'kepala_kantor',
-            'fullname' => 'kepala_kantor sistem',
-            'password' => Hash::make('kepalakantor_1234'),
+            'id_pegawai' => 1,
+            'username' => 'admin',
+            'password' => Hash::make('admin123'),
+            'role' => '0',
         ]);
     }
 }

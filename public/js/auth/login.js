@@ -11,6 +11,7 @@ $("#formLogin").submit(function (event) {
     $("#btnLogin").html("...Login");
     event.preventDefault();
     formData = new FormData($(this)[0]);
+
     $.ajax({
         url: "/processLogin",
         type: "POST",
@@ -27,20 +28,25 @@ $("#formLogin").submit(function (event) {
             Swal.hideLoading();
         },
         success: function (response) {
-            Swal.fire({
-                icon: "success",
-                title: response.message,
-                timer: 2000,
-                showCancelButton: false,
-                showConfirmButton: false,
-                allowOutsideClick: false,
-                onAfterClose: () => (window.location = response.redirect),
-            });
+            if (response.status === true) {
+                Swal.fire({
+                    icon: "success",
+                    title: response.message,
+                    timer: 1500,
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    didClose: () => {
+                        window.location = response.redirect;
+                    }
+                });
+            }
         },
         error: function (error) {
+            const message = error.responseJSON.message;
             Swal.fire({
-                title: "Username dan Password Salah!",
-                text: error.message,
+                title: message,
+                // text: error.message,
                 icon: "error",
                 showConfirmButton: true,
             });
