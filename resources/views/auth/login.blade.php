@@ -59,10 +59,11 @@
                                                 <label class="form-label" for="password">Password</label>
                                             </div>
                                             <div class="form-control-wrap">
-                                                {{-- <a href="#" class="form-icon form-icon-right passcode-switch lg" data-target="password">
-                                                        <em class="passcode-icon icon-show icon ni ni-eye"></em>
-                                                        <em class="passcode-icon icon-hide icon ni ni-eye-off"></em>
-                                                    </a> --}}
+                                                {{-- <a href="#" class="form-icon form-icon-right passcode-switch lg"
+                                                    data-target="password">
+                                                    <em class="passcode-icon icon-show icon ni ni-eye"></em>
+                                                    <em class="passcode-icon icon-hide icon ni ni-eye-off"></em>
+                                                </a> --}}
                                                 <input type="password" class="form-control form-control-lg"
                                                     id="password" name="password" placeholder="Password">
                                             </div>

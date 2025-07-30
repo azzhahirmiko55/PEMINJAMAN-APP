@@ -11,9 +11,16 @@ use App\Http\Controllers\RuangrapatController;
 use App\Http\Controllers\PeminjamanRuangrapatController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserPLoginController;
-use App\Http\Controllers\ProfileController;
 use App\Models\RekapitulasiKendaraanExport;
 use Maatwebsite\Excel\Facades\Excel;
+// Start Global Session
+use App\Http\Controllers\ProfileController;
+// End Global Session
+
+// Start Admin Session
+use App\Http\Controllers\UserController;
+// End Admin Session
+
 
 /*
 |--------------------------------------------------------------------------
@@ -33,11 +40,21 @@ Route::get('/login', [LoginController::class, 'index'])->middleware('IsLogout');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/processLogin', [LoginController::class, 'ajax_process_login']);
 
-# Halaman Dashboard #
+# Start Halaman Dashboard #
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('IsLogin');
-# Profile Modal #
-Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.modal');
-Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+# End Halaman Dashboard #
+# Start Profile Modal #
+Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.modal')->middleware('IsLogin');
+Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update')->middleware('IsLogin');
+# End Profile Modal #
+
+# Start Admin Session #
+# User Session #
+Route::resource('user', UserController::class)->name('index', 'user');
+Route::post('/user/update_status', [UserController::class, 'update_status'])->name('user.status')->middleware('IsLogin');
+# End Admin Session #
+
+
 # End Halaman #
 
 # Ajax Master #

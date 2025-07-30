@@ -17,10 +17,10 @@ class IsLogin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->check()) {
+        if (auth()->check() && auth()->user()->active_st == 1) {
             return $next($request);
         } else {
-            return redirect('login');
+            return redirect()->route('logout');
         }
     }
 }

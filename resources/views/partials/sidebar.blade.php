@@ -5,7 +5,8 @@
             <a href="{{ route('dashboard') }}" class="b-brand text-primary d-flex align-items-center">
                 <!-- ========   Change your logo from here   ============ -->
                 {{-- <img src="{{asset('/assets/images/Logo_BPN.png') }}" class="img-fluid logo-lg" alt="logo"> --}}
-                <img src="{{asset('/assets/images/Logo_BPN.png') }}" class="img-fluid" width="50" height="50" alt="logo">
+                <img src="{{asset('/assets/images/Logo_BPN.png') }}" class="img-fluid" width="50" height="50"
+                    alt="logo">
                 <h2 class="mb-0 ms-2">&nbsp;BPN</h2>
             </a>
         </div>
@@ -30,7 +31,7 @@
                     </i>
                 </li>
                 <li class="pc-item">
-                    <a href="../elements/bc_typography.html" class="pc-link">
+                    <a href="{{ route('user') }}" class="pc-link">
                         <span class="pc-micon">
                             <svg class="pc-icon">
                                 <use xlink:href="#user"></use>

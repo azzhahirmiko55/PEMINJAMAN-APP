@@ -32,6 +32,8 @@
     <link rel="stylesheet" href="{{ asset('/assets/css/style.css') }}" id="main-style-link">
     <link rel="stylesheet" href="{{ asset('/assets/css/style-preset.css') }}">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
 <!-- [Head] end -->
 
@@ -70,10 +72,15 @@
                                 <input type="text" class="form-control" placeholder="Masukkan Username" name="username"
                                     required>
                             </div>
-                            <div class="form-group mb-3">
+                            <div class="form-group mb-3 position-relative">
                                 <label class="form-label">Password</label>
-                                <input type="password" class="form-control" placeholder="Masukkan Password"
-                                    name="password" required>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" placeholder="Masukkan Password"
+                                        name="password" id="password" required>
+                                    <span class="input-group-text" onclick="togglePassword()" style="cursor: pointer;">
+                                        <i class="fa-solid fa-eye" id="toggleIcon"></i>
+                                    </span>
+                                </div>
                             </div>
                             <div class="d-flex mt-1 justify-content-between">
                             </div>
@@ -157,6 +164,17 @@
         font_change('Public-Sans');
     </script>
 
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById("password");
+            const toggleIcon = document.getElementById("toggleIcon");
+
+            const isPassword = passwordInput.type === "password";
+            passwordInput.type = isPassword ? "text" : "password";
+            toggleIcon.classList.toggle("fa-eye");
+            toggleIcon.classList.toggle("fa-eye-slash");
+        }
+    </script>
 
 </body>
 <!-- [Body] end -->

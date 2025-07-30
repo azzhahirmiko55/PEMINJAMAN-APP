@@ -52,6 +52,14 @@ class LoginController extends Controller
                 ], 401);
             }
 
+            if(Auth::user()->active_st != 1){
+                \Log::warning('Login failed', ['username' => $request->username]);
+                return response()->json([
+                    "status"    => false,
+                    "message"   => "Username dan Password Salah!"
+                ], 401);
+            }
+
             return response()->json([
                 'status'    => TRUE,
                 'message'   => 'Login berhasil!',

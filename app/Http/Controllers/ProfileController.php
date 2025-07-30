@@ -25,24 +25,22 @@ class ProfileController extends Controller
         $user = User::find(Auth::User()->id_user);
         $pegawai = Pegawai::find(Auth::User()->id_pegawai);
         $request->validate([
-            'nama_pegawai' => 'required|regex:/^[a-zA-Z\s\'`]+$/u|max:255',
-
+            'nama_pegawai' => 'required|regex:/^[a-zA-Z\s\'\.`]+$/u|max:255',
             'password' => ['nullable', 'string', 'min:6', 'confirmed'],
+            'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
         $pegawai->nama_pegawai = $request->input('nama_pegawai');
         $pegawai->save();
 
         $user->password = Hash::make($request->input('password'));
-        $user->save();
-        // $user->email = $request->input('email');
-        // // Add other fields as necessary
 
-        // if ($request->hasFile('profile_picture')) {
-        //     $file = $request->file('profile_picture');
-        //     $filename = time() . '.' . $file->getClientOriginalExtension();
-        //     $file->move(public_path('images/profile'), $filename);
-        //     $user->profile_picture = 'images/profile/' . $filename;
-        // }
+        if ($request->hasFile('profile_picture')) {
+            $file = $request->file('profile_picture');
+            $imageData = base64_encode(file_get_contents($file->getRealPath()));
+            $mime = $file->getMimeType();
+            $user->profile_picture = 'data:' . $mime . ';base64,' . $imageData;
+        }
+        $user->save();
 
 
         return response()->json(['success' => true, 'message' => 'Profile berhasil diperbarui']);

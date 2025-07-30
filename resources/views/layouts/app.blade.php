@@ -32,6 +32,14 @@
     <link rel="stylesheet" href="{{ asset('/assets/css/style-preset.css') }}">
     <!-- Toastr CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <style>
+        .swal2-container {
+            z-index: 2000 !important;
+        }
+    </style>
+
 
 
 </head>
@@ -50,8 +58,39 @@
     <!-- topbar @s -->
     @include('partials.topbar')
     <!-- topbar @s -->
-    <div class="content">
-        @yield('content')
+    <div class="content" id="content">
+        <div class="pc-container">
+            <div class="pc-content">
+                <!-- [ breadcrumb ] start -->
+                <div class="page-header">
+                    <div class="page-block">
+                        <div class="row align-items-center">
+                            <div class="col-md-12">
+                                <div class="page-header-title">
+                                    <h5 class="m-b-10">{{ isset($page) ? $page : "Page"; }}</h5>
+                                </div>
+                                <ul class="breadcrumb">
+                                    @if ($page != "Dashboard")
+                                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                                    <li class="breadcrumb-item"><a href="javascript: void(0)">{{ isset($page) ? $page :
+                                            "Page"; }}</a></li>
+                                    @endif
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ breadcrumb ] end -->
+
+                <!-- [ Main Content ] start -->
+                <div class="row">
+                    <!-- [ sample-page ] start -->
+                    @yield('content')
+                    <!-- [ sample-page ] end -->
+                </div>
+                <!-- [ Main Content ] end -->
+            </div>
+        </div>
     </div>
 
     <!-- footer @s -->
@@ -64,7 +103,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Profile</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"
                         style="background: none !important;border: none !important;">
                         <svg class="pc-icon">
@@ -79,6 +118,26 @@
         </div>
     </div>
 
+    <!-- Modal Global -->
+    <div class="modal fade" id="ModalGlobal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="GlobalModalTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                        style="background: none !important;border: none !important;">
+                        <svg class="pc-icon">
+                            <use xlink:href="#close"></use>
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-content" id="GlobalModalBody">
+
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 
@@ -95,13 +154,20 @@
 <script src="{{ asset('/assets/js/pcoded.js') }}"></script>
 <script src="{{ asset('/assets/js/plugins/feather.min.js') }}"></script>
 <!-- Buy Now Link  -->
-<script defer src="https://fomo.codedthemes.com/pixel/Oo2pYDncP8R8qhhETpWKGA04b8jPhUjF"></script>
+{{-- <script defer src="https://fomo.codedthemes.com/pixel/Oo2pYDncP8R8qhhETpWKGA04b8jPhUjF"></script> --}}
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Toastr JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
 
 
@@ -158,45 +224,93 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('[data-dismiss="modal"]').forEach(function (btn) {
-                btn.addEventListener('click', function () {
+        document.querySelectorAll('[data-dismiss="modal"]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
 
-                    let modalElement = btn.closest('.modal');
-                    if (modalElement) {
-                        let modalInstance = bootstrap.Modal.getInstance(modalElement);
-                        if (modalInstance) {
-                            modalInstance.hide();
-                        } else {
-                            new bootstrap.Modal(modalElement).hide();
-                        }
+                let modalElement = btn.closest('.modal');
+                if (modalElement) {
+                    let modalInstance = bootstrap.Modal.getInstance(modalElement);
+                    if (modalInstance) {
+                        modalInstance.hide();
+                    } else {
+                        new bootstrap.Modal(modalElement).hide();
                     }
-                });
-            });
-        });
-
-        function hideAllModals() {
-            const modalProfile = document.getElementById('ModalProfile');
-            if (modalProfile) {
-                const instance = bootstrap.Modal.getInstance(modalProfile) || new bootstrap.Modal(modalProfile);
-                instance.hide();
-            }
-
-            document.querySelectorAll('.modal.show').forEach(function (modalEl) {
-                const modalInstance = bootstrap.Modal.getInstance(modalEl);
-                if (modalInstance) {
-                    modalInstance.hide();
-                } else {
-                    new bootstrap.Modal(modalEl).hide();
                 }
             });
+        });
+    });
+
+    function hideAllModals() {
+        const modalProfile = document.getElementById('ModalProfile');
+        if (modalProfile) {
+            const instance = bootstrap.Modal.getInstance(modalProfile) || new bootstrap.Modal(modalProfile);
+            instance.hide();
         }
 
-        function refreshContent() {
-            $("#content").load(window.location.pathname + " #content > *");
-            $("#header-topbar").load(window.location.pathname + " #header-topbar > *");
-        }
+        document.querySelectorAll('.modal.show').forEach(function (modalEl) {
+            const modalInstance = bootstrap.Modal.getInstance(modalEl);
+            if (modalInstance) {
+                modalInstance.hide();
+            } else {
+                new bootstrap.Modal(modalEl).hide();
+            }
+        });
+    }
+
+    function refreshContent() {
+        $("#content").load(window.location.pathname + " #content > *");
+        $("#header-topbar").load(window.location.pathname + " #header-topbar > *");
+    }
+
+    function initDataTable(tableId) {
+        $('#' + tableId).DataTable({
+            responsive: true,
+            autoWidth: false,
+            pagingType: "full_numbers",
+            lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
+            language: {
+                search: "Cari:",
+                lengthMenu: "Tampilkan _MENU_ entri",
+                info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                paginate: {
+                    first: "«",
+                    previous: "‹",
+                    next: "›",
+                    last: "»"
+                },
+                zeroRecords: "Data tidak ditemukan",
+                infoEmpty: "Menampilkan 0 sampai 0 dari 0 entri",
+                infoFiltered: "(disaring dari _MAX_ entri keseluruhan)"
+            }
+        });
+    }
 
 </script>
+
+{{-- Global Modal --}}
+<script>
+    function showGlobalModal(title, url) {
+        $('#GlobalModalTitle').text(title);
+        $('#GlobalModalBody').html('<div class="text-center p-3"><div class="spinner-border"></div></div>');
+
+        $.get(url, function (res) {
+            $('#GlobalModalBody').html(res);
+
+            const modalEl = document.getElementById('ModalGlobal');
+            const modalInstance = bootstrap.Modal.getOrCreateInstance(modalEl);
+            modalInstance.show();
+        });
+    }
+
+    $(document).on('click', '[data-modal]', function (e) {
+        e.preventDefault();
+        const title = $(this).data('title') || 'Modal';
+
+        const url = $(this).data('url');
+        showGlobalModal(title, url);
+    });
+</script>
+
 
 
 </html>

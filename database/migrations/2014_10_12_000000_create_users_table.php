@@ -18,7 +18,13 @@ class CreateUsersTable extends Migration
             $table->string('id_pegawai');
             $table->string('username')->unique();
             $table->text('password');
-            $table->integer('role')->default(1);
+            $table->longText('profile_picture')->nullable();
+            $table->integer('role')->default(4);
+            // 0 => Admin
+            // 1 => Kasubag
+            // 2 => Staff TU
+            // 3 => Satpam
+            // 4 => Pegawai BPN
             $table->boolean('active_st')->default(1);
             $table->timestamps();
         });
