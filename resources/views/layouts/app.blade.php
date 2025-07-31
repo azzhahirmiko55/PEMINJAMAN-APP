@@ -258,7 +258,16 @@
     }
 
     function refreshContent() {
-        $("#content").load(window.location.pathname + " #content > *");
+        $("#content").load(window.location.pathname + " #content > *", function () {
+            // Re-inisialisasi DataTable setelah konten berhasil dimuat
+            $("#content table.dataTable").each(function () {
+                // Hapus instance sebelumnya jika ada
+                if ($.fn.DataTable.isDataTable(this)) {
+                    $(this).DataTable().clear().destroy();
+                }
+                initDataTable($(this).attr('id'));
+            });
+        });
         $("#header-topbar").load(window.location.pathname + " #header-topbar > *");
     }
 

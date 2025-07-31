@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class IsLogin
+class IsAdmin
 {
     /**
      * Handle an incoming request.
@@ -17,10 +17,10 @@ class IsLogin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->check() && auth()->user()->active_st == 1) {
+        if (auth()->user()->role == 0) {
             return $next($request);
         } else {
-            return redirect()->route('logout');
+            return redirect()->back();
         }
     }
 }

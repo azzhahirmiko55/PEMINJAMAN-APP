@@ -19,6 +19,7 @@ use App\Http\Controllers\ProfileController;
 
 // Start Admin Session
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PegawaiController;
 // End Admin Session
 
 
@@ -50,8 +51,11 @@ Route::post('/profile/update', [ProfileController::class, 'update'])->name('prof
 
 # Start Admin Session #
 # User Session #
-Route::resource('user', UserController::class)->name('index', 'user');
-Route::post('/user/update_status', [UserController::class, 'update_status'])->name('user.status')->middleware('IsLogin');
+Route::resource('user', UserController::class)->name('index', 'user')->middleware(['IsLogin','IsAdmin']);
+Route::post('/user/update_status', [UserController::class, 'update_status'])->name('user.status')->middleware(['IsLogin','IsAdmin']);
+# Pegawai Session #
+Route::resource('pegawai', PegawaiController::class)->name('index', 'pegawai')->middleware(['IsLogin','IsAdmin']);
+Route::post('/pegawai/update_status', [PegawaiController::class, 'update_status'])->name('pegawai.status')->middleware(['IsLogin','IsAdmin']);
 # End Admin Session #
 
 
