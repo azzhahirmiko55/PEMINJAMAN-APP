@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\Ruangan;
 use App\Models\Pegawai;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
-class PegawaiController extends Controller
+class RuanganController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,11 +17,11 @@ class PegawaiController extends Controller
      */
     public function index()
     {
-        $dPegawai =  Pegawai::orderBy('nama_pegawai', 'ASC')->get();
-        return view('admin.pegawai.index', [
-            "page"  => "Master Pegawai",
-            'js_script' => 'js/admin/pegawai/index.js',
-            'data_pegawai' => $dPegawai,
+        $dRuangan =  Ruangan::orderBy('nama_ruangan', 'ASC')->get();
+        return view('admin.ruangan.index', [
+            "page"  => "Master ruangan",
+            'js_script' => 'js/admin/ruangan/index.js',
+            'data_ruangan' => $dRuangan,
         ]);
     }
 
@@ -54,11 +54,11 @@ class PegawaiController extends Controller
      */
     public function show($id)
     {
-        $dPegawai = [];
+         $dRuangan = [];
         if($id != 'add'){
-            $dPegawai = Pegawai::find($id);
+            $dRuangan = Ruangan::find($id);
         }
-        return view('admin.pegawai.form_modal',compact('dPegawai'));
+        return view('admin.ruangan.form_modal',compact('dRuangan'));
     }
 
     /**
@@ -82,19 +82,17 @@ class PegawaiController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nama_pegawai' => 'required|string|max:255|regex:/^[a-zA-Z\s\'`]+$/u',
-            'jabatan' => 'required|in:Kasubag,Staff TU,Satpam,Pegawai BPN',
-            'jenis_kelamin' => 'required|in:0,1',
+            'nama_ruangan' => 'required|string|max:255',
+            'warna_ruangan' => 'nullable|string|max:255|regex:/^[a-zA-Z\s\'`]+$/u',
         ]);
         if($id === 'add'){// Tambah data
-            $pegawai = new Pegawai();
+            $ruangan = new Ruangan();
         }else { // Edit Data
-            $pegawai = Pegawai::findOrFail($id);
+            $ruangan = Ruangan::findOrFail($id);
         }
-        $pegawai->nama_pegawai     = $request->nama_pegawai;
-        $pegawai->jabatan     = $request->jabatan;
-        $pegawai->jenis_kelamin     = $request->jenis_kelamin;
-        $pegawai->save();
+        $ruangan->nama_ruangan     = $request->nama_ruangan;
+        $ruangan->warna_ruangan     = $request->warna_ruangan;
+        $ruangan->save();
 
         return response()->json([
             'success' => true,
@@ -122,9 +120,9 @@ class PegawaiController extends Controller
     */
     public function update_status(Request $request)
     {
-        $pegawai = Pegawai::findOrFail($request->id);
-        $pegawai->active_st = $request->current_status == 1 ? 0 : 1;
-        $pegawai->save();
+        $ruangan = Ruangan::findOrFail($request->id);
+        $ruangan->active_st = $request->current_status == 1 ? 0 : 1;
+        $ruangan->save();
 
         return response()->json([
             'status' => true,

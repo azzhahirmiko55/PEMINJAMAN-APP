@@ -16,8 +16,8 @@ class CreateRuangrapatTable extends Migration
         Schema::create('tb_ruang_rapat', function (Blueprint $table) {
             $table->id('id_ruangrapat');
             $table->text('nama_ruangan');
-            $table->text('warna_ruangan');
-            $table->boolean('tersedia_st')->default(1);
+            $table->text('warna_ruangan')->nullable();
+            // $table->boolean('tersedia_st')->default(1);
             $table->boolean('active_st')->default(1);
             $table->timestamps();
         });

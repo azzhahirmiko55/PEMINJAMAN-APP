@@ -44,7 +44,7 @@ class Ruangrapat extends Model
                         ->orderBy('ruangan', 'ASC')
                         ->offset($start)
                         ->limit($limit);
-        
+
         $response = [
             'query' => $query->get(),
             'count' => $query->count()

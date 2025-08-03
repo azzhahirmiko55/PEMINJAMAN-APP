@@ -19,7 +19,7 @@ class CreateKendaraanTable extends Migration
             $table->enum('jenis_kendaraan', ['Roda-2', 'Roda-4']);
             $table->text('warna_kendaraan');
             $table->text('keterangan');
-            $table->boolean('tersedia_st')->default(1);
+            // $table->boolean('tersedia_st')->default(1);
             $table->boolean('active_st')->default(1);
             $table->timestamps();
         });
