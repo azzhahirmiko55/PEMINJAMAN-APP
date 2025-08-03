@@ -18,7 +18,7 @@ class CreateKendaraanTable extends Migration
             $table->string('no_plat')->unique();
             $table->enum('jenis_kendaraan', ['Roda-2', 'Roda-4']);
             $table->text('warna_kendaraan');
-            $table->text('keterangan');
+            $table->text('keterangan')->nullabel();
             // $table->boolean('tersedia_st')->default(1);
             $table->boolean('active_st')->default(1);
             $table->timestamps();

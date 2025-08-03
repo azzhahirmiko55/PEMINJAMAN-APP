@@ -21,6 +21,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\RuanganController;
+use App\Http\Controllers\KendaraanV2Controller;
 // End Admin Session
 
 
@@ -60,6 +61,9 @@ Route::post('/pegawai/update_status', [PegawaiController::class, 'update_status'
 # Ruangan Session #
 Route::resource('ruangan', RuanganController::class)->name('index', 'ruangan')->middleware(['IsLogin','IsAdmin']);
 Route::post('/ruangan/update_status', [RuanganController::class, 'update_status'])->name('ruangan.status')->middleware(['IsLogin','IsAdmin']);
+# Kendaraan Session #
+Route::resource('kendaraan', KendaraanV2Controller::class)->name('index', 'kendaraan')->middleware(['IsLogin','IsAdmin']);
+Route::post('/kendaraan/update_status', [KendaraanV2Controller::class, 'update_status'])->name('kendaraan.status')->middleware(['IsLogin','IsAdmin']);
 # End Admin Session #
 
 

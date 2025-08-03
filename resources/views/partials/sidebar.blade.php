@@ -61,7 +61,7 @@
                     </a>
                 </li>
                 <li class="pc-item">
-                    <a href="../elements/bc_typography.html" class="pc-link">
+                    <a href="{{ route('kendaraan') }}" class="pc-link">
                         <span class="pc-micon">
                             <svg class="pc-icon">
                                 <use xlink:href="#car"></use>

@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Ruangan;
+use App\Models\KendaraanV2;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
-class RuanganController extends Controller
+class KendaraanV2Controller extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,11 +16,11 @@ class RuanganController extends Controller
      */
     public function index()
     {
-        $dRuangan =  Ruangan::orderBy('nama_ruangan', 'ASC')->get();
-        return view('admin.ruangan.index', [
-            "page"  => "Master ruangan",
-            'js_script' => 'js/admin/ruangan/index.js',
-            'data_ruangan' => $dRuangan,
+        $dKendaraan =  KendaraanV2::orderBy('created_at', 'DESC')->get();
+        return view('admin.kendaraan.index', [
+            "page"  => "Master Kendaraan",
+            'js_script' => 'js/admin/kendaraan/index.js',
+            'data_kendaraan' => $dKendaraan,
         ]);
     }
 
@@ -53,11 +53,11 @@ class RuanganController extends Controller
      */
     public function show($id)
     {
-        $dRuangan = [];
+        $dKendaraan = [];
         if($id != 'add'){
-            $dRuangan = Ruangan::find($id);
+            $dKendaraan = KendaraanV2::find($id);
         }
-        return view('admin.ruangan.form_modal',compact('dRuangan'));
+        return view('admin.kendaraan.form_modal',compact('dKendaraan'));
     }
 
     /**
@@ -81,17 +81,24 @@ class RuanganController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nama_ruangan' => 'required|string|max:255',
-            'warna_ruangan' => 'nullable|string|max:255|regex:/^[a-zA-Z\s\'`]+$/u',
+            'no_plat' => 'required|max:255',
+            'jenis_kendaraan' => 'required|in:Roda-2,Roda-4',
+            'warna_kendaraan' => 'required|string|max:255',
+            'keterangan' => 'nullable|string|max:255',
         ]);
         if($id === 'add'){// Tambah data
-            $ruangan = new Ruangan();
+            $request->validate([
+                'no_plat' => 'unique:tb_kendaraan,no_plat',
+            ]);
+            $kendaraan = new KendaraanV2();
         }else { // Edit Data
-            $ruangan = Ruangan::findOrFail($id);
+            $kendaraan = KendaraanV2::findOrFail($id);
         }
-        $ruangan->nama_ruangan     = $request->nama_ruangan;
-        $ruangan->warna_ruangan     = $request->warna_ruangan;
-        $ruangan->save();
+        $kendaraan->no_plat     = $request->no_plat;
+        $kendaraan->jenis_kendaraan     = $request->jenis_kendaraan;
+        $kendaraan->warna_kendaraan     = $request->warna_kendaraan;
+        $kendaraan->keterangan     = $request->keterangan;
+        $kendaraan->save();
 
         return response()->json([
             'success' => true,
@@ -119,9 +126,9 @@ class RuanganController extends Controller
     */
     public function update_status(Request $request)
     {
-        $ruangan = Ruangan::findOrFail($request->id);
-        $ruangan->active_st = $request->current_status == 1 ? 0 : 1;
-        $ruangan->save();
+        $kendaraan = KendaraanV2::findOrFail($request->id);
+        $kendaraan->active_st = $request->current_status == 1 ? 0 : 1;
+        $kendaraan->save();
 
         return response()->json([
             'status' => true,
