@@ -20,7 +20,7 @@ class IsLogin
         if (auth()->check() && auth()->user()->active_st == 1) {
             return $next($request);
         } else {
-            return redirect()->route('logout');
+            return redirect()->back();
         }
     }
 }

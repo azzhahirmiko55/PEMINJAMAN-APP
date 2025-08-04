@@ -19,7 +19,7 @@ class IsLogout
         if (!auth()->check()) {
             return $next($request);
         } else {
-            return redirect('dashboard');
+            return redirect()->back();
         }
     }
 }
