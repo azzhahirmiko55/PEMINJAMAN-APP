@@ -5,28 +5,35 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class KendaraanV2 extends Model
+class Tb_peminjaman extends Model
 {
     use HasFactory;
+
 
      /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $table = 'tb_kendaraan';
+    protected $table = 'tb_peminjaman';
 
-    protected $primaryKey = 'id_kendaraan';
+    protected $primaryKey = 'id_peminjaman';
 
     public $incrementing = true;
     protected $keyType = 'int';
 
       protected $fillable = [
-        'kendaraan_ruangan',
-        'no_plat',
-        'jenis_kendaraan',
-        'warna_kendaraan',
-        'keterangan',
+        'id_peminjam',
+        'id_kendaraan',
+        'id_ruangan',
+        'tipe_peminjaman',
+        'tanggal',
+        'jam_mulai',
+        'jam_selesai',
+        'keperluan',
+        'driver',
+        'jumlah_peserta',
+        'status',
         'active_st',
     ];
 

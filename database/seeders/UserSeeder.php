@@ -10,11 +10,19 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
-        User::create([
-            'id_pegawai' => 1,
-            'username' => 'admin',
-            'password' => Hash::make('admin123'),
-            'role' => '0',
+        User::insert([
+            [
+                'id_pegawai' => 1,
+                'username' => 'admin',
+                'password' => Hash::make('admin123'),
+                'role' => '0',
+            ],
+            [
+                'id_pegawai' => 2,
+                'username' => 'pegawai',
+                'password' => Hash::make('admin123'),
+                'role' => '4',
+            ]
         ]);
     }
 }

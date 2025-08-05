@@ -22,6 +22,7 @@
                         <span class="pc-mtext">Dashboard</span>
                     </a>
                 </li>
+                @if ($user->role == 0)
                 <li class="pc-item pc-caption">
                     <label data-i18n="Widget">Master Data</label>
                     <i class="pc-micon">
@@ -70,6 +71,27 @@
                         <span class="pc-mtext">Data Kendaraan</span>
                     </a>
                 </li>
+                @endif
+                @if ($user->role == 4)
+                <li class="pc-item pc-caption">
+                    <label data-i18n="Widget">Menu</label>
+                    <i class="pc-micon">
+                        <svg class="pc-icon">
+                            <use xlink:href="#line-chart"></use>
+                        </svg>
+                    </i>
+                </li>
+                <li class="pc-item">
+                    <a href="{{ route('user.peminjaman') }}" class="pc-link">
+                        <span class="pc-micon">
+                            <svg class="pc-icon">
+                                <use xlink:href="#calendar"></use>
+                            </svg>
+                        </span>
+                        <span class="pc-mtext">Peminjaman</span>
+                    </a>
+                </li>
+                @endif
 
                 {{-- <li class="pc-item pc-caption">
                     <label data-i18n="Widget">UI Components</label>
