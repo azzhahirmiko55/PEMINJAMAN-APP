@@ -12,6 +12,22 @@
         </div>
         <div class="navbar-content">
             <ul class="pc-navbar">
+                <li class="pc-item pc-caption">
+                    <label data-i18n="Widget"></label>
+                    <i class="pc-micon">
+                        <svg class="pc-icon">
+                            <use xlink:href="#line-chart"></use>
+                        </svg>
+                    </i>
+                </li>
+                <li class="pc-item pc-caption">
+                    <label data-i18n="Widget">Home</label>
+                    <i class="pc-micon">
+                        <svg class="pc-icon">
+                            <use xlink:href="#line-chart"></use>
+                        </svg>
+                    </i>
+                </li>
                 <li class="pc-item">
                     <a href="{{ route('dashboard') }}" class="pc-link">
                         <span class="pc-micon">
@@ -82,7 +98,7 @@
                     </i>
                 </li>
                 <li class="pc-item">
-                    <a href="{{ route('user.peminjaman') }}" class="pc-link">
+                    <a href="{{ route('pegawai.peminjaman') }}" class="pc-link">
                         <span class="pc-micon">
                             <svg class="pc-icon">
                                 <use xlink:href="#calendar"></use>

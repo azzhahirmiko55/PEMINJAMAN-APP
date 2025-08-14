@@ -22,7 +22,6 @@ class KendaraanV2 extends Model
     protected $keyType = 'int';
 
       protected $fillable = [
-        'kendaraan_ruangan',
         'no_plat',
         'jenis_kendaraan',
         'warna_kendaraan',

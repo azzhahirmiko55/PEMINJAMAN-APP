@@ -34,9 +34,26 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+    <!-- FullCalendar Core + Bootstrap Theme -->
+    <script src=" https://cdn.jsdelivr.net/npm/fullcalendar@6.1.18/index.global.min.js "></script>
+
+    {{-- Flat Picker --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
     <style>
         .swal2-container {
             z-index: 2000 !important;
+        }
+
+        .fc-day-today {
+            background-color: rgba(13, 110, 253, 0.1);
+            border-radius: 4px;
+        }
+
+        .fc-hoverable:hover {
+            background-color: rgba(13, 110, 253, 0.05);
+            cursor: pointer;
         }
     </style>
 
@@ -121,10 +138,10 @@
     <!-- Modal Global -->
     <div class="modal fade" id="ModalGlobal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="GlobalModalTitle"></h5>
+                    <h3 class="modal-title" id="GlobalModalTitle"></h3>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"
                         style="background: none !important;border: none !important;">
                         <svg class="pc-icon">
@@ -169,6 +186,8 @@
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
+{{-- flat picker --}}
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 
 <script>
@@ -219,6 +238,7 @@
                 alert("Gagal menyimpan data: " + xhr.responseJSON.message);
             });
     });
+
 });
 </script>
 
@@ -320,6 +340,58 @@
     });
 </script>
 
+<script>
+    // ------- Helper: ambil elemen dari selector/element -------
+function _asEl(target) {
+  if (!target) return null;
+  return (typeof target === 'string') ? document.querySelector(target) : target;
+}
 
+// ------- Time Picker (24 jam) -------
+function initTimePicker(target, options = {}) {
+  const el = _asEl(target);
+  if (!el || el._flatpickr) return el? el._flatpickr : null;
+  const defaults = {
+    enableTime: true,
+    noCalendar: true,
+    dateFormat: "H:i",
+    time_24hr: true,
+    minuteIncrement: 1,
+    allowInput: true,
+    disableMobile: true
+  };
+  return flatpickr(el, Object.assign({}, defaults, options));
+}
+
+// ------- Date Picker (YYYY-MM-DD) -------
+function initDatePicker(target, options = {}) {
+  const el = _asEl(target);
+  if (!el || el._flatpickr) return el? el._flatpickr : null;
+  const defaults = {
+    dateFormat: "Y-m-d",
+    allowInput: true,
+    disableMobile: true
+  };
+  return flatpickr(el, Object.assign({}, defaults, options));
+}
+
+// ------- Opsi A: Auto init semua input ber-class tertentu saat halaman siap -------
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('input.time-picker').forEach(el => initTimePicker(el));
+  document.querySelectorAll('input.date-picker').forEach(el => initDatePicker(el));
+});
+
+// ------- Opsi B: Init-on-focus (malas inisialisasi) -------
+document.addEventListener('focusin', function (e) {
+  if (e.target.matches('input.time-picker')) {
+    const fp = initTimePicker(e.target);
+    if (fp) fp.open(); // langsung buka saat fokus
+  }
+  if (e.target.matches('input.date-picker')) {
+    const fp = initDatePicker(e.target);
+    if (fp) fp.open();
+  }
+});
+</script>
 
 </html>

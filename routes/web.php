@@ -23,6 +23,9 @@ use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\KendaraanV2Controller;
 // End Admin Session
+// Start Pegawai Session
+use App\Http\Controllers\PegawaiPeminjamanController;
+// End Pegawai Session
 
 
 /*
@@ -52,6 +55,7 @@ Route::post('/profile/update', [ProfileController::class, 'update'])->name('prof
 # End Profile Modal #
 
 # Start Admin Session #
+
 # User Session #
 Route::resource('user', UserController::class)->name('index', 'user')->middleware(['IsLogin','IsAdmin']);
 Route::post('/user/update_status', [UserController::class, 'update_status'])->name('user.status')->middleware(['IsLogin','IsAdmin']);
@@ -64,10 +68,18 @@ Route::post('/ruangan/update_status', [RuanganController::class, 'update_status'
 # Kendaraan Session #
 Route::resource('kendaraan', KendaraanV2Controller::class)->name('index', 'kendaraan')->middleware(['IsLogin','IsAdmin']);
 Route::post('/kendaraan/update_status', [KendaraanV2Controller::class, 'update_status'])->name('kendaraan.status')->middleware(['IsLogin','IsAdmin']);
+
 # End Admin Session #
 
+# Start Pegawai Session #
+Route::resource('pegawai-peminjaman', PegawaiPeminjamanController::class)->name('index', 'pegawai.peminjaman')->middleware(['IsLogin','IsPegawai']);
+Route::get('/getDataPegawaiPeminjaman', [PegawaiPeminjamanController::class, 'getDataPegawaiPeminjaman'])->middleware(['IsLogin','IsPegawai']);
+# End Pegawai Session #
 
 # End Halaman #
+
+
+
 
 # Ajax Master #
 

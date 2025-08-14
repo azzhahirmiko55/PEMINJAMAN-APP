@@ -27,14 +27,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         View::composer('*', function ($view) {
-        if (Auth::check()) {
-            $user = User::join('tb_pegawai','tb_user.id_pegawai','=','tb_pegawai.id_pegawai')
-                        ->select('tb_user.*','tb_pegawai.*')
-                        ->where('tb_user.id_user', Auth::user()->id_user)
-                        ->first();
+            if (Auth::check()) {
+                $user = User::join('tb_pegawai','tb_user.id_pegawai','=','tb_pegawai.id_pegawai')
+                            ->select('tb_user.*','tb_pegawai.*')
+                            ->where('tb_user.id_user', Auth::user()->id_user)
+                            ->first();
 
-            $view->with('user', $user);
-        }
-    });
+                $view->with('user', $user);
+            }
+        });
     }
 }
