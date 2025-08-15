@@ -18,6 +18,31 @@
                             <div class="col-12 ">
                                 <div id="sect-calendar" class="nk-calendar"></div>
                             </div>
+                            <div class="col-12 ms-4">
+                                <div class="col-12 m1-4">
+                                    <div class="col-6">
+                                        <!-- Informasi status -->
+                                        <span class="badge bg-warning m-2 fs-6">
+                                            <svg class="pc-icon" style="width:14px; height:14px; fill:currentColor;">
+                                                <use xlink:href="#reload"></use>
+                                            </svg>&nbsp;
+                                            Proses Verifikasi
+                                        </span>
+                                        <span class="badge bg-danger m-2 fs-6">
+                                            <svg class="pc-icon" style="width:14px; height:14px; fill:currentColor;">
+                                                <use xlink:href="#x"></use>
+                                            </svg>&nbsp;
+                                            Ditolak
+                                        </span>
+                                        <span class="badge bg-success m-2 fs-6">
+                                            <svg class="pc-icon" style="width:14px; height:14px; fill:currentColor;">
+                                                <use xlink:href="#check"></use>
+                                            </svg>&nbsp;
+                                            Disetujui
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

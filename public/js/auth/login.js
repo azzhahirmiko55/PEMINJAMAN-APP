@@ -11,6 +11,7 @@ $("#formLogin").submit(function (event) {
     $("#btnLogin").html("...Login");
     event.preventDefault();
     formData = new FormData($(this)[0]);
+    Swal.showLoading();
 
     $.ajax({
         url: "/processLogin",

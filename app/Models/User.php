@@ -25,13 +25,18 @@ class User extends Authenticatable
     public $incrementing = true;
     protected $keyType = 'int';
 
-      protected $fillable = [
+    protected $fillable = [
         'id_pegawai',
         'username',
         'password',
         'role',
         'active_st',
     ];
+    // 0 => Admin
+    // 1 => Kasubag
+    // 2 => Staff TU
+    // 3 => Satpam
+    // 4 => Pegawai BPN
 
     /**
      * The attributes that should be hidden for serialization.

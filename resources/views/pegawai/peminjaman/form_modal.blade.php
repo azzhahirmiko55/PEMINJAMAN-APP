@@ -7,41 +7,46 @@
                 <h4 class="modal-title mb-0 me-2">Kendaraan</h4>
 
                 @if (isset($dPegawaiPeminjamanKendaraan->id_peminjaman))
-                    @php
-                        $status = $dPegawaiPeminjamanKendaraan->status ?? 0;
-                        $badgeColor = 'secondary';
-                        $badgeText  = 'Tidak Diketahui';
-                        $badgeIcon  = '❓';
+                @php
+                $status = $dPegawaiPeminjamanKendaraan->status ?? 0;
+                $badgeColor = 'secondary';
+                $badgeText = 'Tidak Diketahui';
+                $badgeIcon = '❓';
 
-                        if ($status == 0) {
-                            $badgeColor = 'warning';
-                            $badgeText  = 'Proses';
-                            $badgeIcon  = '⏳';
-                        } elseif ($status == 1) {
-                            $badgeColor = 'success';
-                            $badgeText  = 'Diterima';
-                            $badgeIcon  = '✔️';
-                        } elseif ($status == -1) {
-                            $badgeColor = 'danger';
-                            $badgeText  = 'Ditolak';
-                            $badgeIcon  = '❌';
-                        }
-                    @endphp
+                if ($status == 0) {
+                $badgeColor = 'warning';
+                $badgeText = 'Proses';
+                $badgeIcon = '<svg class="pc-icon" style="width:14px; height:14px; fill:currentColor;">
+                    <use xlink:href="#reload"></use>
+                </svg>';
+                } elseif ($status == 1) {
+                $badgeColor = 'success';
+                $badgeText = 'Diterima';
+                $badgeIcon = '<svg class="pc-icon" style="width:14px; height:14px; fill:currentColor;">
+                    <use xlink:href="#x"></use>
+                </svg>';
+                } elseif ($status == -1) {
+                $badgeColor = 'danger';
+                $badgeText = 'Ditolak';
+                $badgeIcon = '<svg class="pc-icon" style="width:14px; height:14px; fill:currentColor;">
+                    <use xlink:href="#check"></use>
+                </svg>';
+                }
+                @endphp
 
-                    <div class="d-flex flex-column align-items-end ms-auto">
-                        <span class="badge bg-{{ $badgeColor }} mb-1" style="font-size:0.8rem;">
-                            {!! $badgeIcon !!} {{ $badgeText }}
-                        </span>
+                <div class="d-flex flex-column align-items-end ms-auto">
+                    <span class="badge bg-{{ $badgeColor }} mb-1" style="font-size:0.8rem;">
+                        {!! $badgeIcon !!} {{ $badgeText }}
+                    </span>
 
-                        <a href="#"
-                        class="btn btn-danger d-inline-flex align-items-center btn-sm btn-youtube js-delete"
+                    <a href="#" class="btn btn-danger d-inline-flex align-items-center btn-sm btn-youtube js-delete"
                         data-url="{{ route('pegawai-peminjaman.destroy', $dPegawaiPeminjamanKendaraan->id_peminjaman) }}">
-                            <svg class="pc-icon me-1">
-                                <use xlink:href="#delete"></use>
-                            </svg>
-                            Batalkan
-                        </a>
-                    </div>
+                        <svg class="pc-icon me-1">
+                            <use xlink:href="#delete"></use>
+                        </svg>
+                        Batalkan
+                    </a>
+                </div>
                 @endif
             </div>
 

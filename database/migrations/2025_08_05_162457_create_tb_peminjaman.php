@@ -18,6 +18,7 @@ class CreateTbPeminjaman extends Migration
             $table->unsignedBigInteger('id_peminjam');
             $table->unsignedBigInteger('id_kendaraan')->nullable();
             $table->unsignedBigInteger('id_ruangan')->nullable();
+            $table->unsignedBigInteger('id_verifikator')->nullable();
             $table->enum('tipe_peminjaman', ['kendaraan', 'ruangan']);
             $table->date('tanggal');
             $table->dateTime('jam_mulai');
@@ -27,6 +28,8 @@ class CreateTbPeminjaman extends Migration
             $table->text('jumlah_peserta')->nullable();
             $table->integer('status')->nullable();
             $table->boolean('active_st')->default(1);
+            $table->text('verifikator_catatan')->nullable();
+            $table->dateTime('verifikator_tgl')->nullable();
             $table->timestamps();
         });
     }

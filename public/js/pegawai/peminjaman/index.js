@@ -156,6 +156,16 @@ function renderDateBadges(calendar) {
     document.querySelectorAll('.fc-daygrid-day .fc-badges-wrap').forEach(el => el.remove());
     pastDatesWithData = new Set();
 
+    const statusByDate = {};
+    const statusByDateType = {};
+    const PRIORITY = s => ({'-1': 3, '0': 2, '1': 1}[String(s)] ?? 0);
+
+    const STATUS_CLASS = {
+        '-1': 'bg-danger',
+        '0': 'bg-warning',
+        '1': 'bg-success',
+    };
+
     const counts = {};
     calendar.getEvents().forEach(ev => {
         const d = (ev.startStr || '').slice(0, 10);
@@ -166,7 +176,14 @@ function renderDateBadges(calendar) {
 
         if (tipe === 'kendaraan') counts[d].kendaraan++;
         else if (tipe === 'ruangan') counts[d].ruangan++;
+
+        const status = Number(ev.extendedProps?.status ?? 0);
+        if (!statusByDateType[d]) statusByDateType[d] = {};
+        if (!statusByDateType[d][tipe] || PRIORITY(status) > PRIORITY(statusByDateType[d][tipe])) {
+            statusByDateType[d][tipe] = status;
+        }
     });
+
 
     const ICONS = {
         kendaraan: '<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-steering-wheel"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M12 14l0 7" /><path d="M10 12l-6.75 -2" /><path d="M14 12l6.75 -2" /></svg>',
@@ -185,27 +202,34 @@ function renderDateBadges(calendar) {
         frame.classList.add('has-badge');
 
         const makeBadge = (cls, html, title) => {
-        const b = document.createElement('span');
-        b.className = `badge ${cls} fc-badge-count`;
-        b.innerHTML = html;
-        if (title) b.title = title;
-        return b;
+            const b = document.createElement('span');
+            b.className = `badge ${cls} fc-badge-count`;
+            b.innerHTML = html;
+            if (title) b.title = title;
+            return b;
         };
 
+
+        const sK = statusByDateType[dateStr]?.kendaraan ?? 0;
+        const sR = statusByDateType[dateStr]?.ruangan   ?? 0;
+        const badgeClsK = STATUS_CLASS[String(sK)];
+        const badgeClsR = STATUS_CLASS[String(sR)];
+
+
+
         if (kendaraan > 0) {
-        wrap.appendChild(
-            makeBadge(
-            'bg-warning text-dark',
-            `${ICONS.kendaraan} Kendaraan`,
-            `Ada ${kendaraan} peminjaman kendaraan`
-            )
-        );
+            wrap.appendChild(
+                makeBadge(
+                `${ICONS.kendaraan} Kendaraan`,
+                `Ada ${kendaraan} peminjaman kendaraan`
+                )
+            );
         }
 
         if (ruangan > 0) {
         wrap.appendChild(
             makeBadge(
-            'bg-primary',
+            badgeClsR,
             `${ICONS.ruangan} Ruangan`,
             `Ada ${ruangan} peminjaman ruangan`
             )
@@ -290,15 +314,21 @@ async function showInfoPeminjaman(ds){
         if (status == 0) {
             badgeColor = 'warning';
             badgeText  = 'Proses';
-            badgeIcon  = '⏳';
+            badgeIcon  = `<svg class="pc-icon" style="width:14px; height:14px; fill:currentColor;">
+                                                <use xlink:href="#reload"></use>
+                                            </svg>`;
         } else if (status == 1) {
             badgeColor = 'success';
             badgeText  = 'Diterima';
-            badgeIcon  = '✔️';
+            badgeIcon  = `<svg class="pc-icon" style="width:14px; height:14px; fill:currentColor;">
+                                                <use xlink:href="#check"></use>
+                                            </svg>`;
         } else if (status == -1) {
             badgeColor = 'danger';
             badgeText  = 'Ditolak';
-            badgeIcon  = '❌';
+            badgeIcon  = `<svg class="pc-icon" style="width:14px; height:14px; fill:currentColor;">
+                                                <use xlink:href="#x"></use>
+                                            </svg>`;
         }
 
         return `

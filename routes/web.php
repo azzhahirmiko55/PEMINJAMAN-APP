@@ -26,6 +26,9 @@ use App\Http\Controllers\KendaraanV2Controller;
 // Start Pegawai Session
 use App\Http\Controllers\PegawaiPeminjamanController;
 // End Pegawai Session
+// Start Staff TU Session
+use App\Http\Controllers\StaffTuVerifikasiPeminjamanController;
+// End Staff TU Session
 
 
 /*
@@ -53,9 +56,7 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.modal')->middleware('IsLogin');
 Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update')->middleware('IsLogin');
 # End Profile Modal #
-
 # Start Admin Session #
-
 # User Session #
 Route::resource('user', UserController::class)->name('index', 'user')->middleware(['IsLogin','IsAdmin']);
 Route::post('/user/update_status', [UserController::class, 'update_status'])->name('user.status')->middleware(['IsLogin','IsAdmin']);
@@ -68,13 +69,19 @@ Route::post('/ruangan/update_status', [RuanganController::class, 'update_status'
 # Kendaraan Session #
 Route::resource('kendaraan', KendaraanV2Controller::class)->name('index', 'kendaraan')->middleware(['IsLogin','IsAdmin']);
 Route::post('/kendaraan/update_status', [KendaraanV2Controller::class, 'update_status'])->name('kendaraan.status')->middleware(['IsLogin','IsAdmin']);
-
 # End Admin Session #
 
 # Start Pegawai Session #
 Route::resource('pegawai-peminjaman', PegawaiPeminjamanController::class)->name('index', 'pegawai.peminjaman')->middleware(['IsLogin','IsPegawai']);
 Route::get('/getDataPegawaiPeminjaman', [PegawaiPeminjamanController::class, 'getDataPegawaiPeminjaman'])->middleware(['IsLogin','IsPegawai']);
 # End Pegawai Session #
+
+# Start Staff TU Session #
+Route::resource('staff-verifikasi-peminjaman', StaffTuVerifikasiPeminjamanController::class)->name('index', 'staff.verifikasi.peminjaman')->middleware(['IsLogin','IsStaff']);
+Route::get('/getDataStaffVerifikasiPeminjaman', [StaffTuVerifikasiPeminjamanController::class, 'getDataStaffVerifikasiPeminjaman'])->middleware(['IsLogin','IsStaff']);
+// Route::get('/getDataPegawaiPeminjaman', [PegawaiPeminjamanController::class, 'getDataPegawaiPeminjaman'])->middleware(['IsLogin','IsPegawai']);
+# End Staff TU Session #
+
 
 # End Halaman #
 
