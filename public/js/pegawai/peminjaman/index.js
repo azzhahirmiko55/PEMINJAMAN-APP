@@ -220,8 +220,8 @@ function renderDateBadges(calendar) {
         if (kendaraan > 0) {
             wrap.appendChild(
                 makeBadge(
+                badgeClsK,
                 `${ICONS.kendaraan} Kendaraan`,
-                `Ada ${kendaraan} peminjaman kendaraan`
                 )
             );
         }
@@ -231,7 +231,6 @@ function renderDateBadges(calendar) {
             makeBadge(
             badgeClsR,
             `${ICONS.ruangan} Ruangan`,
-            `Ada ${ruangan} peminjaman ruangan`
             )
         );
         }
