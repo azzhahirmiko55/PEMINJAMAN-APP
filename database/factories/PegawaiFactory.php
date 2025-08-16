@@ -15,7 +15,7 @@ class PegawaiFactory extends Factory
     {
         return [
             'nama_pegawai' => $this->faker->name(),
-            'jabatan' => $this->faker->randomElement(['Admin', 'Kasubag', 'Pegawai BPN', 'Staff TU', 'Security']),
+            'jabatan' => $this->faker->randomElement(['Kasubag', 'Pegawai BPN', 'Staff TU', 'Security']),
             'jenis_kelamin' => $this->faker->randomElement([0,1]),
             'active_st' => true,
         ];
