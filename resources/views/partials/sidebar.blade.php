@@ -130,6 +130,16 @@
                         <span class="pc-mtext">Verifikasi Peminjaman</span>
                     </a>
                 </li>
+                <li class="pc-item">
+                    <a href="{{ route('staff.riwayat.peminjaman') }}" class="pc-link">
+                        <span class="pc-micon">
+                            <svg class="pc-icon">
+                                <use xlink:href="#book"></use>
+                            </svg>
+                        </span>
+                        <span class="pc-mtext">Riwayat Peminjaman</span>
+                    </a>
+                </li>
                 @endif
 
                 {{-- <li class="pc-item pc-caption">

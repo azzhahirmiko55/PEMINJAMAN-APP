@@ -15,6 +15,7 @@ use App\Models\RekapitulasiKendaraanExport;
 use Maatwebsite\Excel\Facades\Excel;
 // Start Global Session
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FilterController;
 // End Global Session
 
 // Start Admin Session
@@ -28,6 +29,7 @@ use App\Http\Controllers\PegawaiPeminjamanController;
 // End Pegawai Session
 // Start Staff TU Session
 use App\Http\Controllers\StaffTuVerifikasiPeminjamanController;
+use App\Http\Controllers\StaffTuRiwayatPeminjamanController;
 // End Staff TU Session
 
 
@@ -56,6 +58,11 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.modal')->middleware('IsLogin');
 Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update')->middleware('IsLogin');
 # End Profile Modal #
+# Start Search #
+Route::post('/filter/save',  [FilterController::class, 'save'])->name('filter.save');
+Route::post('/filter/reset', [FilterController::class, 'reset'])->name('filter.reset');
+# End Search #
+
 # Start Admin Session #
 # User Session #
 Route::resource('user', UserController::class)->name('index', 'user')->middleware(['IsLogin','IsAdmin']);
@@ -79,6 +86,8 @@ Route::get('/getDataPegawaiPeminjaman', [PegawaiPeminjamanController::class, 'ge
 # Start Staff TU Session #
 Route::resource('staff-verifikasi-peminjaman', StaffTuVerifikasiPeminjamanController::class)->name('index', 'staff.verifikasi.peminjaman')->middleware(['IsLogin','IsStaff']);
 Route::get('/getDataStaffVerifikasiPeminjaman', [StaffTuVerifikasiPeminjamanController::class, 'getDataStaffVerifikasiPeminjaman'])->middleware(['IsLogin','IsStaff']);
+Route::resource('staff-riwayat-peminjaman', StaffTuRiwayatPeminjamanController::class)->name('index', 'staff.riwayat.peminjaman')->middleware(['IsLogin','IsStaff']);
+Route::post('/staff-riwayat-peminjaman/export', [StaffTuRiwayatPeminjamanController::class,'export_excel'])->name('staff.riwayat.peminjaman.export')->middleware(['IsLogin','IsStaff']);
 // Route::get('/getDataPegawaiPeminjaman', [PegawaiPeminjamanController::class, 'getDataPegawaiPeminjaman'])->middleware(['IsLogin','IsPegawai']);
 # End Staff TU Session #
 

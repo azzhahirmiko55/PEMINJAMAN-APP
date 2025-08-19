@@ -30,6 +30,7 @@ class CreateTbPeminjaman extends Migration
             $table->boolean('active_st')->default(1);
             $table->text('verifikator_catatan')->nullable();
             $table->dateTime('verifikator_tgl')->nullable();
+            $table->boolean('status_pengembalian')->default(0);
             $table->timestamps();
         });
     }
