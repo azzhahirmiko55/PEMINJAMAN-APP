@@ -191,7 +191,8 @@
                 <div class="form-group mb-3">
                     <label class="form-label">Jumlah Peserta</label>
                     <input type="number" class="form-control"
-                        value="{{ $dPegawaiPeminjamanRuangan->jumlah_peserta??'' }}" name="jumlah_peserta">
+                        value="{{ $dPegawaiPeminjamanRuangan->jumlah_peserta??'' }}" name="jumlah_peserta"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                     <div class="text-danger"></div>
                 </div>
                 <div class="form-group mb-3">

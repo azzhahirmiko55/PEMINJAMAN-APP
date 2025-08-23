@@ -31,6 +31,9 @@ use App\Http\Controllers\PegawaiPeminjamanController;
 use App\Http\Controllers\StaffTuVerifikasiPeminjamanController;
 use App\Http\Controllers\StaffTuRiwayatPeminjamanController;
 // End Staff TU Session
+// Start Satpam Session
+use App\Http\Controllers\SatpamPengembalianContoller;
+// End Satpam Session
 
 
 /*
@@ -91,6 +94,10 @@ Route::post('/staff-riwayat-peminjaman/export', [StaffTuRiwayatPeminjamanControl
 // Route::get('/getDataPegawaiPeminjaman', [PegawaiPeminjamanController::class, 'getDataPegawaiPeminjaman'])->middleware(['IsLogin','IsPegawai']);
 # End Staff TU Session #
 
+# Start Satpam Session #
+Route::resource('satpam-pengembalian', SatpamPengembalianContoller::class)->name('index', 'satpam.pengembalian')->middleware(['IsLogin','IsSatpam']);
+Route::get('/getDataSatpamPengembalian', [SatpamPengembalianContoller::class, 'getDataSatpamPengembalian'])->middleware(['IsLogin','IsSatpam']);
+# End Satpam Session #
 
 # End Halaman #
 

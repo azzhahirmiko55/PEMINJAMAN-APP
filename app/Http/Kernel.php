@@ -69,5 +69,6 @@ class Kernel extends HttpKernel
         'IsAdmin'=> \App\Http\Middleware\IsAdmin::class,
         'IsPegawai'=> \App\Http\Middleware\IsPegawai::class,
         'IsStaff'=> \App\Http\Middleware\IsStaff::class,
+        'IsSatpam'=> \App\Http\Middleware\IsSatpam::class,
     ];
 }

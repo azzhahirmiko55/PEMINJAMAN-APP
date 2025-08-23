@@ -141,6 +141,27 @@
                     </a>
                 </li>
                 @endif
+                {{-- Satpam --}}
+                @if ($user->role == 3)
+                <li class="pc-item pc-caption">
+                    <label data-i18n="Widget">Menu</label>
+                    <i class="pc-micon">
+                        <svg class="pc-icon">
+                            <use xlink:href="#line-chart"></use>
+                        </svg>
+                    </i>
+                </li>
+                <li class="pc-item">
+                    <a href="{{ route('satpam.pengembalian') }}" class="pc-link">
+                        <span class="pc-micon">
+                            <svg class="pc-icon">
+                                <use xlink:href="#rollback"></use>
+                            </svg>
+                        </span>
+                        <span class="pc-mtext">Pengembalian</span>
+                    </a>
+                </li>
+                @endif
 
                 {{-- <li class="pc-item pc-caption">
                     <label data-i18n="Widget">UI Components</label>

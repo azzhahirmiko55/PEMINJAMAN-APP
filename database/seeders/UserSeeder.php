@@ -10,6 +10,11 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
+        // 0 => Admin
+        // 1 => Kasubag
+        // 2 => Staff TU
+        // 3 => Satpam
+        // 4 => Pegawai BPN
         User::insert([
             [
                 'id_pegawai' => 1,
@@ -34,6 +39,12 @@ class UserSeeder extends Seeder
                 'username' => 'pegawai II',
                 'password' => Hash::make('admin123'),
                 'role' => '4',
+            ],
+            [
+                'id_pegawai' => 5,
+                'username' => 'satpam',
+                'password' => Hash::make('admin123'),
+                'role' => '3',
             ],
         ]);
     }

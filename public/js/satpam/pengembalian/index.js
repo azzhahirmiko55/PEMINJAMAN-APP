@@ -24,7 +24,7 @@ const loadCalendar = () => {
             right: "prev,next",
             // right: 'today dayGridMonth,timeGridWeek,timeGridDay,listWeek'
         },
-        events: "/getDataStaffVerifikasiPeminjaman",
+        events: "/getDataSatpamPengembalian",
         eventDisplay: "none",
         height: 800,
         contentHeight: 780,
@@ -42,40 +42,17 @@ const loadCalendar = () => {
             renderDateBadges(calendar);
         },
         select: function (res) {
-            let currentDate = new Date().toJSON().slice(0, 10);
+            const ds = res.startStr;
 
-            if (res.startStr < currentDate) {
-                Swal.fire({
-                    title: "Perhatian!",
-                    text: "Peminjaman ruangan tidak diperbolehkan untuk tanggal yang sudah lewat!",
-                    icon: "warning",
-                });
-            } else {
-                // const tanggalLabel = res.start.toLocaleDateString('id-ID', {
-                //     weekday: 'long',
-                //     day: 'numeric',
-                //     month: 'long',
-                //     year: 'numeric'
-                // });
-                // Swal.fire({
-                //     title: 'Detail Peminjaman',
-                //     html: `<p class="mb-3">${tanggalLabel}</p>`,
-                //     icon: 'info',
-                //     confirmButtonText: '<i class="ti ti-plus me-1"></i> Ajukan Peminjaman',
-                //     showCancelButton: true,
-                //     cancelButtonText: 'Batal',
-                //     showConfirmButton: true
-                // }).then((result) => {
-                //     if (!result.isConfirmed) return;
-                //     const a = document.createElement('a');
-                //     a.href = '#!';
-                //     a.setAttribute('data-modal','');
-                //     a.setAttribute('data-title','Form Peminjaman');
-                //     a.setAttribute('data-url', `/pegawai-peminjaman/add?tanggal=${res.startStr}`);
-                //     document.body.appendChild(a);
-                //     a.click();
-                //     a.remove();
-                // });
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const clicked = new Date(ds);
+            clicked.setHours(0, 0, 0, 0);
+
+            const hasData = datesWithData.has(ds);
+
+            if (hasData && clicked <= today) {
+                showInfoPengembalian(ds);
             }
         },
         eventClick: function (res) {
@@ -100,12 +77,6 @@ const loadCalendar = () => {
                 info.el.classList.add("fc-hoverable");
             }
 
-            const formattedDate = info.date.toLocaleDateString("id-ID", {
-                weekday: "long",
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-            });
             let frame = info.el.querySelector(".fc-daygrid-day-frame");
             if (!frame) {
                 frame = info.el;
@@ -137,13 +108,11 @@ const loadCalendar = () => {
             const clicked = new Date(ds);
             clicked.setHours(0, 0, 0, 0);
 
-            if (datesWithData.has(ds)) {
-                showInfoPeminjaman(ds);
-                return;
-            }
+            const hasData = datesWithData.has(ds);
+            const isPast = clicked < today;
 
-            if (clicked < today && pastDatesWithData.has(ds)) {
-                showInfoPeminjaman(ds);
+            if (hasData && clicked <= today) {
+                showInfoPengembalian(ds);
             }
         },
     });
@@ -244,11 +213,13 @@ function renderDateBadges(calendar) {
         today.setHours(0, 0, 0, 0);
         const d = new Date(dateStr);
         d.setHours(0, 0, 0, 0);
-        if (d < today && kendaraan + ruangan > 0) {
-            pastDatesWithData.add(dateStr);
-            cell.classList.add("past-has-data");
-            cell.setAttribute("tabindex", "0");
-            cell.title = "Klik untuk melihat peminjaman tanggal ini";
+        if (kendaraan + ruangan > 0) {
+            if (d <= today) {
+                pastDatesWithData.add(dateStr);
+                cell.classList.add("clickable-has-data");
+                cell.setAttribute("tabindex", "0");
+                cell.title = "Klik untuk melihat peminjaman tanggal ini";
+            }
         }
     });
 }
@@ -298,7 +269,25 @@ style.textContent = `
 document.head.appendChild(style);
 
 const style2 = document.createElement("style");
-style2.textContent = `.fc-daygrid-day.past-has-data{cursor:pointer;}`;
+style2.textContent = `
+  /* Hanya sel yg ditandai clickable-has-data yg boleh pointer */
+  .fc .fc-daygrid-day.clickable-has-data,
+  .fc .fc-daygrid-day.clickable-has-data .fc-daygrid-day-frame {
+    cursor: pointer !important;
+  }
+
+  /* Kalau ada aturan tema yg pasang pointer-events:none, balikan jadi bisa */
+  .fc .fc-daygrid-day.clickable-has-data,
+  .fc .fc-daygrid-day.clickable-has-data .fc-daygrid-day-frame {
+    pointer-events: auto !important;
+  }
+
+  /* Jangan biarkan class tema lain memaksakan not-allowed */
+  .fc .fc-daygrid-day.clickable-has-data,
+  .fc .fc-daygrid-day.clickable-has-data * {
+    cursor: pointer !important;
+  }
+`;
 document.head.appendChild(style2);
 
 function esc(s) {
@@ -315,7 +304,7 @@ function esc(s) {
     );
 }
 
-async function showInfoPeminjaman(ds) {
+async function showInfoPengembalian(ds) {
     Swal.fire({
         title: "Memuat...",
         allowOutsideClick: false,
@@ -323,8 +312,9 @@ async function showInfoPeminjaman(ds) {
     });
 
     try {
-        const res = await $.getJSON("/getDataStaffVerifikasiPeminjaman", {
+        const res = await $.getJSON("/getDataSatpamPengembalian", {
             tanggal: ds,
+            type: "get",
         });
         const rows = Array.isArray(res)
             ? res
@@ -342,9 +332,8 @@ async function showInfoPeminjaman(ds) {
 
         const ICON_RELOAD = `<svg class="pc-icon" style="width:14px;height:14px;fill:currentColor;"><use xlink:href="#reload"></use></svg>`;
         const ICON_CHECK = `<svg class="pc-icon" style="width:14px;height:14px;fill:currentColor;"><use xlink:href="#check"></use></svg>`;
-        const ICON_X = `<svg class="pc-icon" style="width:14px;height:14px;fill:currentColor;"><use xlink:href="#x"></use></svg>`;
 
-        const groups = { 0: [], 1: [], "-1": [] };
+        const groups = { 0: [], 1: [] };
 
         rows.forEach((row) => {
             const jam_mulai = row.start
@@ -372,7 +361,9 @@ async function showInfoPeminjaman(ds) {
             const keperluan = row.extendedProps.keperluan
                 ? row.extendedProps.keperluan
                 : "";
-            const status = row.status ? row.status : 0;
+            const pengembalian_st = row.pengembalian_st
+                ? row.pengembalian_st
+                : 0;
 
             const id =
                 row.id ||
@@ -381,106 +372,131 @@ async function showInfoPeminjaman(ds) {
                 row.extendedProps?.id ||
                 row.extendedProps?.peminjaman_id ||
                 row.extendedProps?.publicId;
-            const canVerify = !isPastDate && status == 0 && !!id;
+            // const canVerify = !isPastDate && pengembalian_st == 0 && !!id;
+            const canVerify = !!id && Number(pengembalian_st) !== 1;
 
             let badgeColor = "secondary";
             let badgeText = "Tidak Diketahui";
             let badgeIcon = "❓";
 
-            if (status == 0) {
+            if (pengembalian_st == 0) {
                 badgeColor = "warning";
-                badgeText = "Proses";
+                badgeText = "Belum Dikembalikan";
                 badgeIcon = ICON_RELOAD;
-            } else if (status == 1) {
+            } else if (pengembalian_st == 1) {
                 badgeColor = "success";
-                badgeText = "Diterima";
+                badgeText = "Sudah Dikembalikan";
                 badgeIcon = ICON_CHECK;
-            } else if (status == -1) {
-                badgeColor = "danger";
-                badgeText = "Ditolak";
-                badgeIcon = ICON_X;
             }
 
             const cardHTML = `
-        <div class="pinjam-card ${canVerify ? "can-verify" : ""}"
-             data-id="${esc(id)}"
-             style="border:1px solid #eee;border-radius:10px;padding:.5rem .75rem;margin:.4rem 0;position:relative;cursor:${
-                 canVerify ? "pointer" : "default"
-             };">
-          <div style="display:flex;justify-content:space-between;align-items:start;">
-            <span style="opacity:.7">${esc(tipe_peminjaman)}</span>
-            <!--<span class="badge bg-${badgeColor}${
+                    <div class="pinjam-card ${canVerify ? "can-verify" : ""}"
+                        data-id="${esc(id)}"
+                         data-pengembalian_st="${esc(pengembalian_st)}"
+                        style="border:1px solid #eee;border-radius:10px;padding:.5rem .75rem;margin:.4rem 0;position:relative;cursor:${
+                            canVerify ? "pointer" : "default"
+                        };">
+                    <div style="display:flex;justify-content:space-between;align-items:start;">
+                        <span style="opacity:.7">${esc(tipe_peminjaman)}</span>
+                        <!--<span class="badge bg-${badgeColor}${
                 badgeColor === "warning" ? "" : ""
             }" style="font-size:0.8rem;">
-              ${badgeIcon} ${badgeText}${canVerify ? "" : ""}
-            </span> -->
-          </div>
-          <div><b>Jam Mulai</b> : ${esc(jam_mulai)}</div>
-          <div><b>Jam Selesai</b> : ${esc(jam_selesai)}</div>
-          ${
-              row.peminjam
-                  ? `<div><b>Peminjam</b> : ${esc(row.peminjam)}</div>`
-                  : ""
-          }
-          ${
-              row.extendedProps.no_plat
-                  ? `<div><b>Kendaraan</b> : ${esc(
+                        ${badgeIcon} ${badgeText}${canVerify ? "" : ""}
+                        </span> -->
+                    </div>
+                    <div><b>Jam Mulai</b> : ${esc(jam_mulai)}</div>
+                    <div><b>Jam Selesai</b> : ${esc(jam_selesai)}</div>
+                    ${
+                        row.peminjam
+                            ? `<div><b>Peminjam</b> : ${esc(
+                                  row.peminjam
+                              )}</div>`
+                            : ""
+                    }
+                    ${
                         row.extendedProps.no_plat
-                    )}</div>`
-                  : ""
-          }
-          ${
-              row.extendedProps.driver
-                  ? `<div><b>Driver</b> : ${esc(
+                            ? `<div><b>Kendaraan</b> : ${esc(
+                                  row.extendedProps.no_plat
+                              )}</div>`
+                            : ""
+                    }
+                    ${
                         row.extendedProps.driver
-                    )}</div>`
-                  : ""
-          }
-          ${
-              row.extendedProps.nama_ruangan
-                  ? `<div><b>Ruangan</b> : ${esc(
+                            ? `<div><b>Driver</b> : ${esc(
+                                  row.extendedProps.driver
+                              )}</div>`
+                            : ""
+                    }
+                    ${
                         row.extendedProps.nama_ruangan
-                    )}</div>`
-                  : ""
-          }
-          <div style="min-height:60px;"><b>Keperluan</b> : ${esc(
-              keperluan
-          )}</div>
-        </div>
-      `;
+                            ? `<div><b>Ruangan</b> : ${esc(
+                                  row.extendedProps.nama_ruangan
+                              )}</div>`
+                            : ""
+                    }
+                    ${
+                        row.extendedProps.pengembalian_tgl
+                            ? `<div><b>Pengembalian</b> : ${esc(
+                                  row.extendedProps.pengembalian_tgl
+                              )}</div>`
+                            : ""
+                    }
+                    ${
+                        row.extendedProps.pengembali_nm
+                            ? `<div><b>Penerima</b> : ${esc(
+                                  row.extendedProps.pengembali_nm
+                              )}</div>`
+                            : ""
+                    }
+                    <div style="min-height:60px;"><b>Keperluan</b> : ${esc(
+                        keperluan
+                    )}</div>
+                    ${
+                        row.extendedProps.pengembalian_catatan
+                            ? `<div><b>Catatan Tambahan</b> : ${esc(
+                                  row.extendedProps.pengembalian_catatan
+                              )}</div>`
+                            : ""
+                    }
+                    </div>
+                `;
 
-            (groups[String(status)] ?? groups["0"]).push(cardHTML);
+            (groups[String(pengembalian_st)] ?? groups["0"]).push(cardHTML);
         });
 
         const col = (title, cls, icon, listHTML) => `
-      <div class="pinjam-col" style="flex:1 1 320px;min-width:260px;">
-        <div class="mb-2">
-          <span class="badge bg-${cls}${
+                <div class="pinjam-col" style="flex:1 1 320px;min-width:260px;">
+                    <div class="mb-2">
+                    <span class="badge bg-${cls}${
             cls === "warning" ? "" : ""
         } d-inline-flex align-items-start" style="font-size:.75rem;">
-            ${icon} <span style="margin-left:.35rem">${title}</span>
-          </span>
-        </div>
-        ${
-            listHTML && listHTML.trim()
-                ? listHTML
-                : `<div class="text-muted" style="font-size:.85rem;">Tidak ada</div>`
-        }
-      </div>
-    `;
+                        ${icon} <span style="margin-left:.35rem">${title}</span>
+                    </span>
+                    </div>
+                    ${
+                        listHTML && listHTML.trim()
+                            ? listHTML
+                            : `<div class="text-muted" style="font-size:.85rem;">Tidak ada</div>`
+                    }
+                </div>
+                `;
 
         const gridHTML = `
-      <div id="pinjam-grid"
-           style="display:flex;gap:12px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;">
-        ${col(
-            "Proses Verifikasi",
-            "warning",
-            ICON_RELOAD,
-            groups["0"].join("")
-        )}
-        ${col("Disetujui", "success", ICON_CHECK, groups["1"].join(""))}
-        ${col("Ditolak", "danger", ICON_X, groups["-1"].join(""))}
-      </div>
+                <div id="pinjam-grid"
+                    style="display:flex;gap:12px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;">
+                    ${col(
+                        "Belum Dikembalikan",
+                        "warning",
+                        ICON_RELOAD,
+                        groups["0"].join("")
+                    )}
+                    ${col(
+                        "Sudah Dikembalikan",
+                        "success",
+                        ICON_CHECK,
+                        groups["1"].join("")
+                    )}
+                </div>
     `;
 
         const tanggalFormatted = new Date(ds).toLocaleDateString("id-ID", {
@@ -504,7 +520,7 @@ async function showInfoPeminjaman(ds) {
                         const id = card.getAttribute("data-id");
                         if (!id) return;
                         card.addEventListener("click", () => {
-                            openVerifikasiPeminjaman(id);
+                            openVerifikasiPengembalian(id);
                         });
                     }
                 );
@@ -520,7 +536,7 @@ async function showInfoPeminjaman(ds) {
     }
 }
 
-async function openVerifikasiPeminjaman(id) {
+async function openVerifikasiPengembalian(id) {
     try {
         Swal.close();
     } catch (e) {}
@@ -530,9 +546,9 @@ async function openVerifikasiPeminjaman(id) {
         allowOutsideClick: false,
         didOpen: () => Swal.showLoading(),
     });
-    let payload = { status: 0, catatan: "" };
+    let payload = { pengembalian_st: 0, catatan: "" };
     try {
-        payload = await $.getJSON(`/staff-verifikasi-peminjaman/${id}`); // <-- Controller@show
+        payload = await $.getJSON(`/satpam-pengembalian/${id}`); // <-- Controller@show
     } catch (e) {
         console.error(e);
         await Swal.fire({
@@ -543,23 +559,19 @@ async function openVerifikasiPeminjaman(id) {
         return;
     }
 
-    const currentStatus = Number(payload?.status ?? 0);
+    const currentStatus = Number(payload?.pengembalian_st ?? 0);
     const currentNote = payload?.catatan ?? "";
 
     const html = `
     <div style="text-align:left">
-      <div class="mb-2">Pilih hasil verifikasi:</div>
+      <div class="mb-2">Pilih Status Pengembalian:</div>
       <div class="form-check">
-        <input class="form-check-input" type="radio" name="verdict" id="ver_proses" value="0">
-        <label class="form-check-label" for="ver_proses">Proses</label>
+        <input class="form-check-input" type="radio" name="verdict" id="ver_belum" value="0">
+        <label class="form-check-label" for="ver_belum">Belum Dikembalikan</label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="radio" name="verdict" id="ver_setuju" value="1">
-        <label class="form-check-label" for="ver_setuju">Disetujui</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="verdict" id="ver_tolak" value="-1">
-        <label class="form-check-label" for="ver_tolak">Ditolak</label>
+        <input class="form-check-input" type="radio" name="verdict" id="ver_sudah" value="1">
+        <label class="form-check-label" for="ver_sudah">Sudah Dikembalikan</label>
       </div>
 
       <div class="mt-3">
@@ -578,13 +590,11 @@ async function openVerifikasiPeminjaman(id) {
         focusConfirm: false,
         showLoaderOnConfirm: true,
         didOpen: (el) => {
-            ({ "-1": "#ver_tolak", 0: "#ver_proses", 1: "#ver_setuju" })[
-                String(currentStatus)
-            ] || "#ver_proses";
+            ({ 0: "#ver_belum", 1: "#ver_sudah" })[String(currentStatus)] ||
+                "#ver_belum";
             const sel =
-                { "-1": "#ver_tolak", 0: "#ver_proses", 1: "#ver_setuju" }[
-                    String(currentStatus)
-                ] || "#ver_proses";
+                { 0: "#ver_belum", 1: "#ver_sudah" }[String(currentStatus)] ||
+                "#ver_belum";
             el.querySelector(sel).checked = true;
             el.querySelector("#ver_catatan").value = currentNote;
         },
@@ -598,22 +608,22 @@ async function openVerifikasiPeminjaman(id) {
             );
             if (!picked) {
                 Swal.showValidationMessage(
-                    "Pilih hasil verifikasi terlebih dahulu."
+                    "Pilih hasil pengembalian terlebih dahulu."
                 );
                 return false;
             }
-            const status = Number(picked.value);
+            const pengembalian_st = Number(picked.value);
             const catatan = (
                 document.getElementById("ver_catatan")?.value || ""
             ).trim();
 
             try {
                 await $.ajax({
-                    url: `/staff-verifikasi-peminjaman/${id}`,
+                    url: `/satpam-pengembalian/${id}`,
                     method: "POST",
                     headers: { Accept: "application/json" },
                     dataType: "json",
-                    data: { _method: "PUT", status, catatan },
+                    data: { _method: "PUT", pengembalian_st, catatan },
                 });
                 return { ok: true };
             } catch (xhr) {
@@ -668,3 +678,9 @@ async function openVerifikasiPeminjaman(id) {
         }
     });
 }
+
+const styleClickable = document.createElement("style");
+styleClickable.textContent = `
+  .pinjam-card.can-verify { cursor: pointer !important; }
+`;
+document.head.appendChild(styleClickable);

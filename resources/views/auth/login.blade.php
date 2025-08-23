@@ -106,6 +106,11 @@
 <script src="{{ asset('/dashlite/js/libs/fullcalendar.js?ver=3.1.0') }}"></script>
 <?= isset($js_script) ? '<script type="text/javascript" src="'.asset($js_script).'"></script>' : ""; ?>
 {{-- <script src="{{ asset('/dashlite/js/apps/calendar.js?ver=3.1.0') }}"></script> --}}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Toastr JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <!-- End JS -->
 
 </html>

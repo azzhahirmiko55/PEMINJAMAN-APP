@@ -7,11 +7,11 @@ $(document).ready(function () {
 });
 
 $("#formLogin").submit(function (event) {
+    Swal.showLoading();
     $("#btnLogin").prop("disabled", true);
     $("#btnLogin").html("...Login");
     event.preventDefault();
     formData = new FormData($(this)[0]);
-    Swal.showLoading();
 
     $.ajax({
         url: "/processLogin",
