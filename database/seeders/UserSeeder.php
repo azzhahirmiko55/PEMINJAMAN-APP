@@ -46,6 +46,12 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('admin123'),
                 'role' => '3',
             ],
+            [
+                'id_pegawai' => 6,
+                'username' => 'kasubag',
+                'password' => Hash::make('admin123'),
+                'role' => '1',
+            ],
         ]);
     }
 }

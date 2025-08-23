@@ -23,7 +23,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 
-class StaffTuRiwayatPeminjamanController extends Controller
+class KasubagDataPeminjamanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -59,9 +59,9 @@ class StaffTuRiwayatPeminjamanController extends Controller
                     ->orderBy('p.jam_mulai', 'asc')
                     ->get()
         ;
-        return view('staff.riwayat_peminjaman.index', [
+        return view('kasubag.riwayat_peminjaman.index', [
             "page"  => "Data Riwayat Peminjaman",
-            'js_script' => 'js/staff/riwayatpeminjaman/index.js',
+            'js_script' => 'js/kasubag/riwayatpeminjaman/index.js',
             'dRiwayat' => $dRiwayat,
             'filter' => $filter,
         ]);
@@ -258,5 +258,96 @@ class StaffTuRiwayatPeminjamanController extends Controller
             'riwayat-peminjaman-' . now()->format('Ymd_His') . '.xlsx',
             ExcelFormat::XLSX
         );
+    }
+
+    public function getDataKasubagPeminjaman(Request $request)
+    {
+        $user = User::join('tb_pegawai','tb_user.id_pegawai','=','tb_pegawai.id_pegawai')
+            ->select('tb_user.*','tb_pegawai.*')
+            ->where('tb_user.id_user', Auth::user()->id_user)
+            ->first();
+
+        if (!$user) {
+            return response()->json([]);
+        }
+
+        $start = $request->query('start') ? Carbon::parse($request->query('start'))->startOfDay() : null;
+        $end   = $request->query('end')   ? Carbon::parse($request->query('end'))->endOfDay()   : null;
+        $tanggal = $request->query('tanggal')?$request->query('tanggal'):null;
+
+        $q = Tb_peminjaman::leftJoin('tb_kendaraan', 'tb_peminjaman.id_kendaraan', '=', 'tb_kendaraan.id_kendaraan')
+                            ->leftJoin('tb_ruang_rapat', 'tb_peminjaman.id_ruangan', '=', 'tb_ruang_rapat.id_ruangrapat')
+                            ->leftJoin('tb_pegawai', 'tb_peminjaman.id_peminjam', '=', 'tb_pegawai.id_pegawai')
+                            ->select(
+                                'tb_peminjaman.*',
+                                'tb_kendaraan.no_plat',
+                                'tb_kendaraan.keterangan',
+                                'tb_ruang_rapat.nama_ruangan',
+                                'tb_pegawai.nama_pegawai',
+                            );
+
+        if(isset($tanggal)){
+            $q->whereDate('tanggal', $tanggal);
+        }
+
+        if ($start && $end) {
+            $q->whereBetween('tanggal', [$start->toDateString(), $end->toDateString()]);
+        }
+        $rows = $q->get();
+
+        $toIso = function (?string $tanggal, ?string $timeOrDt, bool $isEnd = false): string {
+            if ($timeOrDt) {
+                $s = trim($timeOrDt);
+                if (preg_match('/[T ]\d{2}:\d{2}/', $s) || preg_match('/^\d{4}-\d{2}-\d{2}/', $s)) {
+                    return Carbon::parse($s)->toIso8601String();
+                }
+                if ($tanggal) {
+                    return Carbon::parse($tanggal.' '.$s)->toIso8601String();
+                }
+            }
+            if ($tanggal) {
+                return ($isEnd
+                    ? Carbon::parse($tanggal)->endOfDay()
+                    : Carbon::parse($tanggal)->startOfDay()
+                )->toIso8601String();
+            }
+            return Carbon::now()->toIso8601String();
+        };
+
+        $mapTipe = function ($val) {
+            if ($val === null) return null;
+            $v = is_string($val) ? strtolower($val) : $val;
+            if ($v === 0 || $v === '0' || $v === 'kendaraan') return 'kendaraan';
+            if ($v === 1 || $v === '1' || $v === 'ruangan')   return 'ruangan';
+            return (string)$val;
+        };
+
+        $events = $rows->map(function ($r) use ($toIso, $mapTipe) {
+            $startIso = $toIso($r->tanggal, $r->jam_mulai, false);
+            $endIso   = $toIso($r->tanggal, $r->jam_selesai, true);
+
+            return [
+                'id'      => $r->id_peminjaman,
+                'peminjam'      => $r->nama_pegawai,
+                'status'      => $r->status,
+                'title'   => 'Peminjaman',
+                'start'   => $startIso,
+                'end'     => $endIso,
+                'allDay'  => empty($r->jam_mulai) && empty($r->jam_selesai),
+                'extendedProps' => [
+                    'tipe_peminjaman' => $mapTipe($r->tipe_peminjaman),
+                    'tanggal'         => $r->tanggal,
+                    'jam_mulai'       => $r->jam_mulai,
+                    'jam_selesai'     => $r->jam_selesai,
+                    'keperluan'     => $r->keperluan,
+                    'no_plat'     => $r->no_plat,
+                    'keterangan'     => $r->keterangan,
+                    'nama_ruangan'     => $r->nama_ruangan,
+                    'driver'     => $r->driver,
+                ],
+            ];
+        });
+
+        return response()->json($events);
     }
 }

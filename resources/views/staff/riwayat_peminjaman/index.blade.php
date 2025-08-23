@@ -214,7 +214,25 @@
                                                 </span>
                                                 @endif
                                             </td>
-                                            <td></td>
+                                            <td>
+                                                @if ($item->pengembalian_st == 1)
+                                                <span class="badge bg-success m-2 fs-6 rounded-1">
+                                                    <svg class="pc-icon"
+                                                        style="width:14px; height:14px; fill:currentColor;">
+                                                        <use xlink:href="#check"></use>
+                                                    </svg>&nbsp;
+                                                    Sudah dikembalikan
+                                                </span>
+                                                @else
+                                                <span class="badge bg-warning m-2 fs-6 rounded-1">
+                                                    <svg class="pc-icon"
+                                                        style="width:14px; height:14px; fill:currentColor;">
+                                                        <use xlink:href="#reload"></use>
+                                                    </svg>&nbsp;
+                                                    Belum dikembalikan
+                                                </span>
+                                                @endif
+                                            </td>
                                         </tr>
                                         @endforeach
                                     </tbody>
