@@ -394,6 +394,25 @@ document.addEventListener('focusin', function (e) {
     if (fp) fp.open();
   }
 });
+
+function formatTanggalIndonesia(dateString) {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+
+    const tanggal = date.toLocaleDateString("id-ID", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+    });
+
+    const jam = String(date.getHours()).padStart(2, "0");
+    const menit = String(date.getMinutes()).padStart(2, "0");
+    const detik = String(date.getSeconds()).padStart(2, "0");
+
+    const waktu = `${jam}:${menit}:${detik}`;
+
+    return `${tanggal} ${waktu}`;
+}
 </script>
 
 </html>

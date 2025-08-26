@@ -277,13 +277,17 @@ class KasubagDataPeminjamanController extends Controller
 
         $q = Tb_peminjaman::leftJoin('tb_kendaraan', 'tb_peminjaman.id_kendaraan', '=', 'tb_kendaraan.id_kendaraan')
                             ->leftJoin('tb_ruang_rapat', 'tb_peminjaman.id_ruangan', '=', 'tb_ruang_rapat.id_ruangrapat')
-                            ->leftJoin('tb_pegawai', 'tb_peminjaman.id_peminjam', '=', 'tb_pegawai.id_pegawai')
+                            ->leftJoin('tb_pegawai as pe', 'tb_peminjaman.id_peminjam', '=', 'pe.id_pegawai')
+                            ->leftJoin('tb_pegawai as ve', 'tb_peminjaman.id_verifikator', '=', 've.id_pegawai')
+                            ->leftJoin('tb_pegawai as png', 'tb_peminjaman.pengembalian_pegawai_id', '=', 'png.id_pegawai')
                             ->select(
                                 'tb_peminjaman.*',
                                 'tb_kendaraan.no_plat',
                                 'tb_kendaraan.keterangan',
                                 'tb_ruang_rapat.nama_ruangan',
-                                'tb_pegawai.nama_pegawai',
+                                'pe.nama_pegawai',
+                                've.nama_pegawai as verikator_nm',
+                                'png.nama_pegawai as pengembalian_nm',
                             );
 
         if(isset($tanggal)){
@@ -322,6 +326,8 @@ class KasubagDataPeminjamanController extends Controller
             return (string)$val;
         };
 
+        // dd($rows);
+
         $events = $rows->map(function ($r) use ($toIso, $mapTipe) {
             $startIso = $toIso($r->tanggal, $r->jam_mulai, false);
             $endIso   = $toIso($r->tanggal, $r->jam_selesai, true);
@@ -344,6 +350,12 @@ class KasubagDataPeminjamanController extends Controller
                     'keterangan'     => $r->keterangan,
                     'nama_ruangan'     => $r->nama_ruangan,
                     'driver'     => $r->driver,
+                    'verikator_nm'     => $r->verikator_nm,
+                    'verifikator_tgl'     => $r->verifikator_tgl,
+                    'verifikator_catatan'     => $r->verifikator_catatan,
+                    'pengembalian_nm'     => $r->pengembalian_nm,
+                    'pengembalian_tgl'     => $r->pengembalian_tgl,
+                    'pengembalian_catatan'     => $r->pengembalian_catatan,
                 ],
             ];
         });

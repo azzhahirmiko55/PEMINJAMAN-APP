@@ -434,30 +434,60 @@ async function showInfoPengembalian(ds) {
                               )}</div>`
                             : ""
                     }
-                    ${
-                        row.extendedProps.pengembalian_tgl
-                            ? `<div><b>Pengembalian</b> : ${esc(
-                                  row.extendedProps.pengembalian_tgl
-                              )}</div>`
-                            : ""
-                    }
-                    ${
-                        row.extendedProps.pengembali_nm
-                            ? `<div><b>Penerima</b> : ${esc(
-                                  row.extendedProps.pengembali_nm
-                              )}</div>`
-                            : ""
-                    }
                     <div style="min-height:60px;"><b>Keperluan</b> : ${esc(
                         keperluan
                     )}</div>
                     ${
-                        row.extendedProps.pengembalian_catatan
-                            ? `<div><b>Catatan Tambahan</b> : ${esc(
-                                  row.extendedProps.pengembalian_catatan
+                        row.extendedProps.verikator_nm
+                            ? `<div><b>Verifkator</b> : ${esc(
+                                  row.extendedProps.verikator_nm
                               )}</div>`
                             : ""
                     }
+                    ${
+                        row.extendedProps.verifikator_tgl
+                            ? `<div><b>Tanggal Verifikasi</b> : ${formatTanggalIndonesia(
+                                  row.extendedProps.verifikator_tgl
+                              )}
+                                </div>`
+                            : ""
+                    }
+                    ${
+                        row.extendedProps.verifikator_catatan
+                            ? `
+                                <div style="min-height:60px;"><b>Catatan</b> : ${esc(
+                                    row.extendedProps.verifikator_catatan
+                                )}</div>
+                                <br><br>
+                            `
+                            : ""
+                    }
+                    ${
+                        row.pengembali
+                            ? `<div><b>Penerima Pengembalian</b> : ${esc(
+                                  row.pengembali
+                              )}</div>`
+                            : ""
+                    }
+                    ${
+                        row.extendedProps.pengembalian_tgl
+                            ? `<div><b>Tanggal Pengembalian</b> : ${formatTanggalIndonesia(
+                                  row.extendedProps.pengembalian_tgl
+                              )}
+                                </div>`
+                            : ""
+                    }
+                    ${
+                        row.extendedProps.pengembalian_catatan
+                            ? `
+                                <div style="min-height:60px;"><b>Catatan</b> : ${esc(
+                                    row.extendedProps.pengembalian_catatan
+                                )}</div>
+                                <br><br>
+                            `
+                            : ""
+                    }
+
                     </div>
                 `;
 

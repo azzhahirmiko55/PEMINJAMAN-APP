@@ -147,6 +147,7 @@ class SatpamPengembalianContoller extends Controller
                             ->leftJoin('tb_ruang_rapat', 'tb_peminjaman.id_ruangan', '=', 'tb_ruang_rapat.id_ruangrapat')
                             ->leftJoin('tb_pegawai  as peminjam', 'tb_peminjaman.id_peminjam', '=', 'peminjam.id_pegawai')
                             ->leftJoin('tb_pegawai  as pengembalian', 'tb_peminjaman.pengembalian_pegawai_id', '=', 'pengembalian.id_pegawai')
+                            ->leftJoin('tb_pegawai as ve', 'tb_peminjaman.id_verifikator', '=', 've.id_pegawai')
                             ->select(
                                 'tb_peminjaman.*',
                                 'tb_kendaraan.no_plat',
@@ -154,9 +155,11 @@ class SatpamPengembalianContoller extends Controller
                                 'tb_ruang_rapat.nama_ruangan',
                                 'peminjam.nama_pegawai as peminjam_nm',
                                 'pengembalian.nama_pegawai as pengembali_nm',
+                                've.nama_pegawai as verikator_nm',
                             )
                             ->where('tb_peminjaman.active_st', 1)
-                            ->where('tb_peminjaman.status', 1);
+                            // ->where('tb_peminjaman.status', 1)
+                            ;
 
         // if(isset($tanggal)){
         if($type == 'get'){
@@ -219,6 +222,12 @@ class SatpamPengembalianContoller extends Controller
                     'keterangan'     => $r->keterangan,
                     'nama_ruangan'     => $r->nama_ruangan,
                     'driver'     => $r->driver,
+                    'pengembalian_catatan'     => $r->pengembalian_catatan,
+                    'verikator_nm'     => $r->verikator_nm,
+                    'verifikator_tgl'     => $r->verifikator_tgl,
+                    'verifikator_catatan'     => $r->verifikator_catatan,
+                    'pengembalian_nm'     => $r->pengembalian_nm,
+                    'pengembalian_tgl'     => $r->pengembalian_tgl,
                     'pengembalian_catatan'     => $r->pengembalian_catatan,
                 ],
             ];
