@@ -88,6 +88,24 @@
                         <span class="pc-mtext">Data Kendaraan</span>
                     </a>
                 </li>
+                <li class="pc-item pc-caption">
+                    <label data-i18n="Widget">Menu</label>
+                    <i class="pc-micon">
+                        <svg class="pc-icon">
+                            <use xlink:href="#line-chart"></use>
+                        </svg>
+                    </i>
+                </li>
+                <li class="pc-item">
+                    <a href="{{ route('kasubag.data.peminjaman') }}" class="pc-link">
+                        <span class="pc-micon">
+                            <svg class="pc-icon">
+                                <use xlink:href="#book"></use>
+                            </svg>
+                        </span>
+                        <span class="pc-mtext">Riwayat Peminjaman</span>
+                    </a>
+                </li>
                 @endif
                 {{-- Pegawai --}}
                 @if ($user->role == 4)

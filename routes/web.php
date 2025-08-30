@@ -73,6 +73,7 @@ Route::post('/filter/reset', [FilterController::class, 'reset'])->name('filter.r
 # User Session #
 Route::resource('user', UserController::class)->name('index', 'user')->middleware(['IsLogin','IsAdmin']);
 Route::post('/user/update_status', [UserController::class, 'update_status'])->name('user.status')->middleware(['IsLogin','IsAdmin']);
+Route::post('/user/reset_password', [UserController::class, 'reset_password'])->name('user.reset_password')->middleware(['IsLogin','IsAdmin']);
 # Pegawai Session #
 Route::resource('pegawai', PegawaiController::class)->name('index', 'pegawai')->middleware(['IsLogin','IsAdmin']);
 Route::post('/pegawai/update_status', [PegawaiController::class, 'update_status'])->name('pegawai.status')->middleware(['IsLogin','IsAdmin']);
@@ -87,6 +88,7 @@ Route::post('/kendaraan/update_status', [KendaraanV2Controller::class, 'update_s
 # Start Pegawai Session #
 Route::resource('pegawai-peminjaman', PegawaiPeminjamanController::class)->name('index', 'pegawai.peminjaman')->middleware(['IsLogin','IsPegawai']);
 Route::get('/getDataPegawaiPeminjaman', [PegawaiPeminjamanController::class, 'getDataPegawaiPeminjaman'])->middleware(['IsLogin','IsPegawai']);
+Route::get('/getKetersediaan/{type}/{date}', [PegawaiPeminjamanController::class, 'getKetersediaan'])->middleware(['IsLogin','IsPegawai']);
 # End Pegawai Session #
 
 # Start Staff TU Session #

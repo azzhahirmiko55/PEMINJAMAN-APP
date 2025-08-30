@@ -158,7 +158,7 @@ class SatpamPengembalianContoller extends Controller
                                 've.nama_pegawai as verikator_nm',
                             )
                             ->where('tb_peminjaman.active_st', 1)
-                            // ->where('tb_peminjaman.status', 1)
+                            ->where('tb_peminjaman.status', 1)
                             ;
 
         // if(isset($tanggal)){

@@ -16,7 +16,7 @@ class IsKasubag
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->user()->role == 1) {
+        if (auth()->user()->role == 1 || auth()->user()->role == 0) {
             return $next($request);
         } else {
             return redirect()->back();

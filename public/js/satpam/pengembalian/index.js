@@ -52,7 +52,7 @@ const loadCalendar = () => {
             const hasData = datesWithData.has(ds);
 
             if (hasData && clicked <= today) {
-                showInfoPengembalian(ds);
+                // showInfoPengembalian(ds);
             }
         },
         eventClick: function (res) {

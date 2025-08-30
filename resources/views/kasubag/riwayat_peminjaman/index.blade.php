@@ -28,6 +28,19 @@
                                 value="{{ $filter['tanggal_akhir'] ?? '' }}">
                             @error('tanggal_akhir')<small class="text-danger">{{ $message }}</small>@enderror
                         </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Tipe Peminjaman</label>
+                            <select name="tipe_peminjaman" class="form-control">
+                                <option value="">--- Semua Tipe ---</option>
+                                <option value="kendaraan" {{
+                                    !empty($filter['tipe_peminjaman'])?($filter['tipe_peminjaman']==='kendaraan'
+                                    ? 'selected' :''):'' }}>Kendaraan</option>
+                                <option value="ruangan" {{
+                                    !empty($filter['tipe_peminjaman'])?($filter['tipe_peminjaman']==='ruangan'
+                                    ? 'selected' :''):'' }}>Ruangan</option>
+                            </select>
+                            @error('tipe_peminjaman')<small class="text-danger">{{ $message }}</small>@enderror
+                        </div>
                     </div>
                     <div class="d-flex gap-2 mt-3">
                         <button class="btn btn-primary">
@@ -54,7 +67,7 @@
                 <h5 class="mb-0">Riwayat Peminjaman</h5>
                 {{-- <a class="btn btn-success" href="{{ url('/staff-riwayat-peminjaman/export') }}" target="_blank">
                     --}}
-                    {{-- <form class="d-inline-flex align-items-center"
+                    <form class="d-inline-flex align-items-center"
                         action="{{ route('kasubag.data.peminjaman.export') }}" method="post" target="_blank">
                         @csrf
                         <button class="btn btn-success" formaction="{{ route('kasubag.data.peminjaman.export') }}">
@@ -63,7 +76,7 @@
                             </svg>&nbsp;
                             Export Data
                         </button>
-                    </form> --}}
+                    </form>
                     {{-- <a class="btn btn-primary btn-sm text-white d-inline-flex align-items-center" href="#!"
                         data-modal data-title="Tambah Data" data-url="{{ url('/pegawai/add') }}">
                         <i class="ti ti-plus me-1"></i>Tambah Data
@@ -107,10 +120,10 @@
                                                     aria-label="Office: Activate to sort" tabindex="0"><span
                                                         class="dt-column-title" role="button">Tipe
                                                         Peminjaman</span><span class="dt-column-order"></span></th>
-                                                <th data-dt-column="4" rowspan="2" colspan="1"
+                                                <th data-dt-column="4" rowspan="1" colspan="2"
                                                     class="dt-orderable-asc dt-orderable-desc text-center"
                                                     aria-label="Office: Activate to sort" tabindex="0"><span
-                                                        class="dt-column-title" role="button">Verifikator</span><span
+                                                        class="dt-column-title" role="button">Verifikasi</span><span
                                                         class="dt-column-order"></span></th>
                                                 <th data-dt-column="5" rowspan="1" colspan="3"
                                                     class="dt-orderable-asc dt-orderable-desc text-center"
@@ -127,7 +140,7 @@
                                                     aria-label="Office: Activate to sort" tabindex="0"><span
                                                         class="dt-column-title" role="button">Status</span><span
                                                         class="dt-column-order"></span></th>
-                                                <th data-dt-column="5" rowspan="2" colspan="1"
+                                                <th data-dt-column="5" rowspan="1" colspan="3"
                                                     class="dt-orderable-asc dt-orderable-desc text-center"
                                                     aria-label="Office: Activate to sort" tabindex="0"><span
                                                         class="dt-column-title" role="button">Pengembalian</span><span
@@ -143,6 +156,16 @@
                                                     class="dt-orderable-asc dt-orderable-desc text-center"
                                                     aria-label="Office: Activate to sort" tabindex="0"><span
                                                         class="dt-column-title" role="button">Selesai</span><span
+                                                        class="dt-column-order"></span></th>
+                                                <th data-dt-column="4" rowspan="1" colspan="1"
+                                                    class="dt-orderable-asc dt-orderable-desc text-center"
+                                                    aria-label="Office: Activate to sort" tabindex="0"><span
+                                                        class="dt-column-title" role="button">Verifikator</span><span
+                                                        class="dt-column-order"></span></th>
+                                                <th data-dt-column="4" rowspan="1" colspan="1"
+                                                    class="dt-orderable-asc dt-orderable-desc text-center"
+                                                    aria-label="Office: Activate to sort" tabindex="0"><span
+                                                        class="dt-column-title" role="button">Tanggal</span><span
                                                         class="dt-column-order"></span></th>
                                                 <th data-dt-column="5" rowspan="1" colspan="1"
                                                     class="dt-orderable-asc dt-orderable-desc text-center"
@@ -169,6 +192,21 @@
                                                     aria-label="Office: Activate to sort" tabindex="0"><span
                                                         class="dt-column-title" role="button">Peserta</span><span
                                                         class="dt-column-order"></span></th>
+                                                <th data-dt-column="8" rowspan="1" colspan="1"
+                                                    class="dt-orderable-asc dt-orderable-desc text-center"
+                                                    aria-label="Office: Activate to sort" tabindex="0"><span
+                                                        class="dt-column-title" role="button">Status</span><span
+                                                        class="dt-column-order"></span></th>
+                                                <th data-dt-column="8" rowspan="1" colspan="1"
+                                                    class="dt-orderable-asc dt-orderable-desc text-center"
+                                                    aria-label="Office: Activate to sort" tabindex="0"><span
+                                                        class="dt-column-title" role="button">Penerima</span><span
+                                                        class="dt-column-order"></span></th>
+                                                <th data-dt-column="8" rowspan="1" colspan="1"
+                                                    class="dt-orderable-asc dt-orderable-desc text-center"
+                                                    aria-label="Office: Activate to sort" tabindex="0"><span
+                                                        class="dt-column-title" role="button">Tanggal
+                                                        Pengembalian</span><span class="dt-column-order"></span></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -188,11 +226,15 @@
                                                     }}
                                                 </td>
                                                 <td>{{
-                                                    \Carbon\Carbon::parse($item->jam_selesai)->translatedFormat('H:i:s')
+                                                    \Carbon\Carbon::parse($item->jam_selesai)->locale('id')->translatedFormat('H:i:s')
                                                     }}
                                                 </td>
                                                 <td>{{ strtoupper($item->tipe_peminjaman) }}</td>
                                                 <td>{{ ($item->verifikator_nama) }}</td>
+                                                <td>{{
+                                                    (\Carbon\Carbon::parse($item->verifikator_tgl)->translatedFormat('d
+                                                    F Y H:i:s'))
+                                                    }}</td>
                                                 <td>{{ ($item->driver) }}</td>
                                                 <td>{{ ($item->no_plat) }}</td>
                                                 <td>{{ ($item->jenis_kendaraan) }}</td>
@@ -243,6 +285,12 @@
                                                         Belum dikembalikan
                                                     </span>
                                                     @endif
+                                                </td>
+                                                <td>{{ ($item->pengembalian_nm) }}</td>
+                                                <td>{{
+                                                    \Carbon\Carbon::parse($item->pengembalian_tgl)->locale('id')->translatedFormat('d
+                                                    F Y H:i:s')
+                                                    }}
                                                 </td>
                                             </tr>
                                             @endforeach

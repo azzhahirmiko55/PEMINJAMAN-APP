@@ -343,13 +343,11 @@
 </script>
 
 <script>
-    // ------- Helper: ambil elemen dari selector/element -------
-function _asEl(target) {
+    function _asEl(target) {
   if (!target) return null;
   return (typeof target === 'string') ? document.querySelector(target) : target;
 }
 
-// ------- Time Picker (24 jam) -------
 function initTimePicker(target, options = {}) {
   const el = _asEl(target);
   if (!el || el._flatpickr) return el? el._flatpickr : null;
@@ -362,6 +360,14 @@ function initTimePicker(target, options = {}) {
     allowInput: true,
     disableMobile: true
   };
+
+    if (!('defaultDate' in options) && !el.value) {
+        const now = new Date();
+        now.setSeconds(0, 0);
+        const pad = n => String(n).padStart(2, '0');
+        defaults.defaultDate = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+    }
+
   return flatpickr(el, Object.assign({}, defaults, options));
 }
 
@@ -377,13 +383,11 @@ function initDatePicker(target, options = {}) {
   return flatpickr(el, Object.assign({}, defaults, options));
 }
 
-// ------- Opsi A: Auto init semua input ber-class tertentu saat halaman siap -------
 document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('input.time-picker').forEach(el => initTimePicker(el));
   document.querySelectorAll('input.date-picker').forEach(el => initDatePicker(el));
 });
 
-// ------- Opsi B: Init-on-focus (malas inisialisasi) -------
 document.addEventListener('focusin', function (e) {
   if (e.target.matches('input.time-picker')) {
     const fp = initTimePicker(e.target);

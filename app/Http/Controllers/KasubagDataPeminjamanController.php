@@ -39,6 +39,7 @@ class KasubagDataPeminjamanController extends Controller
                     ->leftJoin('tb_ruang_rapat as r', 'p.id_ruangan', '=', 'r.id_ruangrapat')
                     ->leftJoin('tb_pegawai as pg', 'p.id_peminjam', '=', 'pg.id_pegawai')
                     ->leftJoin('tb_pegawai as ve', 'p.id_verifikator', '=', 've.id_pegawai')
+                    ->leftJoin('tb_pegawai as png', 'p.pengembalian_pegawai_id', '=', 'png.id_pegawai')
                     ->select(
                         'p.*',
                         'k.no_plat',
@@ -47,12 +48,19 @@ class KasubagDataPeminjamanController extends Controller
                         'r.nama_ruangan',
                         'pg.nama_pegawai',
                         've.nama_pegawai as verifikator_nama',
+                        'png.nama_pegawai as pengembalian_nm',
                     )
                     ->when(
                         !empty($filter['tanggal_awal']) && !empty($filter['tanggal_akhir']),
                         fn($q) => $q->whereBetween('p.tanggal', [
                             $filter['tanggal_awal'],
                             $filter['tanggal_akhir'],
+                        ])
+                    )
+                    ->when(
+                        !empty($filter['tipe_peminjaman']),
+                        fn($q) => $q->where('p.tipe_peminjaman', [
+                            $filter['tipe_peminjaman'],
                         ])
                     )
                     ->orderBy('p.tanggal', 'asc')
@@ -139,7 +147,8 @@ class KasubagDataPeminjamanController extends Controller
                     ->leftJoin('tb_kendaraan as k', 'p.id_kendaraan', '=', 'k.id_kendaraan')
                     ->leftJoin('tb_ruang_rapat as r', 'p.id_ruangan', '=', 'r.id_ruangrapat')
                     ->leftJoin('tb_pegawai as pg', 'p.id_peminjam', '=', 'pg.id_pegawai')
-                    ->leftJoin('tb_pegawai as ve', 'p.id_verifikator', '=', 'pg.id_pegawai')
+                    ->leftJoin('tb_pegawai as ve', 'p.id_verifikator', '=', 've.id_pegawai')
+                    ->leftJoin('tb_pegawai as png', 'p.pengembalian_pegawai_id', '=', 'png.id_pegawai')
                     ->select(
                         'p.*',
                         'k.no_plat',
@@ -148,12 +157,19 @@ class KasubagDataPeminjamanController extends Controller
                         'r.nama_ruangan',
                         'pg.nama_pegawai',
                         've.nama_pegawai as verifikator_nama',
+                        'png.nama_pegawai as pengembalian_nm',
                     )
                     ->when(
                         !empty($filter['tanggal_awal']) && !empty($filter['tanggal_akhir']),
                         fn($q) => $q->whereBetween('p.tanggal', [
                             $filter['tanggal_awal'],
                             $filter['tanggal_akhir'],
+                        ])
+                    )
+                    ->when(
+                        !empty($filter['tipe_peminjaman']),
+                        fn($q) => $q->where('p.tipe_peminjaman', [
+                            $filter['tipe_peminjaman'],
                         ])
                     )
                     ->orderBy('p.tanggal', 'asc')
@@ -167,14 +183,24 @@ class KasubagDataPeminjamanController extends Controller
             'Tanggal',
             'Waktu Peminjaman', '',
             'Tipe Peminjaman',
-            'Verifikator',
+            'Verifikasi','',
             'Kendaraan','','',
             'Ruangan','',
             'Status',
+            'Keterangan',
             'Pengembalian',
         ];
+
         $header2 = [
-            '', '', '', 'Mulai','Selesai', '', '', 'Driver','Plat Nomor','Jenis Kendaraan','Ruangan','Peserta','',''
+            '', '', '',
+            'Mulai','Selesai',
+            '',
+            'Verifikator','Tanggal',
+            'Driver','Plat Nomor','Jenis Kendaraan',
+            'Ruangan','Peserta',
+            '',                 // Status (rowspan 2)
+            '',                 // Keterangan (rowspan 2)
+            'Status','Penerima','Tanggal Pengembalian' // 3 subkolom Pengembalian
         ];
 
         $rows = [];
@@ -184,31 +210,39 @@ class KasubagDataPeminjamanController extends Controller
                 0       => 'Belum Dikembalikan',
                 default => 'Tidak Diketahui',
             };
+            $tipe = $item->tipe_peminjaman;
+            if (is_numeric($tipe)) {
+                $tipe = ((int)$tipe === 0) ? 'KENDARAAN' : 'RUANGAN';
+            } else {
+                $tipe = strtoupper((string)$tipe);
+            }
 
             $rows[] = [
-                $i+1,
-                $item->nama_pegawai,
-                $item->tanggal ? Carbon::parse($item->tanggal)->locale('id')->translatedFormat('d F Y') : '',
-                $item->jam_mulai ? Carbon::parse($item->jam_mulai)->format('H:i:s') : '',
-                $item->jam_selesai ? Carbon::parse($item->jam_selesai)->format('H:i:s') : '',
-                $item->tipe_peminjaman == 0 ? 'Kendaraan' : 'Ruangan',
-                $item->verifikator_nama,
-                $item->driver,
-                $item->no_plat,
-                $item->jenis_kendaraan,
-                $item->nama_ruangan,
-                $item->jumlah_peserta,
-                $item->status == 1 ? 'Disetujui' : ($item->status == -1 ? 'Ditolak' : 'Proses Verifikasi'),
-                $labelPengembalian,
+                $i+1,                                                  // No.
+                $item->nama_pegawai,                                   // Nama Pegawai
+                $item->tanggal ? Carbon::parse($item->tanggal)->locale('id')->translatedFormat('d F Y') : '',  // Tanggal
+                $item->jam_mulai ? Carbon::parse($item->jam_mulai)->format('H:i:s') : '',                     // Mulai
+                $item->jam_selesai ? Carbon::parse($item->jam_selesai)->format('H:i:s') : '',                 // Selesai
+                $tipe,                                                 // Tipe Peminjaman
+                $item->verifikator_nama,                               // Verifikator
+                $item->verifikator_tgl ? Carbon::parse($item->verifikator_tgl)->locale('id')->translatedFormat('d F Y H:i:s') : '', // Verif Tgl
+                $item->driver,                                         // Driver
+                $item->no_plat,                                        // Plat Nomor
+                $item->jenis_kendaraan,                                // Jenis Kendaraan
+                $item->nama_ruangan,                                   // Ruangan
+                $item->jumlah_peserta,                                 // Peserta
+                ($item->status == 1 ? 'Disetujui' : ($item->status == -1 ? 'Ditolak' : 'Proses Verifikasi')),
+                $item->keterangan,                                     // Keterangan (kolom tambahan)
+                $labelPengembalian,                                    // Status Pengembalian
+                $item->pengembalian_nm,                                // Penerima
+                $item->pengembalian_tgl ? Carbon::parse($item->pengembalian_tgl)->locale('id')->translatedFormat('d F Y H:i:s') : '', // Tgl Pengembalian
             ];
         }
-
 
         $data = array_merge([$header1, $header2], $rows);
 
         $export = new class($data) implements FromArray, WithEvents, WithStyles, ShouldAutoSize {
             public function __construct(private array $data) {}
-
             public function array(): array { return $this->data; }
 
             public function registerEvents(): array
@@ -222,30 +256,31 @@ class KasubagDataPeminjamanController extends Controller
                         $sheet->mergeCells('C1:C2'); // Tanggal
                         $sheet->mergeCells('D1:E1'); // Waktu Peminjaman
                         $sheet->mergeCells('F1:F2'); // Tipe Peminjaman
-                        $sheet->mergeCells('G1:G2'); // Verifikator
-                        $sheet->mergeCells('H1:J1'); // Kendaraan
-                        $sheet->mergeCells('K1:L1'); // Ruangan
-                        $sheet->mergeCells('M1:M2'); // Status
-                        $sheet->mergeCells('N1:N2'); // Pengembalian
+                        $sheet->mergeCells('G1:H1'); // Verifikasi (2 kolom)
+                        $sheet->mergeCells('I1:K1'); // Kendaraan (3 kolom)
+                        $sheet->mergeCells('L1:M1'); // Ruangan (2 kolom)
+                        $sheet->mergeCells('N1:N2'); // Status (rowspan)
+                        $sheet->mergeCells('O1:O2'); // Keterangan (rowspan)
+                        $sheet->mergeCells('P1:R1'); // Pengembalian (3 kolom)
 
-                        // Style header
-                        $sheet->getStyle('A1:N2')->getAlignment()
-                            ->setHorizontal(Alignment::HORIZONTAL_CENTER)
-                            ->setVertical(Alignment::VERTICAL_CENTER)
+                        // Style header (kedua baris header)
+                        $sheet->getStyle('A1:R2')->getAlignment()
+                            ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER)
+                            ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
                             ->setWrapText(true);
+                        $sheet->getStyle('A1:R2')->getFont()->setBold(true);
 
-                        $sheet->getStyle('A1:N2')->getFont()->setBold(true);
-
-                        $highestRow = $sheet->getHighestRow();   // total baris
-                        $sheet->getStyle("A1:N{$highestRow}")->getBorders()->getAllBorders()
-                            ->setBorderStyle(Border::BORDER_THIN);
+                        $highestRow = $sheet->getHighestRow();
+                        $sheet->getStyle("A1:R{$highestRow}")
+                            ->getBorders()->getAllBorders()
+                            ->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
                         $sheet->freezePane('A3');
                     }
                 ];
             }
 
-            public function styles(Worksheet $sheet)
+            public function styles(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $sheet)
             {
                 $sheet->getRowDimension(1)->setRowHeight(24);
                 $sheet->getRowDimension(2)->setRowHeight(24);
@@ -256,7 +291,7 @@ class KasubagDataPeminjamanController extends Controller
         return Excel::download(
             $export,
             'riwayat-peminjaman-' . now()->format('Ymd_His') . '.xlsx',
-            ExcelFormat::XLSX
+            \Maatwebsite\Excel\Excel::XLSX
         );
     }
 

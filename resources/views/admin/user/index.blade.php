@@ -125,6 +125,13 @@
                                                             </svg>Non Aktif
                                                             @endif
                                                         </a>
+                                                        <a class="dropdown-item btnToggleReset" href="#!"
+                                                            data-url="{{ route('user.reset_password') }}"
+                                                            data-id="{{ $item->id_user }}">
+                                                            <svg class="pc-icon text-warning">
+                                                                <use xlink:href="#reload"></use>
+                                                            </svg> Reset Password
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </td>

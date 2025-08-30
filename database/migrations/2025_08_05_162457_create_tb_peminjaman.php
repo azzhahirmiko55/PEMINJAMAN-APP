@@ -24,6 +24,7 @@ class CreateTbPeminjaman extends Migration
             $table->dateTime('jam_mulai');
             $table->dateTime('jam_selesai');
             $table->text('keperluan')->nullable();
+            $table->text('keperluan_bbm')->nullable();
             $table->text('driver')->nullable();
             $table->text('jumlah_peserta')->nullable();
             $table->integer('status')->nullable();

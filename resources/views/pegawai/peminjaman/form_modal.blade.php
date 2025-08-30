@@ -1,54 +1,61 @@
+@php
+$status = $dPegawaiPeminjamanKendaraan->status ?? 0;
+$badgeColor = 'secondary';
+$badgeText = 'Tidak Diketahui';
+$badgeIcon = '❓';
+
+if ($status == 0) {
+$badgeColor = 'warning';
+$badgeText = 'Proses';
+$badgeIcon = '<svg class="pc-icon" style="width:14px; height:14px; fill:currentColor;">
+    <use xlink:href="#reload"></use>
+</svg>';
+} elseif ($status == 1) {
+$badgeColor = 'success';
+$badgeText = 'Diterima';
+$badgeIcon = '<svg class="pc-icon" style="width:14px; height:14px; fill:currentColor;">
+    <use xlink:href="#x"></use>
+</svg>';
+} elseif ($status == -1) {
+$badgeColor = 'danger';
+$badgeText = 'Ditolak';
+$badgeIcon = '<svg class="pc-icon" style="width:14px; height:14px; fill:currentColor;">
+    <use xlink:href="#check"></use>
+</svg>';
+}
+@endphp
 <div class="row">
+    @if ($type=='kendaraan')
     {{-- Sesi Kendaraan --}}
-    <div class="col-md-6 border-end border-gray">
+    <div class="col-md-12 ">
         <form action="#" id="formPegawaiPeminjamanKendaraan" method="POST" class="form-validate is-alter"
             enctype="multipart/form-data">
-            <div class="d-flex align-items-center m-2 w-100">
-                <h4 class="modal-title mb-0 me-2">Kendaraan</h4>
+            <div class="d-flex justify-content-end align-items-center m-2 gap-2">
+                <div class="d-flex align-items-end gap-2">
+                    <a class="btn btn-success btn-sm d-inline-flex align-items-center" href="#!" data-modal
+                        data-title="Cek Ketersediaan"
+                        data-url="{{ url('/getKetersediaan/kendaraan/'.$tanggal_calendar) }}">
+                        <i class="fas fa-list me-1"></i> Cek Ketersediaan
+                    </a>
 
-                @if (isset($dPegawaiPeminjamanKendaraan->id_peminjaman))
-                @php
-                $status = $dPegawaiPeminjamanKendaraan->status ?? 0;
-                $badgeColor = 'secondary';
-                $badgeText = 'Tidak Diketahui';
-                $badgeIcon = '❓';
-
-                if ($status == 0) {
-                $badgeColor = 'warning';
-                $badgeText = 'Proses';
-                $badgeIcon = '<svg class="pc-icon" style="width:14px; height:14px; fill:currentColor;">
-                    <use xlink:href="#reload"></use>
-                </svg>';
-                } elseif ($status == 1) {
-                $badgeColor = 'success';
-                $badgeText = 'Diterima';
-                $badgeIcon = '<svg class="pc-icon" style="width:14px; height:14px; fill:currentColor;">
-                    <use xlink:href="#x"></use>
-                </svg>';
-                } elseif ($status == -1) {
-                $badgeColor = 'danger';
-                $badgeText = 'Ditolak';
-                $badgeIcon = '<svg class="pc-icon" style="width:14px; height:14px; fill:currentColor;">
-                    <use xlink:href="#check"></use>
-                </svg>';
-                }
-                @endphp
-
-                <div class="d-flex flex-column align-items-end ms-auto">
-                    <span class="badge bg-{{ $badgeColor }} mb-1" style="font-size:0.8rem;">
+                    @if (isset($dPegawaiPeminjamanKendaraan->id_peminjaman))
+                    <span class="badge bg-{{ $badgeColor }}" style="font-size:0.8rem;">
                         {!! $badgeIcon !!} {{ $badgeText }}
                     </span>
 
-                    <a href="#" class="btn btn-danger d-inline-flex align-items-center btn-sm btn-youtube js-delete"
+                    <a href="#" class="btn btn-danger btn-sm d-inline-flex align-items-center js-delete"
                         data-url="{{ route('pegawai-peminjaman.destroy', $dPegawaiPeminjamanKendaraan->id_peminjaman) }}">
                         <svg class="pc-icon me-1">
                             <use xlink:href="#delete"></use>
                         </svg>
                         Batalkan
                     </a>
+                    @endif
                 </div>
-                @endif
             </div>
+
+            <h4 class="modal-title mb-0">Kendaraan</h4>
+
 
             <div class="modal-body">
                 @csrf
@@ -107,10 +114,58 @@
                     <div class="text-danger"></div>
                 </div>
                 <div class="form-group mb-3">
-                    <label class="form-label">Keperluan</label>
-                    <textarea class="form-control" name="keperluan" cols="30"
-                        rows="5">{{ $dPegawaiPeminjamanKendaraan->keperluan??'' }}</textarea>
+                    <label class="form-label">Keperluan BBM</label>
+                    <textarea class="form-control" name="keperluan_bbm" cols="10"
+                        rows="2">{{ $dPegawaiPeminjamanKendaraan->keperluan_bbm??'' }}</textarea>
                     <div class="text-danger"></div>
+                </div>
+                @php
+                $opsi = [
+                'Ukur dan Survey Tanah',
+                'Cek Keadaan Tanah',
+                'Menghadiri dari Dinas terkait',
+                ];
+                $keperluanAwal = old('keperluan', $dPegawaiPeminjamanKendaraan->keperluan ?? '');
+                $isPreset = in_array($keperluanAwal, $opsi, true);
+                @endphp
+
+                <div class="form-group mb-3">
+                    <label class="form-label">Keperluan</label>
+
+                    {{-- Radio options --}}
+                    <div class="d-flex flex-column gap-1">
+                        @foreach ($opsi as $label)
+                        <label class="form-check">
+                            <input class="form-check-input keperluan-radio" type="radio" name="keperluan_option"
+                                value="{{ $label }}" {{ $isPreset && $keperluanAwal===$label ? 'checked' : '' }}>
+                            <span class="form-check-label">{{ $label }}</span>
+                        </label>
+                        @endforeach
+
+                        <label class="form-check">
+                            <input class="form-check-input keperluan-radio" type="radio" name="keperluan_option"
+                                value="__LAIN__" {{ !$isPreset && $keperluanAwal !=='' ? 'checked' : '' }}>
+                            <span class="form-check-label">Lain-lain</span>
+                        </label>
+                    </div>
+
+                    {{-- Textarea untuk 'Lain-lain' --}}
+                    <div id="wrap-keperluan-lain" class="mt-2" {{--
+                        style="{{ ($isPreset || $keperluanAwal==='') ? 'display:none' : '' }}" --}}>
+                        <textarea class="form-control" id="keperluan_lain" rows="4" name="keperluan_lain"
+                            placeholder="Tuliskan keperluan lainnya...">{{ !$isPreset ? $keperluanAwal : '' }}</textarea>
+                    </div>
+
+                    {{-- Hidden final value yang dikirim ke server --}}
+                    <input type="hidden" name="keperluan" id="keperluan_final"
+                        value="{{ $isPreset ? $keperluanAwal : (!$keperluanAwal ? '' : $keperluanAwal) }}">
+
+                    {{-- pesan error (opsional, jika pakai validasi server-side) --}}
+                    @error('keperluan_option')
+                    <div class="text-danger">{{ $message }}</div>
+                    @else
+                    <div class="text-danger"></div>
+                    @enderror
                 </div>
             </div>
             <div class="modal-footer">
@@ -123,14 +178,23 @@
             </div>
         </form>
     </div>
+    @else
     {{-- Sesi Ruangan --}}
-    <div class="col-md-6">
+    <div class="col-md-12 ">
         <form action="#" id="formPegawaiPeminjamanRuangan" method="POST" class="form-validate is-alter"
             enctype="multipart/form-data">
-            <div class="d-flex align-items-center m-2">
-                <h4 class="modal-title m-2">Ruangan</h4>
+            <div class="d-flex justify-content-end align-items-center m-2 gap-2">
+                <a class="btn btn-success btn-sm text-white d-inline-flex align-items-center" href="#!" data-modal
+                    data-title="Cek Ketersediaan" data-url="{{ url('/getKetersediaan/ruangan/'.$tanggal_calendar) }}">
+                    <i class="fas fa-list me-1"></i> Cek Ketersediaan
+                </a>
+
                 @if (isset($dPegawaiPeminjamanRuangan->id_peminjaman))
-                <a href="#" class="btn btn-danger ms-auto d-inline-flex align-items-center btn-sm btn-youtube js-delete"
+                <span class="badge bg-{{ $badgeColor }}" style="font-size:0.8rem;">
+                    {!! $badgeIcon !!} {{ $badgeText }}
+                </span>
+
+                <a href="#" class="btn btn-danger btn-sm d-inline-flex align-items-center js-delete"
                     data-url="{{ route('pegawai-peminjaman.destroy', $dPegawaiPeminjamanRuangan->id_peminjaman) }}">
                     <svg class="pc-icon me-1">
                         <use xlink:href="#delete"></use>
@@ -139,6 +203,9 @@
                 </a>
                 @endif
             </div>
+
+            <br>
+            <h4 class="modal-title mb-0 mx-2">Ruangan</h4>
             <div class="modal-body">
                 @csrf
                 <div class="form-group mb-3">
@@ -191,15 +258,58 @@
                 <div class="form-group mb-3">
                     <label class="form-label">Jumlah Peserta</label>
                     <input type="number" class="form-control"
-                        value="{{ $dPegawaiPeminjamanRuangan->jumlah_peserta??'' }}" name="jumlah_peserta"
-                        oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                        value="{{ $dPegawaiPeminjamanRuangan->jumlah_peserta??0 }}" name="jumlah_peserta" min="1"
+                        max="300" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                     <div class="text-danger"></div>
                 </div>
+                @php
+                $opsi1 = [
+                'Rapat Tim Divisi',
+                'Sosialisasi',
+                'Forum Koordinasi',
+                'Pelatihan dan Diklat',
+                ];
+                $keperluanAwal1 = old('keperluan', $dPegawaiPeminjamanRuangan->keperluan ?? '');
+                $isPreset1 = in_array($keperluanAwal1, $opsi1, true);
+                @endphp
+
                 <div class="form-group mb-3">
                     <label class="form-label">Keperluan</label>
-                    <textarea class="form-control" name="keperluan" cols="30"
-                        rows="5">{{ $dPegawaiPeminjamanRuangan->keperluan??'' }}</textarea>
+
+                    {{-- Radio options --}}
+                    <div class="d-flex flex-column gap-1">
+                        @foreach ($opsi1 as $label)
+                        <label class="form-check">
+                            <input class="form-check-input keperluan-radio" type="radio" name="keperluan_option"
+                                value="{{ $label }}" {{ $isPreset1 && $keperluanAwal1===$label ? 'checked' : '' }}>
+                            <span class="form-check-label">{{ $label }}</span>
+                        </label>
+                        @endforeach
+
+                        <label class="form-check">
+                            <input class="form-check-input keperluan-radio" type="radio" name="keperluan_option"
+                                value="__LAIN__" {{ !$isPreset1 && $keperluanAwal1 !=='' ? 'checked' : '' }}>
+                            <span class="form-check-label">Lain-lain</span>
+                        </label>
+                    </div>
+
+                    {{-- Textarea untuk 'Lain-lain' --}}
+                    <div id="wrap-keperluan-lain" class="mt-2" {{--
+                        style="{{ ($isPreset1 || $keperluanAwal1==='') ? 'display:none' : '' }}" --}}>
+                        <textarea class="form-control" id="keperluan_lain" rows="4" name="keperluan_lain"
+                            placeholder="Tuliskan keperluan lainnya...">{{ !$isPreset1 ? $keperluanAwal1 : '' }}</textarea>
+                    </div>
+
+                    {{-- Hidden final value yang dikirim ke server --}}
+                    <input type="hidden" name="keperluan" id="keperluan_final"
+                        value="{{ $isPreset1 ? $keperluanAwal1 : (!$keperluanAwal1 ? '' : $keperluanAwal1) }}">
+
+                    {{-- pesan error (opsional, jika pakai validasi server-side) --}}
+                    @error('keperluan_option')
+                    <div class="text-danger">{{ $message }}</div>
+                    @else
                     <div class="text-danger"></div>
+                    @enderror
                 </div>
             </div>
             <div class="modal-footer">
@@ -212,6 +322,7 @@
             </div>
         </form>
     </div>
+    @endif
 </div>
 
 <script>
@@ -384,5 +495,34 @@ $(document).on('click', '.js-delete', function(e) {
   });
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    const radios = document.querySelectorAll('.keperluan-radio');
+    const wrapLain = document.getElementById('wrap-keperluan-lain');
+    const txtLain  = document.getElementById('keperluan_lain');
+    const finalInp = document.getElementById('keperluan_final');
 
+    function syncFinal() {
+        const checked = document.querySelector('.keperluan-radio:checked');
+        if (!checked) return;
+        if (checked.value === '__LAIN__') {
+            wrapLain.style.display = '';
+            txtLain.setAttribute('required', 'required');
+            finalInp.value = (txtLain.value || '').trim();
+        } else {
+            wrapLain.style.display = 'none';
+            txtLain.removeAttribute('required');
+            finalInp.value = checked.value;
+        }
+    }
+
+    radios.forEach(r => r.addEventListener('change', syncFinal));
+    if (txtLain) txtLain.addEventListener('input', function () {
+        const checked = document.querySelector('.keperluan-radio:checked');
+        if (checked && checked.value === '__LAIN__') {
+            finalInp.value = (txtLain.value || '').trim();
+        }
+    });
+
+    syncFinal();
+});
 </script>

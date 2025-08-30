@@ -8,6 +8,7 @@ use App\Models\Pegawai;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -147,6 +148,20 @@ class UserController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Status berhasil diperbarui.'
+        ]);
+    }
+
+    public function reset_password(Request $request)
+    {
+        $user = User::findOrFail($request->id);
+        $newPassword = Str::random(8);
+        $user->password = Hash::make($newPassword);
+        $user->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Status berhasil diperbarui.',
+            'data'=>$newPassword
         ]);
     }
 }

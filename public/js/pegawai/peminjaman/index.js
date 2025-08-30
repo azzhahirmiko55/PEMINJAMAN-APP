@@ -57,30 +57,80 @@ const loadCalendar = () => {
                     year: "numeric",
                 });
 
+                // Swal.fire({
+                //     title: "Detail Peminjaman",
+                //     html: `<p class="mb-3">${tanggalLabel}</p>`,
+                //     icon: "info",
+                //     confirmButtonText:
+                //         '<i class="ti ti-plus me-1"></i> Ajukan Peminjaman',
+                //     showCancelButton: true,
+                //     cancelButtonText: "Batal",
+                //     showConfirmButton: true,
+                // }).then((result) => {
+                //     if (!result.isConfirmed) return;
+
+                //     const a = document.createElement("a");
+                //     a.href = "#!";
+                //     a.setAttribute("data-modal", "");
+                //     a.setAttribute("data-title", "Form Peminjaman");
+                //     a.setAttribute(
+                //         "data-url",
+                //         `/pegawai-peminjaman/add?tanggal=${res.startStr}`
+                //     );
+                //     document.body.appendChild(a);
+                //     a.click();
+                //     a.remove();
+                // });
                 Swal.fire({
                     title: "Detail Peminjaman",
-                    html: `<p class="mb-3">${tanggalLabel}</p>`,
+                    html: `
+                            <p class="mb-3">${tanggalLabel}</p>
+                            <div class="d-flex justify-content-center gap-2">
+                            <button id="btnKendaraan" class="swal2-confirm swal2-styled">
+                                🚗 Peminjaman Kendaraan
+                            </button>
+                            <button id="btnRuangan" class="swal2-deny swal2-styled">
+                                🏢 Peminjaman Ruangan
+                            </button>
+                            </div>
+                        `,
                     icon: "info",
-                    confirmButtonText:
-                        '<i class="ti ti-plus me-1"></i> Ajukan Peminjaman',
                     showCancelButton: true,
                     cancelButtonText: "Batal",
-                    showConfirmButton: true,
-                }).then((result) => {
-                    if (!result.isConfirmed) return;
+                    showConfirmButton: false, // tombol default Swal disembunyikan
+                    didOpen: () => {
+                        // tombol kendaraan
+                        document
+                            .getElementById("btnKendaraan")
+                            .addEventListener("click", () => {
+                                openModal("kendaraan");
+                                Swal.close();
+                            });
+                        // tombol ruangan
+                        document
+                            .getElementById("btnRuangan")
+                            .addEventListener("click", () => {
+                                openModal("ruangan");
+                                Swal.close();
+                            });
+                    },
+                });
 
+                function openModal(type) {
                     const a = document.createElement("a");
                     a.href = "#!";
                     a.setAttribute("data-modal", "");
                     a.setAttribute("data-title", "Form Peminjaman");
                     a.setAttribute(
                         "data-url",
-                        `/pegawai-peminjaman/add?tanggal=${res.startStr}`
+                        `/pegawai-peminjaman/add?tanggal=${encodeURIComponent(
+                            res.startStr
+                        )}&type=${type}`
                     );
                     document.body.appendChild(a);
                     a.click();
                     a.remove();
-                });
+                }
             }
         },
         eventClick: function (res) {
@@ -406,6 +456,13 @@ async function showInfoPeminjaman(ds) {
                 row.extendedProps.nama_ruangan
                     ? `<div><b>Ruangan</b> : ${esc(
                           row.extendedProps.nama_ruangan
+                      )}</div>`
+                    : ""
+            }
+            ${
+                row.extendedProps.keperluan_bbm
+                    ? `<div><b>Ruangan</b> : ${esc(
+                          row.extendedProps.keperluan_bbm
                       )}</div>`
                     : ""
             }
