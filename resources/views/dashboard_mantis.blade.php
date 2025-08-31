@@ -169,7 +169,7 @@
             $statusMap = [
             0 => ['class' => 'warning', 'text' => 'Menunggu'],
             1 => ['class' => 'success', 'text' => 'Disetujui'],
-            2 => ['class' => 'danger', 'text' => 'Ditolak'],
+            -1 => ['class' => 'danger', 'text' => 'Ditolak'],
             3 => ['class' => 'secondary','text' => 'Dibatalkan'],
             4 => ['class' => 'info', 'text' => 'Selesai'],
             ];
@@ -206,7 +206,7 @@
                 : '');
                 $subtitle = 'Peminjam: ' . ($row->nama_pegawai ?? '—');
                 } elseif ($tipe === 'ruangan') {
-                $title = ($row->ruang_kode ? $row->ruang_kode . ' • ' : '') . ($row->ruang_nm ?? '—');
+                $title = ($row->nama_ruangan ? $row->nama_ruangan . ' • ' : '') . ($row->warna_ruangan ?? '—');
                 $subtitle = 'Peminjam: ' . ($row->nama_pegawai ?? '—');
                 } else {
                 $title = 'Peminjaman #' . $row->id_peminjaman;

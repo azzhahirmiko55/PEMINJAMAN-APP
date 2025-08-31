@@ -295,6 +295,315 @@ class KasubagDataPeminjamanController extends Controller
         );
     }
 
+    public function export_excel_ruangan(){
+        $filter = FilterController::current();
+        $dRiwayat = Tb_peminjaman::from('tb_peminjaman as p')
+                    ->leftJoin('tb_kendaraan as k', 'p.id_kendaraan', '=', 'k.id_kendaraan')
+                    ->leftJoin('tb_ruang_rapat as r', 'p.id_ruangan', '=', 'r.id_ruangrapat')
+                    ->leftJoin('tb_pegawai as pg', 'p.id_peminjam', '=', 'pg.id_pegawai')
+                    ->leftJoin('tb_pegawai as ve', 'p.id_verifikator', '=', 've.id_pegawai')
+                    ->leftJoin('tb_pegawai as png', 'p.pengembalian_pegawai_id', '=', 'png.id_pegawai')
+                    ->select(
+                        'p.*',
+                        'k.no_plat',
+                        'k.keterangan as kendaraan_ket',
+                        'k.jenis_kendaraan',
+                        'r.nama_ruangan',
+                        'pg.nama_pegawai',
+                        've.nama_pegawai as verifikator_nama',
+                        'png.nama_pegawai as pengembalian_nm',
+                    )
+                    ->when(
+                        !empty($filter['tanggal_awal']) && !empty($filter['tanggal_akhir']),
+                        fn($q) => $q->whereBetween('p.tanggal', [
+                            $filter['tanggal_awal'],
+                            $filter['tanggal_akhir'],
+                        ])
+                    )
+                    ->where(function($q){
+                        $q->where('p.tipe_peminjaman', 'ruangan');
+                    })
+                    ->orderBy('p.tanggal', 'asc')
+                    ->orderBy('p.jam_mulai', 'asc')
+                    ->get()
+        ;
+
+        $header1 = [
+                'No.',
+                'Nama Pegawai',
+                'Tanggal',
+                'Waktu Peminjaman', '',
+                'Tipe Peminjaman',
+                'Verifikasi','',
+                'Ruangan','',
+                'Status',
+                'Pengembalian','','',
+            ];
+
+            $header2 = [
+                '', '', '',
+                'Mulai','Selesai',
+                '',
+                'Verifikator','Tanggal',
+                'Ruangan','Peserta',
+                '',
+                'Status','Penerima','Tanggal Pengembalian'
+            ];
+
+            $rows = [];
+            foreach ($dRiwayat as $i => $item) {
+                $tipe = $item->tipe_peminjaman;
+                if (is_numeric($tipe)) {
+                    $tipe = ((int)$tipe === 1) ? 'RUANGAN' : strtoupper((string)$tipe);
+                } else {
+                    $tipe = strtoupper((string)$tipe);
+                }
+
+                $statusVerif = ($item->status == 1) ? 'Disetujui' : (($item->status == -1) ? 'Ditolak' : 'Proses Verifikasi');
+
+                $labelPengembalian = match((int)($item->pengembalian_st ?? 0)) {
+                    1       => 'Sudah dikembalikan',
+                    0       => 'Belum dikembalikan',
+                    default => 'Tidak diketahui',
+                };
+
+                $rows[] = [
+                    $i + 1,
+                    $item->nama_pegawai,
+                    $item->tanggal ? \Carbon\Carbon::parse($item->tanggal)->locale('id')->translatedFormat('d F Y') : '',
+                    $item->jam_mulai ? \Carbon\Carbon::parse($item->jam_mulai)->format('H:i:s') : '',
+                    $item->jam_selesai ? \Carbon\Carbon::parse($item->jam_selesai)->format('H:i:s') : '',
+                    $tipe,
+                    $item->verifikator_nama,
+                    $item->verifikator_tgl ? \Carbon\Carbon::parse($item->verifikator_tgl)->locale('id')->translatedFormat('d F Y H:i:s') : '',
+                    $item->nama_ruangan,
+                    (string)($item->jumlah_peserta ?? ''),
+                    $statusVerif,
+                    $labelPengembalian,
+                    $item->pengembalian_nm,
+                    $item->pengembalian_tgl ? \Carbon\Carbon::parse($item->pengembalian_tgl)->locale('id')->translatedFormat('d F Y H:i:s') : '',
+                ];
+            }
+
+            $data = array_merge([$header1, $header2], $rows);
+
+            $export = new class($data) implements \Maatwebsite\Excel\Concerns\FromArray,
+                \Maatwebsite\Excel\Concerns\WithEvents,
+                \Maatwebsite\Excel\Concerns\WithStyles,
+                \Maatwebsite\Excel\Concerns\ShouldAutoSize {
+
+                public function __construct(private array $data) {}
+                public function array(): array { return $this->data; }
+
+                public function registerEvents(): array
+                {
+                    return [
+                        \Maatwebsite\Excel\Events\AfterSheet::class => function(\Maatwebsite\Excel\Events\AfterSheet $event) {
+                            $sheet = $event->sheet->getDelegate();
+
+                            $sheet->mergeCells('A1:A2');
+                            $sheet->mergeCells('B1:B2');
+                            $sheet->mergeCells('C1:C2');
+                            $sheet->mergeCells('D1:E1');
+                            $sheet->mergeCells('F1:F2');
+                            $sheet->mergeCells('G1:H1');
+                            $sheet->mergeCells('I1:J1');
+                            $sheet->mergeCells('K1:K2');
+                            $sheet->mergeCells('L1:N1');
+
+                            $sheet->getStyle('A1:N2')->getAlignment()
+                                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER)
+                                ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
+                                ->setWrapText(true);
+                            $sheet->getStyle('A1:N2')->getFont()->setBold(true);
+
+                            $highestRow = $sheet->getHighestRow();
+                            $sheet->getStyle("A1:N{$highestRow}")
+                                ->getBorders()->getAllBorders()
+                                ->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
+                            $sheet->freezePane('A3');
+
+                            $sheet->getStyle("A3:A{$highestRow}")->getAlignment()
+                                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                            $sheet->getStyle("D3:E{$highestRow}")->getAlignment()
+                                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                            $sheet->getStyle("J3:J{$highestRow}")->getAlignment()
+                                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                            $sheet->getStyle("K3:K{$highestRow}")->getAlignment()
+                                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                        }
+                    ];
+                }
+
+                public function styles(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $sheet)
+                {
+                    $sheet->getRowDimension(1)->setRowHeight(24);
+                    $sheet->getRowDimension(2)->setRowHeight(24);
+                    return [];
+                }
+            };
+
+        return Excel::download(
+            $export,
+            'riwayat-peminjaman-ruangan-' . now()->format('Ymd_His') . '.xlsx',
+            \Maatwebsite\Excel\Excel::XLSX
+        );
+    }
+
+    public function export_excel_kendaraan(){
+        $filter = FilterController::current();
+        $dRiwayat = Tb_peminjaman::from('tb_peminjaman as p')
+                    ->leftJoin('tb_kendaraan as k', 'p.id_kendaraan', '=', 'k.id_kendaraan')
+                    ->leftJoin('tb_ruang_rapat as r', 'p.id_ruangan', '=', 'r.id_ruangrapat')
+                    ->leftJoin('tb_pegawai as pg', 'p.id_peminjam', '=', 'pg.id_pegawai')
+                    ->leftJoin('tb_pegawai as ve', 'p.id_verifikator', '=', 've.id_pegawai')
+                    ->leftJoin('tb_pegawai as png', 'p.pengembalian_pegawai_id', '=', 'png.id_pegawai')
+                    ->select(
+                        'p.*',
+                        'k.no_plat',
+                        'k.keterangan as kendaraan_ket',
+                        'k.jenis_kendaraan',
+                        'r.nama_ruangan',
+                        'pg.nama_pegawai',
+                        've.nama_pegawai as verifikator_nama',
+                        'png.nama_pegawai as pengembalian_nm',
+                    )
+                    ->when(
+                        !empty($filter['tanggal_awal']) && !empty($filter['tanggal_akhir']),
+                        fn($q) => $q->whereBetween('p.tanggal', [
+                            $filter['tanggal_awal'],
+                            $filter['tanggal_akhir'],
+                        ])
+                    )
+                    ->where(function($q){
+                        $q->where('p.tipe_peminjaman', 'kendaraan');
+                    })
+                    ->orderBy('p.tanggal', 'asc')
+                    ->orderBy('p.jam_mulai', 'asc')
+                    ->get()
+        ;
+
+        $header1 = [
+            'No.',
+            'Nama Pegawai',
+            'Tanggal',
+            'Waktu Peminjaman', '',
+            'Tipe Peminjaman',
+            'Verifikasi','',
+            'Kendaraan','','',
+            'Status',
+            'Pengembalian','','',
+        ];
+
+        $header2 = [
+            '', '', '',
+            'Mulai','Selesai',
+            '',
+            'Verifikator','Tanggal',
+            'Driver','Plat Nomor','Jenis Kendaraan',
+            '',
+            'Status','Penerima','Tanggal Pengembalian'
+        ];
+
+        $rows = [];
+        foreach ($dRiwayat as $i => $item) {
+
+            $tipe = $item->tipe_peminjaman;
+            if (is_numeric($tipe)) {
+                $tipe = ((int)$tipe === 0) ? 'KENDARAAN' : strtoupper((string)$tipe);
+            } else {
+                $tipe = strtoupper((string)$tipe);
+            }
+
+            $statusVerif = ($item->status == 1) ? 'Disetujui' : (($item->status == -1) ? 'Ditolak' : 'Proses Verifikasi');
+
+            // Status pengembalian
+            $labelPengembalian = match((int)($item->pengembalian_st ?? 0)) {
+                1       => 'Sudah dikembalikan',
+                0       => 'Belum dikembalikan',
+                default => 'Tidak diketahui',
+            };
+
+            $rows[] = [
+                $i + 1,
+                $item->nama_pegawai,
+                $item->tanggal ? Carbon::parse($item->tanggal)->locale('id')->translatedFormat('d F Y') : '',
+                $item->jam_mulai ? Carbon::parse($item->jam_mulai)->format('H:i:s') : '',
+                $item->jam_selesai ? Carbon::parse($item->jam_selesai)->format('H:i:s') : '',
+                $tipe,
+                $item->verifikator_nama,
+                $item->verifikator_tgl ? Carbon::parse($item->verifikator_tgl)->locale('id')->translatedFormat('d F Y H:i:s') : '',
+                (string)($item->driver ?? ''),
+                (string)($item->no_plat ?? ''),
+                (string)($item->jenis_kendaraan ?? ''),
+                $statusVerif,
+                $labelPengembalian,
+                (string)($item->pengembalian_nm ?? ''),
+                $item->pengembalian_tgl ? Carbon::parse($item->pengembalian_tgl)->locale('id')->translatedFormat('d F Y H:i:s') : '',
+            ];
+        }
+
+        $data = array_merge([$header1, $header2], $rows);
+
+        $export = new class($data) implements FromArray, WithEvents, WithStyles, ShouldAutoSize {
+            public function __construct(private array $data) {}
+            public function array(): array { return $this->data; }
+
+            public function registerEvents(): array
+            {
+                return [
+                    AfterSheet::class => function(AfterSheet $event) {
+                        $sheet = $event->sheet->getDelegate();
+
+                        $sheet->mergeCells('A1:A2');
+                        $sheet->mergeCells('B1:B2');
+                        $sheet->mergeCells('C1:C2');
+                        $sheet->mergeCells('D1:E1');
+                        $sheet->mergeCells('F1:F2');
+                        $sheet->mergeCells('G1:H1');
+                        $sheet->mergeCells('I1:K1');
+                        $sheet->mergeCells('L1:L2');
+                        $sheet->mergeCells('M1:O1');
+
+                        $sheet->getStyle('A1:O2')->getAlignment()
+                            ->setHorizontal(Alignment::HORIZONTAL_CENTER)
+                            ->setVertical(Alignment::VERTICAL_CENTER)
+                            ->setWrapText(true);
+                        $sheet->getStyle('A1:O2')->getFont()->setBold(true);
+
+                        $highestRow = $sheet->getHighestRow();
+                        $sheet->getStyle("A1:O{$highestRow}")
+                            ->getBorders()->getAllBorders()
+                            ->setBorderStyle(Border::BORDER_THIN);
+
+                        $sheet->freezePane('A3');
+
+                        $sheet->getStyle("A3:A{$highestRow}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+                        $sheet->getStyle("D3:E{$highestRow}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+                        $sheet->getStyle("K3:K{$highestRow}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+                        $sheet->getStyle("L3:L{$highestRow}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+                        $sheet->getStyle("M3:M{$highestRow}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+                    }
+                ];
+            }
+
+            public function styles(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $sheet)
+            {
+                $sheet->getRowDimension(1)->setRowHeight(24);
+                $sheet->getRowDimension(2)->setRowHeight(24);
+                return [];
+            }
+        };
+
+
+        return Excel::download(
+            $export,
+            'riwayat-peminjaman-kendaraan-' . now()->format('Ymd_His') . '.xlsx',
+            \Maatwebsite\Excel\Excel::XLSX
+        );
+    }
+
     public function getDataKasubagPeminjaman(Request $request)
     {
         $user = User::join('tb_pegawai','tb_user.id_pegawai','=','tb_pegawai.id_pegawai')
@@ -397,4 +706,6 @@ class KasubagDataPeminjamanController extends Controller
 
         return response()->json($events);
     }
+
+
 }
