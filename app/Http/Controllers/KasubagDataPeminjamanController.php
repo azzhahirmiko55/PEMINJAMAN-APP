@@ -63,6 +63,12 @@ class KasubagDataPeminjamanController extends Controller
                             $filter['tipe_peminjaman'],
                         ])
                     )
+                    ->when(
+                        (!empty($filter['status'])||$filter['status']=='0'),
+                        fn($q) => $q->where('p.status', [
+                            $filter['status'],
+                        ])
+                    )
                     ->orderBy('p.tanggal', 'asc')
                     ->orderBy('p.jam_mulai', 'asc')
                     ->get()
@@ -323,6 +329,12 @@ class KasubagDataPeminjamanController extends Controller
                     ->where(function($q){
                         $q->where('p.tipe_peminjaman', 'ruangan');
                     })
+                    ->when(
+                        (!empty($filter['status'])||$filter['status']=='0'),
+                        fn($q) => $q->where('p.status', [
+                            $filter['status'],
+                        ])
+                    )
                     ->orderBy('p.tanggal', 'asc')
                     ->orderBy('p.jam_mulai', 'asc')
                     ->get()
@@ -479,6 +491,12 @@ class KasubagDataPeminjamanController extends Controller
                     ->where(function($q){
                         $q->where('p.tipe_peminjaman', 'kendaraan');
                     })
+                    ->when(
+                        (!empty($filter['status'])||$filter['status']=='0'),
+                        fn($q) => $q->where('p.status', [
+                            $filter['status'],
+                        ])
+                    )
                     ->orderBy('p.tanggal', 'asc')
                     ->orderBy('p.jam_mulai', 'asc')
                     ->get()

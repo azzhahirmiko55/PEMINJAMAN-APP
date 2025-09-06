@@ -56,6 +56,9 @@ Route::get('/', [LoginController::class, 'index'])->name('login')->middleware('I
 Route::get('/login', [LoginController::class, 'index'])->middleware('IsLogout');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/processLogin', [LoginController::class, 'ajax_process_login']);
+Route::get('/lupa_password', [LoginController::class, 'lupa_password'])->middleware('IsLogout');
+Route::post('/lupa_password_cek_user', [LoginController::class, 'lupa_password_cek_user'])->middleware('IsLogout');
+Route::post('/lupa_password_update_pass', [LoginController::class, 'lupa_password_update_pass'])->middleware('IsLogout');
 
 # Start Halaman Dashboard #
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('IsLogin');

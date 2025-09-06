@@ -65,32 +65,55 @@
                                 A simple danger alert—check it out!
                             </div>
                         </div> --}}
-                        <form action="#" id="formLogin" method="POST" class="form-validate is-alter">
+                        {{-- Section Cek Username --}}
+                        <form action="#" id="formRegisterUsername" method="POST" class="form-validate is-alter">
                             @csrf
                             <div class="form-group mb-3">
                                 <label class="form-label">Username</label>
                                 <input type="text" class="form-control" placeholder="Masukkan Username" name="username"
                                     required>
                             </div>
-                            <div class="form-group mb-3 position-relative">
+                            <div class="d-flex mt-1 justify-content-between">
+                            </div>
+                            <div class="d-grid mt-4">
+                                <button type="submit" class="btn btn-primary"
+                                    id="btnRegisterUsername">Selanjutnya</button>
+                            </div>
+                        </form>
+                        {{-- Section Update Password --}}
+                        <form action="#" id="formRegisterPassword" method="POST" class="form-validate is-alter d-none">
+                            @csrf
+                            <input type="text" class="form-control" name="id_user" hidden>
+                            <div class="form-group mb-3">
                                 <label class="form-label">Password</label>
-                                <div class="input-group">
-                                    <input type="password" class="form-control" placeholder="Masukkan Password"
-                                        name="password" id="password" required>
-                                    <span class="input-group-text" onclick="togglePassword()" style="cursor: pointer;">
-                                        <i class="fa-solid fa-eye" id="toggleIcon"></i>
-                                    </span>
-                                </div>
+                                <input type="password" class="form-control" placeholder="Masukkan Password"
+                                    name="password">
+                                <div class="text-danger"></div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="form-label">Ulangi Password</label>
+                                <input type="password" class="form-control" placeholder="Ulangi Password"
+                                    name="password_confirmation">
+                                <div class="text-danger"></div>
                             </div>
                             <div class="d-flex mt-1 justify-content-between">
                             </div>
                             <div class="d-grid mt-4">
-                                <button type="submit" class="btn btn-primary">MASUK</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
                         </form>
                         <div class="saprator mt-3">
                         </div>
                         <div class="row">
+                            <div class="col-4">
+                                <div class="d-grid">
+                                    <a href="{{ url('/login') }}"
+                                        class="btn mt-2 btn-light-primary bg-light text-muted">
+                                        <span class="d-sm-inline-block fst-italic" style="font-size: 12px">
+                                            Kembali</span>
+                                    </a>
+                                </div>
+                            </div>
                             <div class="col-4">
                                 <div class="d-grid">
                                     {{-- <button type="button" class="btn mt-2 btn-light-primary bg-light text-muted">
@@ -105,15 +128,6 @@
                                         <img src="../assets/images/authentication/twitter.svg" alt="img"> <span
                                             class="d-none d-sm-inline-block"> Twitter</span>
                                     </button> --}}
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="d-grid">
-                                    <a href="{{ url('/lupa_password') }}"
-                                        class="btn mt-2 btn-light-primary bg-light text-muted">
-                                        <span class="d-sm-inline-block fst-italic" style="font-size: 12px"> Lupa
-                                            Password</span>
-                                    </a>
                                 </div>
                             </div>
                         </div>

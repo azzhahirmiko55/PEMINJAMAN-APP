@@ -28,6 +28,18 @@
     }
     @endphp
     <div class="col-md-12 ">
+        @if(($dPegawaiPeminjamanKendaraan->status ?? 0) == -1 &&
+        !empty($dPegawaiPeminjamanKendaraan->verifikator_catatan))
+        <div class="small text-danger d-flex align-items-center gap-2 m-2">
+            <svg class="pc-icon" style="width:14px;height:14px;">
+                <use xlink:href="#alert"></use>
+            </svg>
+            <span>
+                <strong>Alasan:</strong>
+                {{ $dPegawaiPeminjamanKendaraan->verifikator_catatan??'' }}
+            </span>
+        </div>
+        @endif
         <form action="#" id="formPegawaiPeminjamanKendaraan" method="POST" class="form-validate is-alter"
             enctype="multipart/form-data">
             <div class="d-flex justify-content-end align-items-center m-2 gap-2">
@@ -54,7 +66,7 @@
                 </div>
             </div>
 
-            <h4 class="modal-title mb-0">Kendaraan</h4>
+            <h4 class="modal-title mb-0 mx-3">Kendaraan</h4>
 
 
             <div class="modal-body">
