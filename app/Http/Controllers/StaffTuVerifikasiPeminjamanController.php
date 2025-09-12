@@ -93,6 +93,7 @@ class StaffTuVerifikasiPeminjamanController extends Controller
     {
         $data = $request->validate([
             'status'  => 'required|in:-1,0,1',
+            'keperluan_bbm' => 'nullable|string',
             'catatan' => 'nullable|string|max:1000',
         ]);
 
@@ -140,7 +141,7 @@ class StaffTuVerifikasiPeminjamanController extends Controller
             if ($resourceCol && $resourceVal) {
                 // Cari semua peminjaman lain di TANGGAL yang sama, resource sama, dan overlap jam
                 $conflictIds = Tb_peminjaman::query()
-                    ->where('id_peminjaman', '!=', $p->id)
+                    ->where('id_peminjaman', '!=', $p->id_peminjaman)
                     ->where('active_st', 1)
                     ->where('status', '!=', -1)
                     ->whereDate('tanggal', $tanggal)
@@ -152,17 +153,18 @@ class StaffTuVerifikasiPeminjamanController extends Controller
                     ->pluck('id_peminjaman');
 
                 if ($conflictIds->isNotEmpty()) {
-                    Tb_peminjaman::whereIn('id_peminjaman', $conflictIds)->update([
-                        'status'               => -1,
-                        'verifikator_catatan'  => 'Ditolak otomatis: bentrok dengan peminjaman yang lain.',
-                        'id_verifikator'       => $user->id_pegawai,
-                        'verifikator_tgl'      => now(),
-                    ]);
+                        Tb_peminjaman::whereIn('id_peminjaman', $conflictIds)->update([
+                            'status'               => -1,
+                            'verifikator_catatan'  => 'Ditolak otomatis: bentrok dengan peminjaman yang lain.',
+                            'id_verifikator'       => $user->id_pegawai,
+                            'verifikator_tgl'      => now(),
+                        ]);
                 }
             }
 
             // setujui yang ini
             $p->status              = 1;
+            $p->keperluan_bbm = $data['keperluan_bbm'] ?? null;
             $p->verifikator_catatan = $data['catatan'] ?? null;
             $p->id_verifikator      = $user->id_pegawai;
             $p->verifikator_tgl     = now();
@@ -278,6 +280,7 @@ class StaffTuVerifikasiPeminjamanController extends Controller
                     'pengembalian_nm'     => $r->pengembalian_nm,
                     'pengembalian_tgl'     => $r->pengembalian_tgl,
                     'pengembalian_catatan'     => $r->pengembalian_catatan,
+                    'keperluan_bbm'     => $r->keperluan_bbm,
                 ],
             ];
         });

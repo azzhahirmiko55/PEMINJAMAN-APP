@@ -437,6 +437,13 @@ async function showInfoPeminjaman(ds) {
                   : ""
           }
           ${
+              row.extendedProps.driver
+                  ? `<div><b>Keperluan BBM</b> : ${esc(
+                        row.extendedProps.keperluan_bbm
+                    )}</div>`
+                  : ""
+          }
+          ${
               row.extendedProps.nama_ruangan
                   ? `<div><b>Ruangan</b> : ${esc(
                         row.extendedProps.nama_ruangan
@@ -448,7 +455,7 @@ async function showInfoPeminjaman(ds) {
           )}</div>
           ${
               row.extendedProps.verikator_nm
-                  ? `<div><b>Verifkator</b> : ${esc(
+                  ? `<div><b>Verifikator</b> : ${esc(
                         row.extendedProps.verikator_nm
                     )}</div>`
                   : ""
@@ -598,24 +605,29 @@ async function openVerifikasiPeminjaman(id) {
 
     const html = `
     <div style="text-align:left">
-      <div class="mb-2">Pilih hasil verifikasi:</div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="verdict" id="ver_proses" value="0">
-        <label class="form-check-label" for="ver_proses">Proses</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="verdict" id="ver_setuju" value="1">
-        <label class="form-check-label" for="ver_setuju">Disetujui</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="verdict" id="ver_tolak" value="-1">
-        <label class="form-check-label" for="ver_tolak">Ditolak</label>
-      </div>
-
-      <div class="mt-3">
-        <label for="ver_catatan" class="form-label">Catatan (opsional)</label>
-        <textarea id="ver_catatan" class="form-control" rows="3" placeholder="Isi alasan/notes jika perlu"></textarea>
-      </div>
+        <div class="mb-2">Pilih hasil verifikasi:</div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="verdict" id="ver_proses" value="0">
+            <label class="form-check-label" for="ver_proses">Proses</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="verdict" id="ver_setuju" value="1">
+            <label class="form-check-label" for="ver_setuju">Disetujui</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="verdict" id="ver_tolak" value="-1">
+            <label class="form-check-label" for="ver_tolak">Ditolak</label>
+        </div>
+        <div class="form-group mt-3">
+            <label class="form-label">Keperluan BBM</label>
+            <textarea class="form-control" id="keperluan_bbm" cols="10"
+                rows="2"></textarea>
+            <div class="text-danger"></div>
+        </div>
+        <div class="mt-3">
+            <label for="ver_catatan" class="form-label">Catatan (opsional)</label>
+            <textarea id="ver_catatan" class="form-control" rows="3" placeholder="Isi alasan/notes jika perlu"></textarea>
+        </div>
     </div>
   `;
 
@@ -656,6 +668,9 @@ async function openVerifikasiPeminjaman(id) {
             const catatan = (
                 document.getElementById("ver_catatan")?.value || ""
             ).trim();
+            const keperluan_bbm = (
+                document.getElementById("keperluan_bbm")?.value || ""
+            ).trim();
 
             try {
                 await $.ajax({
@@ -663,7 +678,7 @@ async function openVerifikasiPeminjaman(id) {
                     method: "POST",
                     headers: { Accept: "application/json" },
                     dataType: "json",
-                    data: { _method: "PUT", status, catatan },
+                    data: { _method: "PUT", status, catatan, keperluan_bbm },
                 });
                 return { ok: true };
             } catch (xhr) {

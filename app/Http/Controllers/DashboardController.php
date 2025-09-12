@@ -36,6 +36,10 @@ class DashboardController extends Controller
             ->where('p.status', 1)
             ->count();
 
+        $totalCancel = (clone $base)
+            ->where('p.status', -1)
+            ->count();
+
         $totalKendaraan = (clone $base)
             ->where('p.tipe_peminjaman', 'kendaraan')
             ->count();
@@ -77,6 +81,7 @@ class DashboardController extends Controller
             'js_script' => 'js/peminjaman/dashboard.js',
             'totalAll'=>$totalAll,
             'totalApproved'=>$totalApproved,
+            'totalCancel'=>$totalCancel,
             'totalKendaraan'=>$totalKendaraan,
             'totalRuangan'=>$totalRuangan,
             'peminjamanToday'=>$peminjamanToday,

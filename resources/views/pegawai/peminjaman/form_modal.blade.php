@@ -125,12 +125,12 @@
                         name="driver">
                     <div class="text-danger"></div>
                 </div>
-                <div class="form-group mb-3">
+                {{-- <div class="form-group mb-3">
                     <label class="form-label">Keperluan BBM</label>
                     <textarea class="form-control" name="keperluan_bbm" cols="10"
                         rows="2">{{ $dPegawaiPeminjamanKendaraan->keperluan_bbm??'' }}</textarea>
                     <div class="text-danger"></div>
-                </div>
+                </div> --}}
                 @php
                 $opsi = [
                 'Ukur dan Survey Tanah',

@@ -47,6 +47,12 @@
         background: rgba(255, 255, 255, .03);
     }
 </style>
+<div class="col-12 text-start mb-3">
+    <h3>
+        {{ \Carbon\Carbon::now()->translatedFormat('F Y') }}
+    </h3>
+</div>
+
 <div class="row g-3">
     {{-- Card 1: Total Peminjaman --}}
     <div class="col-12 col-sm-4 col-xl-4">
@@ -92,7 +98,29 @@
         </div>
     </div>
 
-    {{-- Card 3: Pengembalian --}}
+    {{-- Card 3: Ditolak --}}
+    <div class="col-12 col-sm-4 col-xl-4">
+        <div class="card stat-card shadow-sm border-0">
+            <div class="card-body d-flex align-items-center">
+                <div class="icon-wrap me-3 icon-danger text-danger">
+                    <i class="pc-micon">
+                        <svg class="pc-icon">
+                            <use xlink:href="#x"></use>
+                        </svg>
+                    </i>
+                </div>
+                <div class="flex-grow-1">
+                    <div class="label text-muted small mb-1">Total Ditolak</div>
+                    <div class="h3 mb-0">
+                        <span class="counter" data-target="{{ $totalCancel ?? 0 }}">{{ $totalCancel ?? 0 }}</span>
+                    </div>
+                </div>
+                <span class="badge bg-danger-subtle text-danger d-none d-md-inline">Ditolak</span>
+            </div>
+        </div>
+    </div>
+
+    {{-- Card 4: Pengembalian --}}
     <div class="col-12 col-sm-4 col-xl-4">
         <div class="card stat-card shadow-sm border-0">
             <div class="card-body d-flex align-items-center">
@@ -115,8 +143,8 @@
         </div>
     </div>
 
-    {{-- Card 3: Peminjaman Kendaraan --}}
-    <div class="col-12 col-sm-6 col-xl-6">
+    {{-- Card 5: Peminjaman Kendaraan --}}
+    <div class="col-12 col-sm-4 col-xl-4">
         <div class="card stat-card shadow-sm border-0">
             <div class="card-body d-flex align-items-center">
                 <div class="icon-wrap me-3 text-info">
@@ -137,8 +165,8 @@
         </div>
     </div>
 
-    {{-- Card 4: Peminjaman Ruangan --}}
-    <div class="col-12 col-sm-6 col-xl-6">
+    {{-- Card 6: Peminjaman Ruangan --}}
+    <div class="col-12 col-sm-4 col-xl-4">
         <div class="card stat-card shadow-sm border-0">
             <div class="card-body d-flex align-items-center">
                 <div class="icon-wrap me-3 icon-warning">
@@ -162,7 +190,10 @@
 
 <div class="row">
     <div class="col-12">
-        <h5 class="mb-3">Peminjaman Hari Ini</h5>
+        <h5 class="mb-3">Peminjaman {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}
+            <sup class="badge bg-info rounded">
+                Hari Ini</sup>
+        </h5>
         <div class="card">
             @php
             // Map status => badge warna + label
