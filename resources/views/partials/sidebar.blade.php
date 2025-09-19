@@ -106,6 +106,16 @@
                         <span class="pc-mtext">Riwayat Peminjaman</span>
                     </a>
                 </li>
+                <li class="pc-item">
+                    <a href="{{ route('admin.pelaporan.peminjaman') }}" class="pc-link">
+                        <span class="pc-micon">
+                            <svg class="pc-icon">
+                                <use xlink:href="#account-book"></use>
+                            </svg>
+                        </span>
+                        <span class="pc-mtext">Pelaporan Peminjaman</span>
+                    </a>
+                </li>
                 @endif
                 {{-- Pegawai --}}
                 @if ($user->role == 4)
@@ -158,6 +168,16 @@
                         <span class="pc-mtext">Riwayat Peminjaman</span>
                     </a>
                 </li>
+                <li class="pc-item">
+                    <a href="{{ route('staff.pelaporan.peminjaman') }}" class="pc-link">
+                        <span class="pc-micon">
+                            <svg class="pc-icon">
+                                <use xlink:href="#account-book"></use>
+                            </svg>
+                        </span>
+                        <span class="pc-mtext">Pelaporan Peminjaman</span>
+                    </a>
+                </li>
                 @endif
                 {{-- Satpam --}}
                 @if ($user->role == 3)
@@ -177,6 +197,16 @@
                             </svg>
                         </span>
                         <span class="pc-mtext">Pengembalian</span>
+                    </a>
+                </li>
+                <li class="pc-item">
+                    <a href="{{ route('satpam.laporan.pengembalian') }}" class="pc-link">
+                        <span class="pc-micon">
+                            <svg class="pc-icon">
+                                <use xlink:href="#account-book"></use>
+                            </svg>
+                        </span>
+                        <span class="pc-mtext">Laporan Pengembalian</span>
                     </a>
                 </li>
                 @endif

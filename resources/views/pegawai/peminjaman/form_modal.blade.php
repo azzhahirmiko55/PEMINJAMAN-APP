@@ -68,7 +68,6 @@
 
             <h4 class="modal-title mb-0 mx-3">Kendaraan</h4>
 
-
             <div class="modal-body">
                 @csrf
                 <div class="form-group mb-3">
@@ -88,7 +87,7 @@
                         <option value='' selected>-- Pilih Kendaraan --</option>
                         @foreach ($dKendaraan as $item)
                         <option value="{{ $item->id_kendaraan }}" {{ $item->id_kendaraan ===
-                            (!empty($dPegawaiPeminjamanKendaraan)?$dPegawaiPeminjamanKendaraan->id_kendaraan:'')
+                            ($dPegawaiPeminjamanKendaraan->id_kendaraan??'')
                             ?'selected':''}}>
                             {{ $item->no_plat }} - {{ $item->keterangan }}</option>
                         @endforeach
@@ -178,6 +177,13 @@
                     @else
                     <div class="text-danger"></div>
                     @enderror
+
+                </div>
+                <div class="form-group mb-3">
+                    <label class="form-label">Detail Lokasi</label>
+                    <textarea class="form-control" name="detail_lokasi" cols="10"
+                        rows="2">{{ $dPegawaiPeminjamanKendaraan->detail_lokasi??'' }}</textarea>
+                    <div class="text-danger"></div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -311,7 +317,7 @@
                     <label class="form-label">Jumlah Peserta</label>
                     <input type="number" class="form-control"
                         value="{{ $dPegawaiPeminjamanRuangan->jumlah_peserta??0 }}" name="jumlah_peserta" min="1"
-                        max="300" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                        max="100" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                     <div class="text-danger"></div>
                 </div>
                 @php

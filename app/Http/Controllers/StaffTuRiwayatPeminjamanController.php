@@ -55,15 +55,37 @@ class StaffTuRiwayatPeminjamanController extends Controller
                             $filter['tanggal_akhir'],
                         ])
                     )
+                    ->when(
+                        !empty($filter['status']) ,
+                        fn($q) => $q->where('p.status', [
+                            $filter['status'],
+                        ])
+                    )
+                    ->when(
+                        !empty($filter['id_kendaraan']) && ($filter['section_view']??'') ==-1 ,
+                        fn($q) => $q->where('p.id_kendaraan', [
+                            $filter['id_kendaraan'],
+                        ])
+                    )
+                    ->when(
+                        !empty($filter['id_ruangan']) && ($filter['section_view']??'') ==0 ,
+                        fn($q) => $q->where('p.id_ruangan', [
+                            $filter['id_ruangan'],
+                        ])
+                    )
                     ->orderBy('p.tanggal', 'asc')
                     ->orderBy('p.jam_mulai', 'asc')
                     ->get()
         ;
+        $mst_kendaraan = KendaraanV2::all()->where('active_st',1);
+        $mst_ruangan = Ruangan::all()->where('active_st',1);
         return view('staff.riwayat_peminjaman.index', [
             "page"  => "Data Riwayat Peminjaman",
             'js_script' => 'js/staff/riwayatpeminjaman/index.js',
             'dRiwayat' => $dRiwayat,
             'filter' => $filter,
+            'mst_kendaraan' => $mst_kendaraan,
+            'mst_ruangan' => $mst_ruangan,
         ]);
     }
 

@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             PegawaiSeeder::class,
             RuanganSeeder::class,
             KendaraanSeeder::class,
+            // Tb_PeminjamanSeeder::class,
         ]);
     }
 }

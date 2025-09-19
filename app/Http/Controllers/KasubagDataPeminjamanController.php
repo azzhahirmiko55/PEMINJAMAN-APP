@@ -64,20 +64,42 @@ class KasubagDataPeminjamanController extends Controller
                         ])
                     )
                     ->when(
-                        (!empty($filter['status'])||$filter['status']=='0'),
+                        !empty($filter['status']) ,
                         fn($q) => $q->where('p.status', [
                             $filter['status'],
+                        ])
+                    )
+                    ->when(
+                        !empty($filter['id_kendaraan']) && ($filter['section_view']??'') ==-1 ,
+                        fn($q) => $q->where('p.id_kendaraan', [
+                            $filter['id_kendaraan'],
+                        ])
+                    )
+                    ->when(
+                        !empty($filter['id_ruangan']) && ($filter['section_view']??'') ==0 ,
+                        fn($q) => $q->where('p.id_ruangan', [
+                            $filter['id_ruangan'],
+                        ])
+                    )
+                    ->when(
+                        isset($filter['pengembalian_st']),
+                        fn($q) => $q->where('p.pengembalian_st', [
+                            $filter['pengembalian_st'],
                         ])
                     )
                     ->orderBy('p.tanggal', 'asc')
                     ->orderBy('p.jam_mulai', 'asc')
                     ->get()
         ;
+        $mst_kendaraan = KendaraanV2::all()->where('active_st',1);
+        $mst_ruangan = Ruangan::all()->where('active_st',1);
         return view('kasubag.riwayat_peminjaman.index', [
             "page"  => "Data Riwayat Peminjaman",
             'js_script' => 'js/kasubag/riwayatpeminjaman/index.js',
             'dRiwayat' => $dRiwayat,
             'filter' => $filter,
+            'mst_kendaraan' => $mst_kendaraan,
+            'mst_ruangan' => $mst_ruangan,
         ]);
     }
 
@@ -330,9 +352,15 @@ class KasubagDataPeminjamanController extends Controller
                         $q->where('p.tipe_peminjaman', 'ruangan');
                     })
                     ->when(
-                        (!empty($filter['status'])||$filter['status']=='0'),
+                        !empty($filter['status']) ,
                         fn($q) => $q->where('p.status', [
                             $filter['status'],
+                        ])
+                    )
+                    ->when(
+                        !empty($filter['id_ruangan']) ,
+                        fn($q) => $q->where('p.id_ruangan', [
+                            $filter['id_ruangan'],
                         ])
                     )
                     ->orderBy('p.tanggal', 'asc')
@@ -349,7 +377,6 @@ class KasubagDataPeminjamanController extends Controller
                 'Verifikasi','',
                 'Ruangan','',
                 'Status',
-                'Pengembalian','','',
             ];
 
             $header2 = [
@@ -359,7 +386,6 @@ class KasubagDataPeminjamanController extends Controller
                 'Verifikator','Tanggal',
                 'Ruangan','Peserta',
                 '',
-                'Status','Penerima','Tanggal Pengembalian'
             ];
 
             $rows = [];
@@ -391,9 +417,6 @@ class KasubagDataPeminjamanController extends Controller
                     $item->nama_ruangan,
                     (string)($item->jumlah_peserta ?? ''),
                     $statusVerif,
-                    $labelPengembalian,
-                    $item->pengembalian_nm,
-                    $item->pengembalian_tgl ? \Carbon\Carbon::parse($item->pengembalian_tgl)->locale('id')->translatedFormat('d F Y H:i:s') : '',
                 ];
             }
 
@@ -421,16 +444,15 @@ class KasubagDataPeminjamanController extends Controller
                             $sheet->mergeCells('G1:H1');
                             $sheet->mergeCells('I1:J1');
                             $sheet->mergeCells('K1:K2');
-                            $sheet->mergeCells('L1:N1');
 
-                            $sheet->getStyle('A1:N2')->getAlignment()
+                            $sheet->getStyle('A1:K2')->getAlignment()
                                 ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER)
                                 ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
                                 ->setWrapText(true);
-                            $sheet->getStyle('A1:N2')->getFont()->setBold(true);
+                            $sheet->getStyle('A1:K2')->getFont()->setBold(true);
 
                             $highestRow = $sheet->getHighestRow();
-                            $sheet->getStyle("A1:N{$highestRow}")
+                            $sheet->getStyle("A1:K{$highestRow}")
                                 ->getBorders()->getAllBorders()
                                 ->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
@@ -492,9 +514,21 @@ class KasubagDataPeminjamanController extends Controller
                         $q->where('p.tipe_peminjaman', 'kendaraan');
                     })
                     ->when(
-                        (!empty($filter['status'])||$filter['status']=='0'),
+                        !empty($filter['status']) ,
                         fn($q) => $q->where('p.status', [
                             $filter['status'],
+                        ])
+                    )
+                    ->when(
+                        !empty($filter['id_kendaraan'])  ,
+                        fn($q) => $q->where('p.id_kendaraan', [
+                            $filter['id_kendaraan'],
+                        ])
+                    )
+                    ->when(
+                        isset($filter['pengembalian_st']),
+                        fn($q) => $q->where('p.pengembalian_st', [
+                            $filter['pengembalian_st'],
                         ])
                     )
                     ->orderBy('p.tanggal', 'asc')

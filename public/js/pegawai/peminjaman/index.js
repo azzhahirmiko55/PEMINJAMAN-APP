@@ -439,31 +439,49 @@ async function showInfoPeminjaman(ds) {
                     : ""
             }
             ${
-                row.extendedProps.no_plat
-                    ? `<div><b>Kendaraan</b> : ${esc(
-                          row.extendedProps.no_plat
-                      )}</div>`
+                row.extendedProps.tipe_peminjaman === "kendaraan"
+                    ? `
+                        ${
+                            row.extendedProps.no_plat
+                                ? `<div><b>Kendaraan</b> : ${esc(
+                                      row.extendedProps.no_plat
+                                  )}</div>`
+                                : ""
+                        }
+                        ${
+                            row.extendedProps.driver
+                                ? `<div><b>Driver</b> : ${esc(
+                                      row.extendedProps.driver
+                                  )}</div>`
+                                : ""
+                        }
+                    `
                     : ""
             }
             ${
-                row.extendedProps.driver
-                    ? `<div><b>Driver</b> : ${esc(
-                          row.extendedProps.driver
-                      )}</div>`
+                row.extendedProps.tipe_peminjaman === "ruangan"
+                    ? `
+                        ${
+                            row.extendedProps.nama_ruangan
+                                ? `<div><b>Ruangan</b> : ${esc(
+                                      row.extendedProps.nama_ruangan
+                                  )}</div>`
+                                : ""
+                        }
+                        `
                     : ""
             }
             ${
-                row.extendedProps.nama_ruangan
-                    ? `<div><b>Ruangan</b> : ${esc(
-                          row.extendedProps.nama_ruangan
-                      )}</div>`
-                    : ""
-            }
-            ${
-                row.extendedProps.keperluan_bbm
-                    ? `<div><b>Ruangan</b> : ${esc(
-                          row.extendedProps.keperluan_bbm
-                      )}</div>`
+                row.extendedProps.tipe_peminjaman === "kendaraan"
+                    ? `
+                        ${
+                            row.extendedProps.keperluan_bbm
+                                ? `<div><b>Ruangan</b> : ${esc(
+                                      row.extendedProps.keperluan_bbm
+                                  )}</div>`
+                                : ""
+                        }
+                        `
                     : ""
             }
             <div style="height:100px;"><b>Keperluan</b> : ${esc(
@@ -495,30 +513,33 @@ async function showInfoPeminjaman(ds) {
                     : ""
             }
             ${
-                row.extendedProps.pengembalian_nm
-                    ? `<div><b>Penerima Pengembalian</b> : ${esc(
-                          row.extendedProps.pengembalian_nm
-                      )}</div>`
-                    : ""
-            }
-            ${
-                row.extendedProps.pengembalian_tgl
-                    ? `<div><b>Tanggal Pengembalian</b> : ${formatTanggalIndonesia(
-                          row.extendedProps.pengembalian_tgl
-                      )}
-                        </div>`
-                    : ""
-            }
-            ${
-                row.extendedProps.pengembalian_catatan
+                row.extendedProps.tipe_peminjaman === "kendaraan"
                     ? `
-                        <div style="min-height:60px;"><b>Catatan</b> : ${esc(
-                            row.extendedProps.pengembalian_catatan
-                        )}</div>
-                        <br><br>
-                    `
+                            ${
+                                row.extendedProps.pengembalian_nm
+                                    ? `<div><b>Penerima Pengembalian</b> : ${esc(
+                                          row.extendedProps.pengembalian_nm
+                                      )}</div>`
+                                    : ""
+                            }
+                            ${
+                                row.extendedProps.pengembalian_tgl
+                                    ? `<div><b>Tanggal Pengembalian</b> : ${formatTanggalIndonesia(
+                                          row.extendedProps.pengembalian_tgl
+                                      )}</div>`
+                                    : ""
+                            }
+                            ${
+                                row.extendedProps.pengembalian_catatan
+                                    ? `<div style="min-height:60px;"><b>Catatan</b> : ${esc(
+                                          row.extendedProps.pengembalian_catatan
+                                      )}</div><br><br>`
+                                    : ""
+                            }
+                        `
                     : ""
             }
+
             </div>
         `;
             })

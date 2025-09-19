@@ -12,6 +12,18 @@
                 @endphp
                 <form action="{{ route('filter.save') }}" method="post" autocomplete="off" class="mb-2">
                     @csrf
+                    <div class="col-md-12 d-flex justify-content-end">
+                        <div class="col-md-3 my-2">
+                            <select class="form-control" name="section_view" id="section-mode"
+                                onchange="this.form.submit()">
+                                <option value="1" {{ $section==='1' ?'selected':'' }}>Calendar</option>
+                                <option value="0" {{ $section==='0' ?'selected':'' }}>List Data Ruangan
+                                </option>
+                                <option value="-1" {{ $section==='-1' ?'selected':'' }}>List Data
+                                    Kendaraan</option>
+                            </select>
+                        </div>
+                    </div>
                     <section id="section-filter " class="{{ $section==='1' ?'d-none':'' }}">
                         <div class="row g-2">
                             <div class="col-md-6">
@@ -26,8 +38,41 @@
                                     value="{{ $filter['tanggal_akhir'] ?? '' }}">
                                 @error('tanggal_akhir')<small class="text-danger">{{ $message }}</small>@enderror
                             </div>
+                            <div class="col-md-6 {{ $section==='-1' ?'':'d-none' }}" id="select-kendaraan">
+                                <label class="form-label">Kendaraan</label>
+                                <select name="id_kendaraan" class="form-control" id="">
+                                    <option value="" {{ isset($filter['id_kendaraan'])?'':'selected' }}>-- Semua
+                                        Kendaraan --
+                                    </option>
+                                    @foreach ($mst_kendaraan as $item)
+                                    <option value="{{ $item->id_kendaraan }}" {{ ($filter['id_kendaraan']??'')==$item->
+                                        id_kendaraan
+                                        ? 'selected' : '' }}>
+                                        {{ $item->no_plat.' - '.$item->jenis_kendaraan }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                                @error('id_kendaraan')<small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
+                            <div class="col-md-6 {{ $section==='0' ?'':'d-none' }}" id="select-ruangan">
+                                <label class="form-label">Ruangan</label>
+                                <select name="id_ruangan" class="form-control" id="">
+                                    <option value="" {{ empty($filter['id_ruangan'])?'selected':'' }}>-- Semua Ruangan
+                                        --
+                                    </option>
+                                    @foreach ($mst_ruangan as $item1)
+                                    <option value="{{ $item1->id_ruangrapat }}" {{ ($filter['id_ruangan']??'')==$item1->
+                                        id_ruangrapat
+                                        ? 'selected' : '' }}>
+                                        {{ $item1->nama_ruangan.' - '.$item1->warna_ruangan }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                                @error('id_ruangan')<small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
                             <div class="col-md-6 my-2">
-                                <select class="form-control text-center" name="status">
+                                <label class="form-label">Status Peminjaman</label>
+                                <select class="form-control text-start" name="status">
                                     <option value="" {{ $status==='' ?'selected':'' }}>--- Semua Status ---
                                     </option>
                                     <option value="1" {{ $status==='1' ?'selected':'' }}>Disetujui
@@ -52,18 +97,6 @@
                             </button>
                         </div>
                     </section>
-                    <div class="col-md-12 d-flex justify-content-end">
-                        <div class="col-md-3 my-2">
-                            <select class="form-control" name="section_view" id="section-mode"
-                                onchange="this.form.submit()">
-                                <option value="1" {{ $section==='1' ?'selected':'' }}>Calendar</option>
-                                <option value="0" {{ $section==='0' ?'selected':'' }}>List Data Ruangan
-                                </option>
-                                <option value="-1" {{ $section==='-1' ?'selected':'' }}>List Data
-                                    Kendaraan</option>
-                            </select>
-                        </div>
-                    </div>
                 </form>
             </div>
         </div>

@@ -159,6 +159,7 @@ class SatpamPengembalianContoller extends Controller
                             )
                             ->where('tb_peminjaman.active_st', 1)
                             ->where('tb_peminjaman.status', 1)
+                            ->where('tb_peminjaman.tipe_peminjaman', 'kendaraan')
                             ;
 
         // if(isset($tanggal)){

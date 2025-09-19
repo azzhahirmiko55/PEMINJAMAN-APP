@@ -35,6 +35,7 @@ class Tb_peminjaman extends Model
         'jumlah_peserta',
         'status',
         'active_st',
+        'detail_lokasi',
     ];
 
     /**

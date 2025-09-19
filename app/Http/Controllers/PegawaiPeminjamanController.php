@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class PegawaiPeminjamanController extends Controller
 {
@@ -94,13 +95,15 @@ class PegawaiPeminjamanController extends Controller
                                 ->leftJoin('tb_peminjaman', function($join) use ($tanggal_calendar) {
                                     $join->on('tb_kendaraan.id_kendaraan', '=', 'tb_peminjaman.id_kendaraan')
                                         ->whereDate('tb_peminjaman.tanggal', $tanggal_calendar)
-                                        ->where('tb_peminjaman.status', 1)
                                         ->where('tb_peminjaman.tipe_peminjaman', 'kendaraan');
                                 })
-                                ->whereNull('tb_peminjaman.id_peminjaman')
+                                // ->whereNull('tb_peminjaman.id_peminjaman')
                                 ->select('tb_kendaraan.*')
                                 ->orderBy('no_plat', 'ASC')
                                 ->get();
+        if (empty($dPegawaiPeminjamanKendaraan)) {
+            $dKendaraan->where('tb_peminjaman.status', 1);
+        }
         $dRuangan = Ruangan::where('tb_ruang_rapat.active_st', 1)
                             ->leftJoin('tb_peminjaman', function($join) use ($tanggal_calendar) {
                                 $join->on('tb_ruang_rapat.id_ruangrapat', '=', 'tb_peminjaman.id_ruangan')
@@ -108,10 +111,13 @@ class PegawaiPeminjamanController extends Controller
                                     ->where('tb_peminjaman.status', 1)
                                     ->where('tb_peminjaman.tipe_peminjaman', 'ruangan');
                             })
-                            ->whereNull('tb_peminjaman.id_peminjaman')
+                            // ->whereNull('tb_peminjaman.id_peminjaman')
                             ->select('tb_ruang_rapat.*')
                             ->orderBy('nama_ruangan', 'ASC')
                             ->get();
+        if (empty($dPegawaiPeminjamanRuangan)) {
+            $dRuangan->where('tb_peminjaman.status', 1);
+        }
         return view('pegawai.peminjaman.form_modal',compact('dPegawaiPeminjamanKendaraan','dPegawaiPeminjamanRuangan','dPegawai','dKendaraan','dRuangan','tanggal_calendar','type'));
     }
 
@@ -147,6 +153,7 @@ class PegawaiPeminjamanController extends Controller
             'jumlah_peserta' => 'nullable',
             'keperluan_bbm' => 'nullable',
             'keperluan_option' => 'required',
+            'detail_lokasi' => 'nullable',
         ]);
         if($request->tipe_peminjaman === '1'){
             $request->validate([
@@ -173,6 +180,7 @@ class PegawaiPeminjamanController extends Controller
         $PegawaiPeminjaman->keperluan_bbm = $request->keperluan_bbm;
         $PegawaiPeminjaman->driver = $request->driver;
         $PegawaiPeminjaman->jumlah_peserta = $request->jumlah_peserta;
+        $PegawaiPeminjaman->detail_lokasi = $request->detail_lokasi;
         $PegawaiPeminjaman->save();
 
         return response()->json([
@@ -306,36 +314,147 @@ class PegawaiPeminjamanController extends Controller
 
     public function getKetersediaan($type,$date){
         // dd($type,$date);
-        $main = [];
-        $dKendaraan = KendaraanV2::where('tb_kendaraan.active_st', 1)
-                                ->leftJoin('tb_peminjaman', function($join) use ($date) {
-                                    $join->on('tb_kendaraan.id_kendaraan', '=', 'tb_peminjaman.id_kendaraan')
-                                        ->whereDate('tb_peminjaman.tanggal', $date)
-                                        // ->where('tb_peminjaman.status', 1)
-                                        ->where('tb_peminjaman.tipe_peminjaman', 'kendaraan');
-                                })
-                                // ->whereNull('tb_peminjaman.id_peminjaman')
-                                ->select('tb_kendaraan.*','tb_peminjaman.*')
-                                // ->orderBy('no_plat', 'ASC')
-                                ->orderBy('jenis_kendaraan', 'ASC')
-                                ->get();
-        $dRuangan = Ruangan::where('tb_ruang_rapat.active_st', 1)
-                            ->leftJoin('tb_peminjaman', function($join) use ($date) {
-                                $join->on('tb_ruang_rapat.id_ruangrapat', '=', 'tb_peminjaman.id_ruangan')
-                                    ->whereDate('tb_peminjaman.tanggal', $date)
-                                    // ->where('tb_peminjaman.status', 1)
-                                    ->where('tb_peminjaman.tipe_peminjaman', 'ruangan');
-                            })
-                            ->whereNull('tb_peminjaman.id_peminjaman')
-                            ->select('tb_ruang_rapat.*','tb_peminjaman.*')
-                            ->orderBy('nama_ruangan', 'ASC')
-                            ->get();
-        if($type === 'kendaraan'){
-            $main = $dKendaraan;
-        }else if ($type === 'ruangan'){
-            $main = $dRuangan;
+        // $main = [];
+        // $dKendaraan = KendaraanV2::where('tb_kendaraan.active_st', 1)
+        //                         ->leftJoin('tb_peminjaman', function($join) use ($date) {
+        //                             $join->on('tb_kendaraan.id_kendaraan', '=', 'tb_peminjaman.id_kendaraan')
+        //                                 ->whereDate('tb_peminjaman.tanggal', $date)
+        //                                 // ->where('tb_peminjaman.status', 1)
+        //                                 ->where('tb_peminjaman.tipe_peminjaman', 'kendaraan');
+        //                         })
+        //                         // ->whereNull('tb_peminjaman.id_peminjaman')
+        //                         ->select('tb_kendaraan.*','tb_peminjaman.*')
+        //                         // ->orderBy('no_plat', 'ASC')
+        //                         ->orderBy('jenis_kendaraan', 'ASC')
+        //                         ->get();
+        // $dRuangan = Ruangan::where('tb_ruang_rapat.active_st', 1)
+        //                     ->leftJoin('tb_peminjaman', function($join) use ($date) {
+        //                         $join->on('tb_ruang_rapat.id_ruangrapat', '=', 'tb_peminjaman.id_ruangan')
+        //                             ->whereDate('tb_peminjaman.tanggal', $date)
+        //                             // ->where('tb_peminjaman.status', 1)
+        //                             ->where('tb_peminjaman.tipe_peminjaman', 'ruangan');
+        //                     })
+        //                     // ->whereNull('tb_peminjaman.id_peminjaman')
+        //                     ->select('tb_ruang_rapat.*','tb_peminjaman.*')
+        //                     ->orderBy('nama_ruangan', 'ASC')
+        //                     ->get();
+        // if($type === 'kendaraan'){
+        //     $main = $dKendaraan;
+        // }else if ($type === 'ruangan'){
+        //     $main = $dRuangan;
+        // }
+
+        // return view('pegawai.peminjaman.form_ketersediaan',compact('main','date','type'));
+
+        // window 07:00–15:00
+        $windowStart = '07:00:00';
+        $windowEnd   = '17:00:00';
+
+        if ($type === 'kendaraan') {
+            $resources = KendaraanV2::where('tb_kendaraan.active_st', 1)
+                ->select('tb_kendaraan.id_kendaraan as id','tb_kendaraan.no_plat','tb_kendaraan.jenis_kendaraan')
+                ->orderBy('jenis_kendaraan','ASC')
+                ->get();
+            $fk = 'id_kendaraan';
+            $tipePinjam = 'kendaraan';
+            $makeLabel = function($r){ return ($r->no_plat).' - '.($r->jenis_kendaraan); };
+        } else {
+            $resources = Ruangan::where('tb_ruang_rapat.active_st', 1)
+                ->select('tb_ruang_rapat.id_ruangrapat as id','tb_ruang_rapat.nama_ruangan','tb_ruang_rapat.warna_ruangan')
+                ->orderBy('nama_ruangan','ASC')
+                ->get();
+            $fk = 'id_ruangan';
+            $tipePinjam = 'ruangan';
+            $makeLabel = function($r){ return ($r->nama_ruangan).' - '.($r->warna_ruangan); };
         }
 
-        return view('pegawai.peminjaman.form_ketersediaan',compact('main','date','type'));
+        // AMBIL BOOKING: hanya kolom yang ADA di tabel Anda
+       $bookingsAll = DB::table('tb_peminjaman')
+                        ->leftJoin('tb_pegawai as pe', 'pe.id_pegawai', '=', 'tb_peminjaman.id_peminjam')
+                        // ->leftJoin('tb_pegawai as ve', 've.id_pegawai', '=', 'tb_peminjaman.id_verifikator')
+                        // ->leftJoin('tb_pegawai as png', 'png.id_pegawai', '=', 'tb_peminjaman.pengembalian_pegawai_id')
+                        ->whereDate('tb_peminjaman.tanggal', $date)
+                        ->where('tb_peminjaman.tipe_peminjaman', $tipePinjam)
+                        ->select(
+                            'tb_peminjaman.id_peminjaman',
+                            DB::raw("tb_peminjaman.$fk as $fk"), // penting: nama kolom tetap id_kendaraan/id_ruangan
+                            'tb_peminjaman.jam_mulai',
+                            'tb_peminjaman.jam_selesai',
+                            'tb_peminjaman.id_peminjam',
+                            DB::raw('pe.nama_pegawai as nama_peminjam')
+                            // (opsional)
+                            // , DB::raw('ve.nama_pegawai as nama_verifikator')
+                            // , DB::raw('png.nama_pegawai as nama_pengembali')
+                        )
+                        ->get()
+                        ->groupBy($fk);
+
+
+        // helper ambil menit dari kolom datetime/time
+        $toMin = function($t){
+            if (!$t) return null;
+            // dukung format 'HH:MM:SS' atau 'YYYY-MM-DD HH:MM:SS'
+            $time = strlen($t) >= 16 ? substr($t, 11, 5) : substr($t, 0, 5);
+            [$h,$m] = array_pad(explode(':', $time), 2, '00');
+            return ((int)$h)*60 + (int)$m;
+        };
+        $winS = $toMin($windowStart);
+        $winE = $toMin($windowEnd);
+
+        $tersedia = [];
+        $terbatas = [];
+        $terpakai = [];
+
+        foreach ($resources as $r) {
+            $label = $makeLabel($r);
+
+            $bks = ($bookingsAll->get($r->id) ?? collect())->map(function($b) use ($toMin,$winS,$winE){
+                $s = max($toMin($b->jam_mulai), $winS);
+                $e = min($toMin($b->jam_selesai), $winE);
+                return ($e > $s) ? [
+                    'id'          => $b->id_peminjaman,
+                    // belum ada nama → pakai placeholder; ganti via join jika perlu
+                    'peminjam'    => $b->nama_peminjam,
+                    'jam_mulai'   => (strlen($b->jam_mulai) >= 16 ? substr($b->jam_mulai,11,5) : substr($b->jam_mulai,0,5)),
+                    'jam_selesai' => (strlen($b->jam_selesai) >= 16 ? substr($b->jam_selesai,11,5) : substr($b->jam_selesai,0,5)),
+                    's' => $s, 'e' => $e,
+                ] : null;
+            })->filter()->values()->all();
+
+            if (empty($bks)) {
+                $tersedia[] = ['label'=>$label, 'bookings'=>[]];
+                continue;
+            }
+
+            // merge intervals
+            usort($bks, fn($a,$b)=> $a['s'] <=> $b['s']);
+            $merged = [];
+            foreach ($bks as $bk) {
+                if (empty($merged)) { $merged[] = [$bk['s'],$bk['e']]; continue; }
+                $last = $merged[count($merged)-1];
+                if ($bk['s'] <= $last[1]) {
+                    $merged[count($merged)-1] = [$last[0], max($last[1], $bk['e'])];
+                } else {
+                    $merged[] = [$bk['s'],$bk['e']];
+                }
+            }
+
+            // cek coverage penuh 07–15
+            $cursor = $winS;
+            foreach ($merged as $m) {
+                if ($m[0] > $cursor) break;   // ada celah
+                $cursor = max($cursor, $m[1]);
+                if ($cursor >= $winE) break; // sudah penuh
+            }
+            if ($cursor >= $winE) {
+                $terpakai[] = ['label'=>$label, 'bookings'=>$bks];
+            } else {
+                $terbatas[] = ['label'=>$label, 'bookings'=>$bks];
+            }
+        }
+
+        return view('pegawai.peminjaman.form_ketersediaan', compact(
+            'type','date','tersedia','terbatas','terpakai','windowStart','windowEnd'
+        ));
     }
 }

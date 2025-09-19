@@ -35,6 +35,7 @@ class CreateTbPeminjaman extends Migration
             $table->dateTime('pengembalian_tgl')->nullable();
             $table->unsignedBigInteger('pengembalian_pegawai_id')->nullable();
             $table->text('pengembalian_catatan')->nullable();
+            $table->text('detail_lokasi')->nullable();
             // $table->text('pengembalian_bukti')->nullable();
             $table->timestamps();
         });
