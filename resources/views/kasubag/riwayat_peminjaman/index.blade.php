@@ -405,7 +405,7 @@
                         </button>
                     </form>
 
-                    <form action="{{ route('kasubag.data.peminjaman.export_ruangan') }}" method="post" target="_blank">
+                    {{-- <form action="{{ route('kasubag.data.peminjaman.export_ruangan') }}" method="post" target="_blank">
                         @csrf
                         <button class="btn btn-danger">
                             <svg class="pc-icon" style="width:14px; height:14px; fill:currentColor;">
@@ -413,7 +413,7 @@
                             </svg>&nbsp;
                             Export PDF
                         </button>
-                    </form>
+                    </form> --}}
                 </div>
             </div>
             <div class="card-body">
@@ -590,7 +590,7 @@
                             Export Data
                         </button>
                     </form>
-                    <form action="{{ route('kasubag.data.peminjaman.export_ruangan') }}" method="post" target="_blank">
+                    {{-- <form action="{{ route('kasubag.data.peminjaman.export_ruangan') }}" method="post" target="_blank">
                         @csrf
                         <button class="btn btn-danger">
                             <svg class="pc-icon" style="width:14px; height:14px; fill:currentColor;">
@@ -598,7 +598,7 @@
                             </svg>&nbsp;
                             Export PDF
                         </button>
-                    </form>
+                    </form> --}}
                 </div>
             </div>
             <div class="card-body">
