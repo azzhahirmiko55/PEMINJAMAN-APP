@@ -282,8 +282,77 @@
             </div>
             @endif
         </div>
+        @if ($user->role !== 3)
+        <div class="card">
+            <div class="card-header">
+                <h4>Laporan Peminjaman Tahun {{ $year }}</h4>
+            </div>
+            <div class="card-body">
+                <div class="container row">
+                    <div class="col-lg-6">
+                        <div id="chartKendaraan" class="m-4"></div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div id="chartRuangan" class="m-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
 </div>
 
 
 @endsection
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    // mapping angka → bulan
+    const monthNames = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+
+    // ========================
+    // Kendaraan
+    // ========================
+    let kendaraanData = @json($chartkendaraan);
+
+    let kendaraanCategories   = kendaraanData.map(r => monthNames[r.bulan - 1]);
+    let kendaraanTotal        = kendaraanData.map(r => r.total_peminjaman);
+    let kendaraanDisetujui    = kendaraanData.map(r => r.total_disetujui);
+    let kendaraanTolak        = kendaraanData.map(r => r.total_tolak);
+    let kendaraanPengembalian = kendaraanData.map(r => r.total_pengembalian);
+
+    var optionsKendaraan = {
+        chart: { type: 'line', height: 300 },
+        stroke: { curve: 'smooth' },
+        xaxis: { categories: kendaraanCategories },
+        series: [
+            { name: 'Total Peminjaman', data: kendaraanTotal },
+            { name: 'Total Disetujui',  data: kendaraanDisetujui },
+            { name: 'Total Ditolak',    data: kendaraanTolak },
+            { name: 'Total Pengembalian', data: kendaraanPengembalian },
+        ]
+    };
+    new ApexCharts(document.querySelector("#chartKendaraan"), optionsKendaraan).render();
+
+    // ========================
+    // Ruangan
+    // ========================
+    let ruanganData = @json($chartruangan);
+
+    let ruanganCategories = ruanganData.map(r => monthNames[r.bulan - 1]);
+    let ruanganTotal      = ruanganData.map(r => r.total_peminjaman);
+    let ruanganDisetujui  = ruanganData.map(r => r.total_disetujui);
+    let ruanganTolak      = ruanganData.map(r => r.total_tolak);
+
+    var optionsRuangan = {
+        chart: { type: 'line', height: 300 },
+        stroke: { curve: 'smooth' },
+        xaxis: { categories: ruanganCategories },
+        series: [
+            { name: 'Total Peminjaman', data: ruanganTotal },
+            { name: 'Total Disetujui',  data: ruanganDisetujui },
+            { name: 'Total Ditolak',    data: ruanganTolak },
+        ]
+    };
+    new ApexCharts(document.querySelector("#chartRuangan"), optionsRuangan).render();
+});
+</script>

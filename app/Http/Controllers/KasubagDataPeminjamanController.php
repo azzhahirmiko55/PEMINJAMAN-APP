@@ -87,12 +87,19 @@ class KasubagDataPeminjamanController extends Controller
                             $filter['pengembalian_st'],
                         ])
                     )
+                    ->when(
+                        !empty($filter['id_peminjam']) ,
+                        fn($q) => $q->where('p.id_peminjam', [
+                            $filter['id_peminjam'],
+                        ])
+                    )
                     ->orderBy('p.tanggal', 'asc')
                     ->orderBy('p.jam_mulai', 'asc')
                     ->get()
         ;
         $mst_kendaraan = KendaraanV2::all()->where('active_st',1);
         $mst_ruangan = Ruangan::all()->where('active_st',1);
+        $mst_pegawai = Pegawai::all()->where('active_st',1);
         return view('kasubag.riwayat_peminjaman.index', [
             "page"  => "Data Riwayat Peminjaman",
             'js_script' => 'js/kasubag/riwayatpeminjaman/index.js',
@@ -100,6 +107,7 @@ class KasubagDataPeminjamanController extends Controller
             'filter' => $filter,
             'mst_kendaraan' => $mst_kendaraan,
             'mst_ruangan' => $mst_ruangan,
+            'mst_pegawai' => $mst_pegawai,
         ]);
     }
 
@@ -363,6 +371,12 @@ class KasubagDataPeminjamanController extends Controller
                             $filter['id_ruangan'],
                         ])
                     )
+                    ->when(
+                        !empty($filter['id_peminjam']) ,
+                        fn($q) => $q->where('p.id_peminjam', [
+                            $filter['id_peminjam'],
+                        ])
+                    )
                     ->orderBy('p.tanggal', 'asc')
                     ->orderBy('p.jam_mulai', 'asc')
                     ->get()
@@ -529,6 +543,12 @@ class KasubagDataPeminjamanController extends Controller
                         isset($filter['pengembalian_st']),
                         fn($q) => $q->where('p.pengembalian_st', [
                             $filter['pengembalian_st'],
+                        ])
+                    )
+                    ->when(
+                        !empty($filter['id_peminjam']) ,
+                        fn($q) => $q->where('p.id_peminjam', [
+                            $filter['id_peminjam'],
                         ])
                     )
                     ->orderBy('p.tanggal', 'asc')

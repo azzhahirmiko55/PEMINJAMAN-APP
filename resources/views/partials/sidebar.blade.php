@@ -230,6 +230,16 @@
                         <span class="pc-mtext">Riwayat Peminjaman</span>
                     </a>
                 </li>
+                <li class="pc-item">
+                    <a href="{{ route('kasubag.pelaporan.peminjaman') }}" class="pc-link">
+                        <span class="pc-micon">
+                            <svg class="pc-icon">
+                                <use xlink:href="#account-book"></use>
+                            </svg>
+                        </span>
+                        <span class="pc-mtext">Pelaporan Peminjaman</span>
+                    </a>
+                </li>
                 @endif
 
                 {{-- <li class="pc-item pc-caption">

@@ -75,6 +75,40 @@ class DashboardController extends Controller
             ->orderByDesc('tb_peminjaman.tanggal')
             ->get();
 
+        $year = date('Y');
+
+        // ambil data kendaraan
+        $chartkendaraan = DB::table('tb_peminjaman')
+            ->selectRaw('MONTH(tanggal) as bulan,
+                         COUNT(*) as total_peminjaman,
+                         SUM(CASE WHEN status= 1 THEN 1 ELSE 0 END) as total_disetujui,
+                         SUM(CASE WHEN status= -1 THEN 1 ELSE 0 END) as total_tolak,
+                         SUM(CASE WHEN pengembalian_st=1 THEN 1 ELSE 0 END) as total_pengembalian')
+            ->where('tipe_peminjaman', 'kendaraan')
+            ->when($user->role === 4, function ($q) use ($user) {
+                $q->where('tb_peminjaman.id_peminjam', $user->id_pegawai);
+            })
+            ->whereYear('tanggal', $year)
+            ->groupBy('bulan')
+            ->get()
+            ->toArray();
+
+        // ambil data ruangan
+        $chartruangan = DB::table('tb_peminjaman')
+            ->selectRaw('MONTH(tanggal) as bulan,
+                         COUNT(*) as total_peminjaman,
+                         SUM(CASE WHEN status=1 THEN 1 ELSE 0 END) as total_disetujui,
+                         SUM(CASE WHEN status=2 THEN 1 ELSE 0 END) as total_tolak')
+            ->where('tipe_peminjaman', 'ruangan')
+            ->when($user->role === 4, function ($q) use ($user) {
+                $q->where('tb_peminjaman.id_peminjam', $user->id_pegawai);
+            })
+            ->whereYear('tanggal', $year)
+            ->groupBy('bulan')
+            ->get()
+            ->toArray();
+
+        // dd($chartkendaraan,$chartruangan);
 
         return view('dashboard_mantis', [
             "page"  => "Dashboard",
@@ -86,6 +120,9 @@ class DashboardController extends Controller
             'totalRuangan'=>$totalRuangan,
             'peminjamanToday'=>$peminjamanToday,
             'totalPengembalian'=>$totalPengembalian,
+            'year'=>$year,
+            'chartkendaraan'=>$chartkendaraan,
+            'chartruangan'=>$chartruangan,
         ]);
     }
     public static function indexuser()

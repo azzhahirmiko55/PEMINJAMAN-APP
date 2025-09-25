@@ -59,6 +59,12 @@ class StaffTUPelaporanPeminjamanController extends Controller
                     $filter['id_peminjam'],
                 ])
             )
+            ->when(
+                !empty($filter['id_ruangan']) && ($filter['section_view']??'') ==0 ,
+                fn($q) => $q->where('p.id_ruangan', [
+                    $filter['id_ruangan'],
+                ])
+            )
             ->selectRaw("
                 pg.id_pegawai,
                 COALESCE(pg.nama_pegawai, '-') AS nama_pegawai,
@@ -92,6 +98,12 @@ class StaffTUPelaporanPeminjamanController extends Controller
                     $filter['id_peminjam'],
                 ])
             )
+            ->when(
+                !empty($filter['id_kendaraan']) && ($filter['section_view']??'') ==-1 ,
+                fn($q) => $q->where('p.id_kendaraan', [
+                    $filter['id_kendaraan'],
+                ])
+            )
             ->selectRaw("
                 pg.id_pegawai,
                 COALESCE(pg.nama_pegawai, '-') AS nama_pegawai,
@@ -108,13 +120,16 @@ class StaffTUPelaporanPeminjamanController extends Controller
             ->get();
 
         $mst_pegawai = Pegawai::all()->where('active_st',1);
-
+        $mst_kendaraan = KendaraanV2::all()->where('active_st',1);
+        $mst_ruangan = Ruangan::all()->where('active_st',1);
         return view('staff.pelaporan_peminjaman.index', [
             "page"  => "Data Pelaporan Peminjaman",
             'js_script' => 'js/staff/pelaporanpeminjaman/index.js',
             'dRekapRuangan' => $dRekapRuangan,
             'dRekapKendaraan' => $dRekapKendaraan,
             'filter' => $filter,
+            'mst_kendaraan' => $mst_kendaraan,
+            'mst_ruangan' => $mst_ruangan,
             'mst_pegawai' => $mst_pegawai,
         ]);
     }
@@ -185,10 +200,9 @@ class StaffTUPelaporanPeminjamanController extends Controller
         //
     }
 
-     public function exportRuangan(Request $request)
+    public function exportRuangan(Request $request)
     {
         $filter = FilterController::current();
-
         $awal  = $filter['tanggal_awal'] ?? null;
         $akhir = $filter['tanggal_akhir'] ?? null;
 
@@ -209,6 +223,12 @@ class StaffTUPelaporanPeminjamanController extends Controller
                 !empty($filter['id_peminjam']) ,
                 fn($q) => $q->where('p.id_peminjam', [
                     $filter['id_peminjam'],
+                ])
+            )
+            ->when(
+                !empty($filter['id_ruangan']) && ($filter['section_view']??'') ==0 ,
+                fn($q) => $q->where('p.id_ruangan', [
+                    $filter['id_ruangan'],
                 ])
             )
             ->selectRaw("
@@ -232,7 +252,7 @@ class StaffTUPelaporanPeminjamanController extends Controller
         $pdf = Pdf::loadView('staff.pelaporan_peminjaman.cetak_laporan_ruangan', [
             'dRekapRuangan' => $dRekapRuangan,
             'periodeLabel'  => $periodeLabel,
-            'printedAt'     => now()->format('d/m/Y H:i'),
+            'printedAt'     => now()->locale('id')->translatedFormat('d F Y'),
         ])->setPaper('a4', 'landscape');
 
         $filename = 'Pelaporan_Peminjaman_Ruangan_' . now()->format('Ymd_His') . '.pdf';
@@ -240,7 +260,7 @@ class StaffTUPelaporanPeminjamanController extends Controller
         return $pdf->stream($filename);
     }
 
-     public function exportKendaraan(Request $request)
+    public function exportKendaraan(Request $request)
     {
         $filter = FilterController::current();
 
@@ -266,6 +286,12 @@ class StaffTUPelaporanPeminjamanController extends Controller
                     $filter['id_peminjam'],
                 ])
             )
+            ->when(
+                !empty($filter['id_kendaraan']) && ($filter['section_view']??'') ==-1 ,
+                fn($q) => $q->where('p.id_kendaraan', [
+                    $filter['id_kendaraan'],
+                ])
+            )
             ->selectRaw("
                 pg.id_pegawai,
                 COALESCE(pg.nama_pegawai,'-') AS nama_pegawai,
@@ -288,7 +314,7 @@ class StaffTUPelaporanPeminjamanController extends Controller
         $pdf = Pdf::loadView('staff.pelaporan_peminjaman.cetak_laporan_kendaraan', [
             'dRekapKendaraan' => $dRekapKendaraan,
             'periodeLabel'    => $periodeLabel,
-            'printedAt'       => now()->format('d/m/Y H:i'),
+            'printedAt'       => now()->locale('id')->translatedFormat('d F Y'),
         ])->setPaper('a4', 'landscape');
 
         $filename = 'Pelaporan_Peminjaman_Kendaraan_' . now()->format('Ymd_His') . '.pdf';

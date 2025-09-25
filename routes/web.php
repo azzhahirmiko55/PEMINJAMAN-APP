@@ -106,7 +106,6 @@ Route::get('/getKetersediaan/{type}/{date}', [PegawaiPeminjamanController::class
 # Start Staff TU Session #
 Route::resource('staff-verifikasi-peminjaman', StaffTuVerifikasiPeminjamanController::class)->name('index', 'staff.verifikasi.peminjaman')->middleware(['IsLogin','IsStaff']);
 Route::get('/getDataStaffVerifikasiPeminjaman', [StaffTuVerifikasiPeminjamanController::class, 'getDataStaffVerifikasiPeminjaman'])->middleware(['IsLogin','IsStaff']);
-# Start Staff TU Session #
 Route::resource('staff-riwayat-peminjaman', StaffTuRiwayatPeminjamanController::class)->name('index', 'staff.riwayat.peminjaman')->middleware(['IsLogin','IsStaff']);
 Route::post('/staff-riwayat-peminjaman/export', [StaffTuRiwayatPeminjamanController::class,'export_excel'])->name('staff.riwayat.peminjaman.export')->middleware(['IsLogin','IsStaff']);
 // Route::get('/getDataPegawaiPeminjaman', [PegawaiPeminjamanController::class, 'getDataPegawaiPeminjaman'])->middleware(['IsLogin','IsPegawai']);
@@ -134,6 +133,13 @@ Route::post('/kasubag-data-peminjaman/export', [KasubagDataPeminjamanController:
 Route::post('/kasubag-data-peminjaman/export_ruangan', [KasubagDataPeminjamanController::class,'export_excel_ruangan'])->name('kasubag.data.peminjaman.export_ruangan')->middleware(['IsLogin','IsKasubag']);
 Route::post('/kasubag-data-peminjaman/export_kendaraan', [KasubagDataPeminjamanController::class,'export_excel_kendaraan'])->name('kasubag.data.peminjaman.export_kendaraan')->middleware(['IsLogin','IsKasubag']);
 Route::get('/getDataKasubagPeminjaman', [KasubagDataPeminjamanController::class, 'getDataKasubagPeminjaman'])->middleware(['IsLogin','IsKasubag']);
+Route::resource('kasubag-pelaporan-peminjaman', StaffTUPelaporanPeminjamanController::class)->name('index', 'kasubag.pelaporan.peminjaman')->middleware(['IsLogin','IsKasubag']);
+Route::post('kasubag/pelaporan/peminjaman/export-ruangan', [StaffTUPelaporanPeminjamanController::class, 'exportRuangan'])
+    ->name('kasubag.pelaporan.peminjaman.export_ruangan')
+    ->middleware(['IsLogin','IsKasubag']);
+Route::post('kasubag/pelaporan/peminjaman/export-kendaraan', [StaffTUPelaporanPeminjamanController::class, 'exportKendaraan'])
+    ->name('kasubag.pelaporan.peminjaman.export_kendaraan')
+    ->middleware(['IsLogin','IsKasubag']);
 // Route::get('/getDataPegawaiPeminjaman', [PegawaiPeminjamanController::class, 'getDataPegawaiPeminjaman'])->middleware(['IsLogin','IsPegawai']);
 # End Kasubag Session #
 

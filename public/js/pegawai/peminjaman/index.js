@@ -50,87 +50,90 @@ const loadCalendar = () => {
                     icon: "warning",
                 });
             } else {
-                const tanggalLabel = res.start.toLocaleDateString("id-ID", {
-                    weekday: "long",
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                });
+                $.getJSON("/getDataPegawaiPeminjaman", {
+                    tanggal: res.startStr,
+                })
+                    .done(function (data) {
+                        const rows = Array.isArray(data) ? data : [];
+                        tipe_peminjaman = rows.map(
+                            (r) => r.extendedProps.tipe_peminjaman
+                        );
 
-                // Swal.fire({
-                //     title: "Detail Peminjaman",
-                //     html: `<p class="mb-3">${tanggalLabel}</p>`,
-                //     icon: "info",
-                //     confirmButtonText:
-                //         '<i class="ti ti-plus me-1"></i> Ajukan Peminjaman',
-                //     showCancelButton: true,
-                //     cancelButtonText: "Batal",
-                //     showConfirmButton: true,
-                // }).then((result) => {
-                //     if (!result.isConfirmed) return;
+                        const tanggalLabel = res.start.toLocaleDateString(
+                            "id-ID",
+                            {
+                                weekday: "long",
+                                day: "numeric",
+                                month: "long",
+                                year: "numeric",
+                            }
+                        );
 
-                //     const a = document.createElement("a");
-                //     a.href = "#!";
-                //     a.setAttribute("data-modal", "");
-                //     a.setAttribute("data-title", "Form Peminjaman");
-                //     a.setAttribute(
-                //         "data-url",
-                //         `/pegawai-peminjaman/add?tanggal=${res.startStr}`
-                //     );
-                //     document.body.appendChild(a);
-                //     a.click();
-                //     a.remove();
-                // });
-                Swal.fire({
-                    title: "Detail Peminjaman",
-                    html: `
+                        Swal.fire({
+                            title: "Detail Peminjaman",
+                            html: `
                             <p class="mb-3">${tanggalLabel}</p>
                             <div class="d-flex justify-content-center gap-2">
-                            <button id="btnKendaraan" class="swal2-confirm swal2-styled">
+                            <button id="btnKendaraan" class="swal2-confirm swal2-styled ${
+                                !tipe_peminjaman[0] ||
+                                tipe_peminjaman[0] === "kendaraan"
+                                    ? ""
+                                    : "d-none"
+                            }">
                                 🚗 Peminjaman Kendaraan
                             </button>
-                            <button id="btnRuangan" class="swal2-deny swal2-styled">
+
+                            <button id="btnRuangan" class="swal2-deny swal2-styled ${
+                                !tipe_peminjaman[0] ||
+                                tipe_peminjaman[0] === "ruangan"
+                                    ? ""
+                                    : "d-none"
+                            }">
                                 🏢 Peminjaman Ruangan
                             </button>
                             </div>
                         `,
-                    icon: "info",
-                    showCancelButton: true,
-                    cancelButtonText: "Batal",
-                    showConfirmButton: false, // tombol default Swal disembunyikan
-                    didOpen: () => {
-                        // tombol kendaraan
-                        document
-                            .getElementById("btnKendaraan")
-                            .addEventListener("click", () => {
-                                openModal("kendaraan");
-                                Swal.close();
-                            });
-                        // tombol ruangan
-                        document
-                            .getElementById("btnRuangan")
-                            .addEventListener("click", () => {
-                                openModal("ruangan");
-                                Swal.close();
-                            });
-                    },
-                });
+                            icon: "info",
+                            showCancelButton: true,
+                            cancelButtonText: "Batal",
+                            showConfirmButton: false, // tombol default Swal disembunyikan
+                            didOpen: () => {
+                                // tombol kendaraan
+                                document
+                                    .getElementById("btnKendaraan")
+                                    .addEventListener("click", () => {
+                                        openModal("kendaraan");
+                                        Swal.close();
+                                    });
+                                // tombol ruangan
+                                document
+                                    .getElementById("btnRuangan")
+                                    .addEventListener("click", () => {
+                                        openModal("ruangan");
+                                        Swal.close();
+                                    });
+                            },
+                        });
 
-                function openModal(type) {
-                    const a = document.createElement("a");
-                    a.href = "#!";
-                    a.setAttribute("data-modal", "");
-                    a.setAttribute("data-title", "Form Peminjaman");
-                    a.setAttribute(
-                        "data-url",
-                        `/pegawai-peminjaman/add?tanggal=${encodeURIComponent(
-                            res.startStr
-                        )}&type=${type}`
-                    );
-                    document.body.appendChild(a);
-                    a.click();
-                    a.remove();
-                }
+                        function openModal(type) {
+                            const a = document.createElement("a");
+                            a.href = "#!";
+                            a.setAttribute("data-modal", "");
+                            a.setAttribute("data-title", "Form Peminjaman");
+                            a.setAttribute(
+                                "data-url",
+                                `/pegawai-peminjaman/add?tanggal=${encodeURIComponent(
+                                    res.startStr
+                                )}&type=${type}`
+                            );
+                            document.body.appendChild(a);
+                            a.click();
+                            a.remove();
+                        }
+                    })
+                    .fail(function (xhr, status, error) {
+                        console.error("Gagal ambil data:", error);
+                    });
             }
         },
         eventClick: function (res) {

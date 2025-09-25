@@ -73,12 +73,19 @@ class StaffTuRiwayatPeminjamanController extends Controller
                             $filter['id_ruangan'],
                         ])
                     )
+                    ->when(
+                        !empty($filter['id_peminjam']) ,
+                        fn($q) => $q->where('p.id_peminjam', [
+                            $filter['id_peminjam'],
+                        ])
+                    )
                     ->orderBy('p.tanggal', 'asc')
                     ->orderBy('p.jam_mulai', 'asc')
                     ->get()
         ;
         $mst_kendaraan = KendaraanV2::all()->where('active_st',1);
         $mst_ruangan = Ruangan::all()->where('active_st',1);
+        $mst_pegawai = Pegawai::all()->where('active_st',1);
         return view('staff.riwayat_peminjaman.index', [
             "page"  => "Data Riwayat Peminjaman",
             'js_script' => 'js/staff/riwayatpeminjaman/index.js',
@@ -86,6 +93,7 @@ class StaffTuRiwayatPeminjamanController extends Controller
             'filter' => $filter,
             'mst_kendaraan' => $mst_kendaraan,
             'mst_ruangan' => $mst_ruangan,
+            'mst_pegawai' => $mst_pegawai,
         ]);
     }
 
@@ -176,6 +184,12 @@ class StaffTuRiwayatPeminjamanController extends Controller
                         fn($q) => $q->whereBetween('p.tanggal', [
                             $filter['tanggal_awal'],
                             $filter['tanggal_akhir'],
+                        ])
+                    )
+                    ->when(
+                        !empty($filter['id_peminjam']) ,
+                        fn($q) => $q->where('p.id_peminjam', [
+                            $filter['id_peminjam'],
                         ])
                     )
                     ->orderBy('p.tanggal', 'asc')

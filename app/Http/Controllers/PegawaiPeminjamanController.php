@@ -242,6 +242,8 @@ class PegawaiPeminjamanController extends Controller
 
         if(isset($tanggal)){
             $q->whereDate('tanggal', $tanggal);
+            $q->OrderBy('tb_peminjaman.jam_mulai', 'ASC');
+            $q->limit(1);
         }
 
         if ($start && $end) {

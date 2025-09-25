@@ -82,6 +82,21 @@
                                     <option value="-1" {{ $status==='-1' ?'selected':'' }}>Ditolak</option>
                                 </select>
                             </div>
+                            <div class="col-md-6 ">
+                                <label class="form-label">Pegawai</label>
+                                <select name="id_peminjam" class="form-control" id="">
+                                    <option value="" {{ empty($filter['id_peminjam'])?'selected':'' }}>-- Semua Pegawai --
+                                    </option>
+                                    @foreach ($mst_pegawai as $item1)
+                                    <option value="{{ $item1->id_pegawai }}" {{ ($filter['id_peminjam']??'')==$item1->
+                                        id_pegawai
+                                        ? 'selected' : '' }}>
+                                        {{ $item1->nama_pegawai }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                                @error('id_peminjam')<small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
                         </div>
                         <div class="d-flex gap-2 mt-3">
                             <button class="btn btn-primary">
@@ -395,6 +410,7 @@
                 <h5 class="mb-0">Riwayat Peminjaman Ruangan</h5>
 
                 <div class="d-flex gap-2">
+                    @if (($user->role !== 1))
                     <form action="{{ route('kasubag.data.peminjaman.export_ruangan') }}" method="post" target="_blank">
                         @csrf
                         <button class="btn btn-success">
@@ -404,6 +420,7 @@
                             Export Excel
                         </button>
                     </form>
+                    @endif
 
                     {{-- <form action="{{ route('kasubag.data.peminjaman.export_ruangan') }}" method="post" target="_blank">
                         @csrf
@@ -422,9 +439,9 @@
                         <div id="table-style-hover_wrapper" class="dt-container dt-bootstrap5">
                             <div class="row mt-2 justify-content-md-center">
                                 <div class="col-12 ">
-                                    <table id="table-style-hover"
-                                        class="table table-striped table-hover table-bordered nowrap dataTable"
-                                        aria-describedby="table-style-hover_info" style="width: 983px;">
+                                    <table id="table-style-hover-ruangan"
+                                        class="table table-striped table-hover table-bordered nowrap dataTable w-100"
+                                        aria-describedby="table-style-hover_info">
                                         <thead>
                                             <tr role="row">
                                                 <th data-dt-column="0" rowspan="2" colspan="1"
@@ -579,6 +596,7 @@
             <div class="card-header d-flex align-items-center justify-content-between">
                 <h5 class="mb-0">Riwayat Peminjaman Kendaraan</h5>
                 <div class="d-flex gap-2">
+                    @if (($user->role !== 1))
                     <form class="d-inline-flex align-items-center"
                         action="{{ route('kasubag.data.peminjaman.export_kendaraan') }}" method="post" target="_blank">
                         @csrf
@@ -590,6 +608,7 @@
                             Export Data
                         </button>
                     </form>
+                    @endif
                     {{-- <form action="{{ route('kasubag.data.peminjaman.export_ruangan') }}" method="post" target="_blank">
                         @csrf
                         <button class="btn btn-danger">
@@ -607,9 +626,9 @@
                         <div id="table-style-hover_wrapper" class="dt-container dt-bootstrap5">
                             <div class="row mt-2 justify-content-md-center">
                                 <div class="col-12 ">
-                                    <table id="table-style-hover"
-                                        class="table table-striped table-hover table-bordered nowrap dataTable"
-                                        aria-describedby="table-style-hover_info" style="width: 983px;">
+                                    <table id="table-style-hover-kendaraan"
+                                        class="table table-striped table-hover table-bordered nowrap dataTable w-100"
+                                        aria-describedby="table-style-hover_info">
                                         <thead>
                                             <tr role="row">
                                                 <th data-dt-column="0" rowspan="2" colspan="1"
@@ -836,7 +855,8 @@
 
 <script>
     $(document).ready(function () {
-        // initDataTable('table-style-hover');
+        initDataTable('table-style-hover-kendaraan');
+        initDataTable('table-style-hover-ruangan');
     });
 </script>
 

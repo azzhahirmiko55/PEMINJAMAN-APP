@@ -17,8 +17,8 @@
                         <div class="row mt-2 justify-content-md-center">
                             <div class="col-12 ">
                                 <table id="table-style-hover"
-                                    class="table table-striped table-hover table-bordered nowrap dataTable"
-                                    aria-describedby="table-style-hover_info" style="width: 983px;">
+                                    class="table table-striped table-hover table-bordered nowrap dataTable w-100"
+                                    aria-describedby="table-style-hover_info">
                                     <thead>
                                         <tr role="row">
                                             <th data-dt-column="0" rowspan="1" colspan="1"

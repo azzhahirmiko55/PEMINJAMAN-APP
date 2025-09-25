@@ -308,6 +308,21 @@
                         </select>
                         @error('status')<small class="text-danger">{{ $message }}</small>@enderror
                     </div>
+                    <div class="col-md-6 ">
+                    <label class="form-label">Pegawai</label>
+                    <select name="id_peminjam" class="form-control" id="">
+                        <option value="" {{ empty($filter['id_peminjam'])?'selected':'' }}>-- Semua Pegawai --
+                        </option>
+                        @foreach ($mst_pegawai as $item1)
+                        <option value="{{ $item1->id_pegawai }}" {{ ($filter['id_peminjam']??'')==$item1->
+                            id_pegawai
+                            ? 'selected' : '' }}>
+                            {{ $item1->nama_pegawai }}
+                        </option>
+                        @endforeach
+                    </select>
+                    @error('id_peminjam')<small class="text-danger">{{ $message }}</small>@enderror
+                </div>
                 </div>
                 <div class="d-flex gap-2 mt-3">
                     <button class="btn btn-primary">
@@ -340,7 +355,7 @@
                         <svg class="pc-icon" style="width:14px; height:14px; fill:currentColor;">
                             <use xlink:href="#file-excel"></use>
                         </svg>&nbsp;
-                        Export Data
+                        Create Riwayat
                     </button>
                 </form>
             </div>
@@ -351,8 +366,8 @@
                             <div class="row mt-2 justify-content-md-center">
                                 <div class="col-12 ">
                                     <table id="table-style-hover"
-                                        class="table table-striped table-hover table-bordered nowrap dataTable"
-                                        aria-describedby="table-style-hover_info" style="width: 983px;">
+                                        class="table table-striped table-hover table-bordered nowrap dataTable w-100"
+                                        aria-describedby="table-style-hover_info">
                                         <thead>
                                             <tr role="row">
                                                 <th data-dt-column="0" rowspan="2" colspan="1"
@@ -513,7 +528,7 @@
                         <svg class="pc-icon" style="width:14px; height:14px; fill:currentColor;">
                             <use xlink:href="#file-excel"></use>
                         </svg>&nbsp;
-                        Export Data
+                        Create Riwayat
                     </button>
                 </form>
             </div>
