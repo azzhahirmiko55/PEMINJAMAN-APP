@@ -365,7 +365,7 @@
                         <div id="table-style-hover_wrapper" class="dt-container dt-bootstrap5">
                             <div class="row mt-2 justify-content-md-center">
                                 <div class="col-12 ">
-                                    <table id="table-style-hover"
+                                    <table id="table-style-hover-ruangan"
                                         class="table table-striped table-hover table-bordered nowrap dataTable w-100"
                                         aria-describedby="table-style-hover_info">
                                         <thead>
@@ -538,7 +538,7 @@
                         <div id="table-style-hover_wrapper" class="dt-container dt-bootstrap5">
                             <div class="row mt-2 justify-content-md-center">
                                 <div class="col-12 ">
-                                    <table id="table-style-hover"
+                                    <table id="table-style-hover-kendaraan"
                                         class="table table-striped table-hover table-bordered nowrap dataTable w-100"
                                         aria-describedby="table-style-hover_info">
                                         <thead>
@@ -750,7 +750,8 @@
 
 <script>
     $(document).ready(function () {
-        // initDataTable('table-style-hover');
+        initDataTable('table-style-hover-kendaraan');
+        initDataTable('table-style-hover-ruangan');
     });
 </script>
 

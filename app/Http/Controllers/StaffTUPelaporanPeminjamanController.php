@@ -253,7 +253,7 @@ class StaffTUPelaporanPeminjamanController extends Controller
             'dRekapRuangan' => $dRekapRuangan,
             'periodeLabel'  => $periodeLabel,
             'printedAt'     => now()->locale('id')->translatedFormat('d F Y'),
-        ])->setPaper('a4', 'landscape');
+        ])->setPaper('a4', 'portrait');
 
         $filename = 'Pelaporan_Peminjaman_Ruangan_' . now()->format('Ymd_His') . '.pdf';
 
@@ -315,7 +315,7 @@ class StaffTUPelaporanPeminjamanController extends Controller
             'dRekapKendaraan' => $dRekapKendaraan,
             'periodeLabel'    => $periodeLabel,
             'printedAt'       => now()->locale('id')->translatedFormat('d F Y'),
-        ])->setPaper('a4', 'landscape');
+        ])->setPaper('a4', 'portrait');
 
         $filename = 'Pelaporan_Peminjaman_Kendaraan_' . now()->format('Ymd_His') . '.pdf';
         return $pdf->stream($filename);

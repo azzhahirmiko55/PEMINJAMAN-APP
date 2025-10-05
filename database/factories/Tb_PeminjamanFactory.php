@@ -15,7 +15,7 @@ class Tb_PeminjamanFactory extends Factory
     public function definition()
     {
         $tipe = $this->faker->randomElement(['kendaraan', 'ruangan']);
-        $start = $this->faker->dateTimeBetween('2025-09-01 08:00:00', '2025-09-30 17:00:00');
+        $start = $this->faker->dateTimeBetween('2025-10-01 08:00:00', '2025-10-31 17:00:00');
         $end   = (clone $start)->modify('+'.rand(2,5).' hours');
 
         return [

@@ -80,7 +80,7 @@
                         <svg class="pc-icon" style="width:14px; height:14px; fill:currentColor;">
                             <use xlink:href="#file-excel"></use>
                         </svg>&nbsp;
-                        Export Data
+                        Create Laporan
                     </button>
                 </form>
             </div>
@@ -302,7 +302,7 @@
 
 <script>
     $(document).ready(function () {
-        // initDataTable('table-style-hover');
+        initDataTable('table-style-hover');
     });
 </script>
 
