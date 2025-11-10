@@ -48,6 +48,25 @@
     </div>
     <!-- [ Pre-loader ] End -->
 
+    <!-- [ Header Topbar ] start -->
+    <header class="col-12" id="header-topbar">
+        <div class="header-wrapper d-none d-md-block">
+            <div class="navbar-wrapper">
+                <div class="m-header ms-4">
+                    <a href="{{ route('login') }}" class="b-brand text-primary d-flex align-items-center">
+                        <!-- ========   Change your logo from here   ============ -->
+                        {{-- <img src="{{asset('/assets/images/Logo_BPN.png') }}" class="img-fluid logo-lg" alt="logo">
+                        --}}
+                        <img src="{{asset('/assets/images/Logo_BPN.png') }}" class="img-fluid" width="50" height="50"
+                            alt="logo">
+                        <h2 class="mb-0 ms-2">&nbsp;Sistem Peminjaman Kendaraan dan Ruang Rapat BPN Cilacap</h2>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- [ Header ] end -->
+
     <div class="auth-main">
         <div class="auth-wrapper v3">
             <div class="auth-form">
