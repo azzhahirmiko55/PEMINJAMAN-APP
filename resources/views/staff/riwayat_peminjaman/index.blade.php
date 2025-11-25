@@ -309,20 +309,20 @@
                         @error('status')<small class="text-danger">{{ $message }}</small>@enderror
                     </div>
                     <div class="col-md-6 ">
-                    <label class="form-label">Pegawai</label>
-                    <select name="id_peminjam" class="form-control" id="">
-                        <option value="" {{ empty($filter['id_peminjam'])?'selected':'' }}>-- Semua Pegawai --
-                        </option>
-                        @foreach ($mst_pegawai as $item1)
-                        <option value="{{ $item1->id_pegawai }}" {{ ($filter['id_peminjam']??'')==$item1->
-                            id_pegawai
-                            ? 'selected' : '' }}>
-                            {{ $item1->nama_pegawai }}
-                        </option>
-                        @endforeach
-                    </select>
-                    @error('id_peminjam')<small class="text-danger">{{ $message }}</small>@enderror
-                </div>
+                        <label class="form-label">Pegawai</label>
+                        <select name="id_peminjam" class="form-control" id="">
+                            <option value="" {{ empty($filter['id_peminjam'])?'selected':'' }}>-- Semua Pegawai --
+                            </option>
+                            @foreach ($mst_pegawai as $item1)
+                            <option value="{{ $item1->id_pegawai }}" {{ ($filter['id_peminjam']??'')==$item1->
+                                id_pegawai
+                                ? 'selected' : '' }}>
+                                {{ $item1->nama_pegawai }}
+                            </option>
+                            @endforeach
+                        </select>
+                        @error('id_peminjam')<small class="text-danger">{{ $message }}</small>@enderror
+                    </div>
                 </div>
                 <div class="d-flex gap-2 mt-3">
                     <button class="btn btn-primary">
@@ -391,7 +391,7 @@
                                                     class="dt-orderable-asc dt-orderable-desc text-center"
                                                     aria-label="Office: Activate to sort" tabindex="0"><span
                                                         class="dt-column-title" role="button">Waktu
-                                                        Peminjaman</span><span class="dt-column-order"></span></th>
+                                                        Penggunaan</span><span class="dt-column-order"></span></th>
                                                 <th data-dt-column="4" rowspan="2" colspan="1"
                                                     class="dt-orderable-asc dt-orderable-desc text-center"
                                                     aria-label="Office: Activate to sort" tabindex="0"><span
@@ -564,7 +564,7 @@
                                                     class="dt-orderable-asc dt-orderable-desc text-center"
                                                     aria-label="Office: Activate to sort" tabindex="0"><span
                                                         class="dt-column-title" role="button">Waktu
-                                                        Peminjaman</span><span class="dt-column-order"></span></th>
+                                                        Penggunaan</span><span class="dt-column-order"></span></th>
                                                 <th data-dt-column="4" rowspan="2" colspan="1"
                                                     class="dt-orderable-asc dt-orderable-desc text-center"
                                                     aria-label="Office: Activate to sort" tabindex="0"><span
