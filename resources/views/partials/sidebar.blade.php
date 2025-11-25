@@ -155,7 +155,7 @@
                                 <use xlink:href="#check-circle"></use>
                             </svg>
                         </span>
-                        <span class="pc-mtext">Verifikasi Penggunaan</span>
+                        <span class="pc-mtext">Verifikasi Peminjaman</span>
                     </a>
                 </li>
                 <li class="pc-item">
