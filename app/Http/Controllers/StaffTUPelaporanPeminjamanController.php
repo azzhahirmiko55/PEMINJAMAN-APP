@@ -123,7 +123,7 @@ class StaffTUPelaporanPeminjamanController extends Controller
         $mst_kendaraan = KendaraanV2::all()->where('active_st',1);
         $mst_ruangan = Ruangan::all()->where('active_st',1);
         return view('staff.pelaporan_peminjaman.index', [
-            "page"  => "Data Pelaporan Peminjaman",
+            "page"  => "Data Pelaporan Penggunaan",
             'js_script' => 'js/staff/pelaporanpeminjaman/index.js',
             'dRekapRuangan' => $dRekapRuangan,
             'dRekapKendaraan' => $dRekapKendaraan,

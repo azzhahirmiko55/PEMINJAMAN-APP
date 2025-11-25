@@ -85,7 +85,8 @@
                             <div class="col-md-6 ">
                                 <label class="form-label">Pegawai</label>
                                 <select name="id_peminjam" class="form-control" id="">
-                                    <option value="" {{ empty($filter['id_peminjam'])?'selected':'' }}>-- Semua Pegawai --
+                                    <option value="" {{ empty($filter['id_peminjam'])?'selected':'' }}>-- Semua Pegawai
+                                        --
                                     </option>
                                     @foreach ($mst_pegawai as $item1)
                                     <option value="{{ $item1->id_pegawai }}" {{ ($filter['id_peminjam']??'')==$item1->
@@ -422,7 +423,8 @@
                     </form>
                     @endif
 
-                    {{-- <form action="{{ route('kasubag.data.peminjaman.export_ruangan') }}" method="post" target="_blank">
+                    {{-- <form action="{{ route('kasubag.data.peminjaman.export_ruangan') }}" method="post"
+                        target="_blank">
                         @csrf
                         <button class="btn btn-danger">
                             <svg class="pc-icon" style="width:14px; height:14px; fill:currentColor;">
@@ -465,7 +467,7 @@
                                                     class="dt-orderable-asc dt-orderable-desc text-center"
                                                     aria-label="Office: Activate to sort" tabindex="0"><span
                                                         class="dt-column-title" role="button">Waktu
-                                                        Peminjaman</span><span class="dt-column-order"></span></th>
+                                                        Penggunaan</span><span class="dt-column-order"></span></th>
                                                 <th data-dt-column="4" rowspan="2" colspan="1"
                                                     class="dt-orderable-asc dt-orderable-desc text-center"
                                                     aria-label="Office: Activate to sort" tabindex="0"><span
@@ -609,7 +611,8 @@
                         </button>
                     </form>
                     @endif
-                    {{-- <form action="{{ route('kasubag.data.peminjaman.export_ruangan') }}" method="post" target="_blank">
+                    {{-- <form action="{{ route('kasubag.data.peminjaman.export_ruangan') }}" method="post"
+                        target="_blank">
                         @csrf
                         <button class="btn btn-danger">
                             <svg class="pc-icon" style="width:14px; height:14px; fill:currentColor;">
@@ -652,7 +655,7 @@
                                                     class="dt-orderable-asc dt-orderable-desc text-center"
                                                     aria-label="Office: Activate to sort" tabindex="0"><span
                                                         class="dt-column-title" role="button">Waktu
-                                                        Peminjaman</span><span class="dt-column-order"></span></th>
+                                                        Penggunaan</span><span class="dt-column-order"></span></th>
                                                 <th data-dt-column="4" rowspan="2" colspan="1"
                                                     class="dt-orderable-asc dt-orderable-desc text-center"
                                                     aria-label="Office: Activate to sort" tabindex="0"><span

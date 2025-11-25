@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Pelaporan Peminjaman Kendaraan</title>
+    <title>Pelaporan Penggunaan Kendaraan</title>
     <style>
         @page {
             margin: 20px 25px;
@@ -76,7 +76,7 @@
 
     <hr style="border:1px solid #000; margin:8px 0;">
 
-    <div class="title">Pelaporan Peminjaman Kendaraan</div>
+    <div class="title">Pelaporan Penggunaan Kendaraan</div>
     <div class="sub">
         Periode: <strong>{{ $periodeLabel }}</strong><br>
         Dicetak: {{ $printedAt }}
@@ -87,7 +87,7 @@
             <tr>
                 <th class="w-50">No.</th>
                 <th>Nama Pegawai</th>
-                <th>Total Peminjaman</th>
+                <th>Total Penggunaan</th>
                 <th>Kendaraan Roda 2</th>
                 <th>Kendaraan Roda 4</th>
                 <th>Total Disetujui</th>

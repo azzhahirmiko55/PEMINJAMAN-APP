@@ -103,20 +103,20 @@
             <div class="card-header d-flex align-items-center justify-content-between">
                 <h5 class="mb-0">Pelaporan Peminjaman Ruangan</h5>
                 @if (($user->role !== 1))
-                    <form class="d-inline-flex align-items-center"
-                        action="{{ ($user->role == 2)?route('staff.pelaporan.peminjaman.export_ruangan'):route('admin.pelaporan.peminjaman.export_ruangan') }}"
-                        method="post" target="_blank">
-                        @csrf
-                        @php
-                        @endphp
-                        <button class="btn btn-danger"
-                            formaction="{{ ($user->role == 2)?route('staff.pelaporan.peminjaman.export_ruangan'):route('admin.pelaporan.peminjaman.export_ruangan') }}">
-                            <svg class="pc-icon" style="width:14px; height:14px; fill:currentColor;">
-                                <use xlink:href="#file-pdf"></use>
-                            </svg>&nbsp;
-                            Create Laporan
-                        </button>
-                    </form>
+                <form class="d-inline-flex align-items-center"
+                    action="{{ ($user->role == 2)?route('staff.pelaporan.peminjaman.export_ruangan'):route('admin.pelaporan.peminjaman.export_ruangan') }}"
+                    method="post" target="_blank">
+                    @csrf
+                    @php
+                    @endphp
+                    <button class="btn btn-danger"
+                        formaction="{{ ($user->role == 2)?route('staff.pelaporan.peminjaman.export_ruangan'):route('admin.pelaporan.peminjaman.export_ruangan') }}">
+                        <svg class="pc-icon" style="width:14px; height:14px; fill:currentColor;">
+                            <use xlink:href="#file-pdf"></use>
+                        </svg>&nbsp;
+                        Create Laporan
+                    </button>
+                </form>
                 @endif
             </div>
             <div class="card-body">
@@ -152,7 +152,7 @@
                                                     class="dt-orderable-asc dt-orderable-desc text-center"
                                                     aria-label="Position: Activate to sort" tabindex="0"><span
                                                         class="dt-column-title" role="button">Total
-                                                        Peminjaman</span><span class="dt-column-order"></span>
+                                                        Penggunaan</span><span class="dt-column-order"></span>
                                                 </th>
                                                 <th data-dt-column="2" rowspan="2" colspan="1"
                                                     class="dt-orderable-asc dt-orderable-desc text-center"
@@ -195,18 +195,18 @@
             <div class="card-header d-flex align-items-center justify-content-between">
                 <h5 class="mb-0">Pelaporan Peminjaman Kendaraan</h5>
                 @if (($user->role !== 1))
-                    <form class="d-inline-flex align-items-center"
-                        action="{{ ($user->role == 2)?route('staff.pelaporan.peminjaman.export_kendaraan'):route('admin.pelaporan.peminjaman.export_kendaraan') }}"
-                        method="post" target="_blank">
-                        @csrf
-                        <button class="btn btn-danger"
-                            formaction="{{ ($user->role == 2)?route('staff.pelaporan.peminjaman.export_kendaraan'):route('admin.pelaporan.peminjaman.export_kendaraan') }}">
-                            <svg class="pc-icon" style="width:14px; height:14px; fill:currentColor;">
-                                <use xlink:href="#file-pdf"></use>
-                            </svg>&nbsp;
-                            Create Laporan
-                        </button>
-                    </form>
+                <form class="d-inline-flex align-items-center"
+                    action="{{ ($user->role == 2)?route('staff.pelaporan.peminjaman.export_kendaraan'):route('admin.pelaporan.peminjaman.export_kendaraan') }}"
+                    method="post" target="_blank">
+                    @csrf
+                    <button class="btn btn-danger"
+                        formaction="{{ ($user->role == 2)?route('staff.pelaporan.peminjaman.export_kendaraan'):route('admin.pelaporan.peminjaman.export_kendaraan') }}">
+                        <svg class="pc-icon" style="width:14px; height:14px; fill:currentColor;">
+                            <use xlink:href="#file-pdf"></use>
+                        </svg>&nbsp;
+                        Create Laporan
+                    </button>
+                </form>
                 @endif
             </div>
             <div class="card-body">
@@ -236,7 +236,7 @@
                                                     class="dt-orderable-asc dt-orderable-desc text-center"
                                                     aria-label="Position: Activate to sort" tabindex="0"><span
                                                         class="dt-column-title" role="button">Total
-                                                        Peminjaman</span><span class="dt-column-order"></span>
+                                                        Penggunaan</span><span class="dt-column-order"></span>
                                                 </th>
                                                 <th data-dt-column="2" rowspan="2" colspan="1"
                                                     class="dt-orderable-asc dt-orderable-desc text-center"

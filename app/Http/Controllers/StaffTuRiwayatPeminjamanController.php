@@ -201,7 +201,7 @@ class StaffTuRiwayatPeminjamanController extends Controller
             'No.',
             'Nama Pegawai',
             'Tanggal',
-            'Waktu Peminjaman', '',
+            'Waktu Penggunaan', '',
             'Tipe Peminjaman',
             'Verifikator',
             'Kendaraan','','',

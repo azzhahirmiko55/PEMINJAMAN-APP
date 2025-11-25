@@ -101,7 +101,7 @@ class KasubagDataPeminjamanController extends Controller
         $mst_ruangan = Ruangan::all()->where('active_st',1);
         $mst_pegawai = Pegawai::all()->where('active_st',1);
         return view('kasubag.riwayat_peminjaman.index', [
-            "page"  => "Data Riwayat Peminjaman",
+            "page"  => "Data Riwayat Penggunaan",
             'js_script' => 'js/kasubag/riwayatpeminjaman/index.js',
             'dRiwayat' => $dRiwayat,
             'filter' => $filter,
@@ -386,7 +386,7 @@ class KasubagDataPeminjamanController extends Controller
                 'No.',
                 'Nama Pegawai',
                 'Tanggal',
-                'Waktu Peminjaman', '',
+                'Waktu Penggunaan', '',
                 'Tipe Peminjaman',
                 'Verifikasi','',
                 'Ruangan','',
@@ -560,7 +560,7 @@ class KasubagDataPeminjamanController extends Controller
             'No.',
             'Nama Pegawai',
             'Tanggal',
-            'Waktu Peminjaman', '',
+            'Waktu Penggunaan', '',
             'Tipe Peminjaman',
             'Verifikasi','',
             'Kendaraan','','',
