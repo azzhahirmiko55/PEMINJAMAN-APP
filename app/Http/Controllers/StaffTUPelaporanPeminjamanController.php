@@ -48,19 +48,19 @@ class StaffTUPelaporanPeminjamanController extends Controller
                 $q->whereBetween('p.tanggal', [$awal, $akhir]);
             })
             ->when(
-                !empty($filter['status']) ,
+                !empty($filter['status']),
                 fn($q) => $q->where('p.status', [
                     $filter['status'],
                 ])
             )
             ->when(
-                !empty($filter['id_peminjam']) ,
+                !empty($filter['id_peminjam']),
                 fn($q) => $q->where('p.id_peminjam', [
                     $filter['id_peminjam'],
                 ])
             )
             ->when(
-                !empty($filter['id_ruangan']) && ($filter['section_view']??'') ==0 ,
+                !empty($filter['id_ruangan']) && ($filter['section_view'] ?? '') == 0,
                 fn($q) => $q->where('p.id_ruangan', [
                     $filter['id_ruangan'],
                 ])
@@ -87,19 +87,19 @@ class StaffTUPelaporanPeminjamanController extends Controller
                 $q->whereBetween('p.tanggal', [$awal, $akhir]);
             })
             ->when(
-                !empty($filter['status']) ,
+                !empty($filter['status']),
                 fn($q) => $q->where('p.status', [
                     $filter['status'],
                 ])
             )
             ->when(
-                !empty($filter['id_peminjam']) ,
+                !empty($filter['id_peminjam']),
                 fn($q) => $q->where('p.id_peminjam', [
                     $filter['id_peminjam'],
                 ])
             )
             ->when(
-                !empty($filter['id_kendaraan']) && ($filter['section_view']??'') ==-1 ,
+                !empty($filter['id_kendaraan']) && ($filter['section_view'] ?? '') == -1,
                 fn($q) => $q->where('p.id_kendaraan', [
                     $filter['id_kendaraan'],
                 ])
@@ -119,11 +119,11 @@ class StaffTUPelaporanPeminjamanController extends Controller
             ->orderBy('pg.nama_pegawai')
             ->get();
 
-        $mst_pegawai = Pegawai::all()->where('active_st',1);
-        $mst_kendaraan = KendaraanV2::all()->where('active_st',1);
-        $mst_ruangan = Ruangan::all()->where('active_st',1);
+        $mst_pegawai = Pegawai::all()->where('active_st', 1);
+        $mst_kendaraan = KendaraanV2::all()->where('active_st', 1);
+        $mst_ruangan = Ruangan::all()->where('active_st', 1);
         return view('staff.pelaporan_peminjaman.index', [
-            "page"  => "Data Pelaporan Penggunaan",
+            "page"  => "Data Pelaporan Peminjaman",
             'js_script' => 'js/staff/pelaporanpeminjaman/index.js',
             'dRekapRuangan' => $dRekapRuangan,
             'dRekapKendaraan' => $dRekapKendaraan,
@@ -214,19 +214,19 @@ class StaffTUPelaporanPeminjamanController extends Controller
                 $q->whereBetween('p.tanggal', [$awal, $akhir]);
             })
             ->when(
-                !empty($filter['status']) ,
+                !empty($filter['status']),
                 fn($q) => $q->where('p.status', [
                     $filter['status'],
                 ])
             )
             ->when(
-                !empty($filter['id_peminjam']) ,
+                !empty($filter['id_peminjam']),
                 fn($q) => $q->where('p.id_peminjam', [
                     $filter['id_peminjam'],
                 ])
             )
             ->when(
-                !empty($filter['id_ruangan']) && ($filter['section_view']??'') ==0 ,
+                !empty($filter['id_ruangan']) && ($filter['section_view'] ?? '') == 0,
                 fn($q) => $q->where('p.id_ruangan', [
                     $filter['id_ruangan'],
                 ])
@@ -246,7 +246,7 @@ class StaffTUPelaporanPeminjamanController extends Controller
             ->get();
 
         $periodeLabel = (!empty($awal) && !empty($akhir))
-            ? date('d/m/Y', strtotime($awal)).' – '.date('d/m/Y', strtotime($akhir))
+            ? date('d/m/Y', strtotime($awal)) . ' – ' . date('d/m/Y', strtotime($akhir))
             : 'Semua Tanggal';
 
         $pdf = Pdf::loadView('staff.pelaporan_peminjaman.cetak_laporan_ruangan', [
@@ -275,19 +275,19 @@ class StaffTUPelaporanPeminjamanController extends Controller
                 $q->whereBetween('p.tanggal', [$awal, $akhir]);
             })
             ->when(
-                !empty($filter['status']) ,
+                !empty($filter['status']),
                 fn($q) => $q->where('p.status', [
                     $filter['status'],
                 ])
             )
             ->when(
-                !empty($filter['id_peminjam']) ,
+                !empty($filter['id_peminjam']),
                 fn($q) => $q->where('p.id_peminjam', [
                     $filter['id_peminjam'],
                 ])
             )
             ->when(
-                !empty($filter['id_kendaraan']) && ($filter['section_view']??'') ==-1 ,
+                !empty($filter['id_kendaraan']) && ($filter['section_view'] ?? '') == -1,
                 fn($q) => $q->where('p.id_kendaraan', [
                     $filter['id_kendaraan'],
                 ])
@@ -308,7 +308,7 @@ class StaffTUPelaporanPeminjamanController extends Controller
             ->get();
 
         $periodeLabel = (!empty($awal) && !empty($akhir))
-            ? date('d/m/Y', strtotime($awal)).' – '.date('d/m/Y', strtotime($akhir))
+            ? date('d/m/Y', strtotime($awal)) . ' – ' . date('d/m/Y', strtotime($akhir))
             : 'Semua Tanggal';
 
         $pdf = Pdf::loadView('staff.pelaporan_peminjaman.cetak_laporan_kendaraan', [

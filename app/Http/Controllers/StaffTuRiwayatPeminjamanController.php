@@ -35,57 +35,56 @@ class StaffTuRiwayatPeminjamanController extends Controller
         $filter = FilterController::current();
 
         $dRiwayat = Tb_peminjaman::from('tb_peminjaman as p')
-                    ->leftJoin('tb_kendaraan as k', 'p.id_kendaraan', '=', 'k.id_kendaraan')
-                    ->leftJoin('tb_ruang_rapat as r', 'p.id_ruangan', '=', 'r.id_ruangrapat')
-                    ->leftJoin('tb_pegawai as pg', 'p.id_peminjam', '=', 'pg.id_pegawai')
-                    ->leftJoin('tb_pegawai as ve', 'p.id_verifikator', '=', 've.id_pegawai')
-                    ->select(
-                        'p.*',
-                        'k.no_plat',
-                        'k.keterangan as kendaraan_ket',
-                        'k.jenis_kendaraan',
-                        'r.nama_ruangan',
-                        'pg.nama_pegawai',
-                        've.nama_pegawai as verifikator_nama',
-                    )
-                    ->when(
-                        !empty($filter['tanggal_awal']) && !empty($filter['tanggal_akhir']),
-                        fn($q) => $q->whereBetween('p.tanggal', [
-                            $filter['tanggal_awal'],
-                            $filter['tanggal_akhir'],
-                        ])
-                    )
-                    ->when(
-                        !empty($filter['status']) ,
-                        fn($q) => $q->where('p.status', [
-                            $filter['status'],
-                        ])
-                    )
-                    ->when(
-                        !empty($filter['id_kendaraan']) && ($filter['section_view']??'') ==-1 ,
-                        fn($q) => $q->where('p.id_kendaraan', [
-                            $filter['id_kendaraan'],
-                        ])
-                    )
-                    ->when(
-                        !empty($filter['id_ruangan']) && ($filter['section_view']??'') ==0 ,
-                        fn($q) => $q->where('p.id_ruangan', [
-                            $filter['id_ruangan'],
-                        ])
-                    )
-                    ->when(
-                        !empty($filter['id_peminjam']) ,
-                        fn($q) => $q->where('p.id_peminjam', [
-                            $filter['id_peminjam'],
-                        ])
-                    )
-                    ->orderBy('p.tanggal', 'asc')
-                    ->orderBy('p.jam_mulai', 'asc')
-                    ->get()
-        ;
-        $mst_kendaraan = KendaraanV2::all()->where('active_st',1);
-        $mst_ruangan = Ruangan::all()->where('active_st',1);
-        $mst_pegawai = Pegawai::all()->where('active_st',1);
+            ->leftJoin('tb_kendaraan as k', 'p.id_kendaraan', '=', 'k.id_kendaraan')
+            ->leftJoin('tb_ruang_rapat as r', 'p.id_ruangan', '=', 'r.id_ruangrapat')
+            ->leftJoin('tb_pegawai as pg', 'p.id_peminjam', '=', 'pg.id_pegawai')
+            ->leftJoin('tb_pegawai as ve', 'p.id_verifikator', '=', 've.id_pegawai')
+            ->select(
+                'p.*',
+                'k.no_plat',
+                'k.keterangan as kendaraan_ket',
+                'k.jenis_kendaraan',
+                'r.nama_ruangan',
+                'pg.nama_pegawai',
+                've.nama_pegawai as verifikator_nama',
+            )
+            ->when(
+                !empty($filter['tanggal_awal']) && !empty($filter['tanggal_akhir']),
+                fn($q) => $q->whereBetween('p.tanggal', [
+                    $filter['tanggal_awal'],
+                    $filter['tanggal_akhir'],
+                ])
+            )
+            ->when(
+                !empty($filter['status']),
+                fn($q) => $q->where('p.status', [
+                    $filter['status'],
+                ])
+            )
+            ->when(
+                !empty($filter['id_kendaraan']) && ($filter['section_view'] ?? '') == -1,
+                fn($q) => $q->where('p.id_kendaraan', [
+                    $filter['id_kendaraan'],
+                ])
+            )
+            ->when(
+                !empty($filter['id_ruangan']) && ($filter['section_view'] ?? '') == 0,
+                fn($q) => $q->where('p.id_ruangan', [
+                    $filter['id_ruangan'],
+                ])
+            )
+            ->when(
+                !empty($filter['id_peminjam']),
+                fn($q) => $q->where('p.id_peminjam', [
+                    $filter['id_peminjam'],
+                ])
+            )
+            ->orderBy('p.tanggal', 'asc')
+            ->orderBy('p.jam_mulai', 'asc')
+            ->get();
+        $mst_kendaraan = KendaraanV2::all()->where('active_st', 1);
+        $mst_ruangan = Ruangan::all()->where('active_st', 1);
+        $mst_pegawai = Pegawai::all()->where('active_st', 1);
         return view('staff.riwayat_peminjaman.index', [
             "page"  => "Data Riwayat Peminjaman",
             'js_script' => 'js/staff/riwayatpeminjaman/index.js',
@@ -163,66 +162,83 @@ class StaffTuRiwayatPeminjamanController extends Controller
         //
     }
 
-    public function export_excel(){
+    public function export_excel()
+    {
         $filter = FilterController::current();
         $dRiwayat = Tb_peminjaman::from('tb_peminjaman as p')
-                    ->leftJoin('tb_kendaraan as k', 'p.id_kendaraan', '=', 'k.id_kendaraan')
-                    ->leftJoin('tb_ruang_rapat as r', 'p.id_ruangan', '=', 'r.id_ruangrapat')
-                    ->leftJoin('tb_pegawai as pg', 'p.id_peminjam', '=', 'pg.id_pegawai')
-                    ->leftJoin('tb_pegawai as ve', 'p.id_verifikator', '=', 'pg.id_pegawai')
-                    ->select(
-                        'p.*',
-                        'k.no_plat',
-                        'k.keterangan as kendaraan_ket',
-                        'k.jenis_kendaraan',
-                        'r.nama_ruangan',
-                        'pg.nama_pegawai',
-                        've.nama_pegawai as verifikator_nama',
-                    )
-                    ->when(
-                        !empty($filter['tanggal_awal']) && !empty($filter['tanggal_akhir']),
-                        fn($q) => $q->whereBetween('p.tanggal', [
-                            $filter['tanggal_awal'],
-                            $filter['tanggal_akhir'],
-                        ])
-                    )
-                    ->when(
-                        !empty($filter['id_peminjam']) ,
-                        fn($q) => $q->where('p.id_peminjam', [
-                            $filter['id_peminjam'],
-                        ])
-                    )
-                    ->orderBy('p.tanggal', 'asc')
-                    ->orderBy('p.jam_mulai', 'asc')
-                    ->get()
-        ;
+            ->leftJoin('tb_kendaraan as k', 'p.id_kendaraan', '=', 'k.id_kendaraan')
+            ->leftJoin('tb_ruang_rapat as r', 'p.id_ruangan', '=', 'r.id_ruangrapat')
+            ->leftJoin('tb_pegawai as pg', 'p.id_peminjam', '=', 'pg.id_pegawai')
+            ->leftJoin('tb_pegawai as ve', 'p.id_verifikator', '=', 'pg.id_pegawai')
+            ->select(
+                'p.*',
+                'k.no_plat',
+                'k.keterangan as kendaraan_ket',
+                'k.jenis_kendaraan',
+                'r.nama_ruangan',
+                'pg.nama_pegawai',
+                've.nama_pegawai as verifikator_nama',
+            )
+            ->when(
+                !empty($filter['tanggal_awal']) && !empty($filter['tanggal_akhir']),
+                fn($q) => $q->whereBetween('p.tanggal', [
+                    $filter['tanggal_awal'],
+                    $filter['tanggal_akhir'],
+                ])
+            )
+            ->when(
+                !empty($filter['id_peminjam']),
+                fn($q) => $q->where('p.id_peminjam', [
+                    $filter['id_peminjam'],
+                ])
+            )
+            ->orderBy('p.tanggal', 'asc')
+            ->orderBy('p.jam_mulai', 'asc')
+            ->get();
 
         $header1 = [
             'No.',
             'Nama Pegawai',
             'Tanggal',
-            'Waktu Penggunaan', '',
+            'Waktu Peminjaman',
+            '',
             'Tipe Peminjaman',
             'Verifikator',
-            'Kendaraan','','',
-            'Ruangan','',
+            'Kendaraan',
+            '',
+            '',
+            'Ruangan',
+            '',
             'Status',
             'Pengembalian',
         ];
         $header2 = [
-            '', '', '', 'Mulai','Selesai', '', '', 'Driver','Plat Nomor','Jenis Kendaraan','Ruangan','Peserta','',''
+            '',
+            '',
+            '',
+            'Mulai',
+            'Selesai',
+            '',
+            '',
+            'Driver',
+            'Plat Nomor',
+            'Jenis Kendaraan',
+            'Ruangan',
+            'Peserta',
+            '',
+            ''
         ];
 
         $rows = [];
         foreach ($dRiwayat as $i => $item) {
-            $labelPengembalian = match((int)($item->pengembalian_st ?? 0)) {
+            $labelPengembalian = match ((int)($item->pengembalian_st ?? 0)) {
                 1       => 'Sudah Dikembalikan',
                 0       => 'Belum Dikembalikan',
                 default => 'Tidak Diketahui',
             };
 
             $rows[] = [
-                $i+1,
+                $i + 1,
                 $item->nama_pegawai,
                 $item->tanggal ? Carbon::parse($item->tanggal)->locale('id')->translatedFormat('d F Y') : '',
                 $item->jam_mulai ? Carbon::parse($item->jam_mulai)->format('H:i:s') : '',
@@ -245,12 +261,15 @@ class StaffTuRiwayatPeminjamanController extends Controller
         $export = new class($data) implements FromArray, WithEvents, WithStyles, ShouldAutoSize {
             public function __construct(private array $data) {}
 
-            public function array(): array { return $this->data; }
+            public function array(): array
+            {
+                return $this->data;
+            }
 
             public function registerEvents(): array
             {
                 return [
-                    AfterSheet::class => function(AfterSheet $event) {
+                    AfterSheet::class => function (AfterSheet $event) {
                         $sheet = $event->sheet->getDelegate();
 
                         $sheet->mergeCells('A1:A2'); // No.

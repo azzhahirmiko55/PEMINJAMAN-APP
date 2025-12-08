@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Pelaporan Penggunaan Ruangan</title>
+    <title>Pelaporan Peminjaman Ruangan</title>
     <style>
         /* CSS dasar untuk PDF (DomPDF) */
         @page {
@@ -77,7 +77,7 @@
 
     <hr style="border:1px solid #000; margin:8px 0;">
 
-    <div class="title">Pelaporan Penggunaan Ruangan</div>
+    <div class="title">Pelaporan Peminjaman Ruangan</div>
     <div class="sub">
         Periode: <strong>{{ $periodeLabel }}</strong><br>
         Dicetak: {{ $printedAt }}
@@ -89,7 +89,7 @@
                 <th class="w-50">No.</th>
                 <th>Nama Pegawai</th>
                 <th>Ruangan</th>
-                <th>Total Penggunaan</th>
+                <th>Total Peminjaman</th>
                 <th>Total Disetujui</th>
                 <th>Total Tolak</th>
             </tr>

@@ -103,7 +103,7 @@
                                 <use xlink:href="#book"></use>
                             </svg>
                         </span>
-                        <span class="pc-mtext">Riwayat Penggunaan</span>
+                        <span class="pc-mtext">Riwayat Peminjaman</span>
                     </a>
                 </li>
                 <li class="pc-item">
@@ -113,7 +113,7 @@
                                 <use xlink:href="#account-book"></use>
                             </svg>
                         </span>
-                        <span class="pc-mtext">Pelaporan Penggunaan</span>
+                        <span class="pc-mtext">Pelaporan Peminjaman</span>
                     </a>
                 </li>
                 @endif
@@ -165,7 +165,7 @@
                                 <use xlink:href="#book"></use>
                             </svg>
                         </span>
-                        <span class="pc-mtext">Riwayat Penggunaan</span>
+                        <span class="pc-mtext">Riwayat Peminjaman</span>
                     </a>
                 </li>
                 <li class="pc-item">
@@ -175,7 +175,7 @@
                                 <use xlink:href="#account-book"></use>
                             </svg>
                         </span>
-                        <span class="pc-mtext">Pelaporan Penggunaan</span>
+                        <span class="pc-mtext">Pelaporan Peminjaman</span>
                     </a>
                 </li>
                 @endif
@@ -227,7 +227,7 @@
                                 <use xlink:href="#book"></use>
                             </svg>
                         </span>
-                        <span class="pc-mtext">Riwayat Penggunaan</span>
+                        <span class="pc-mtext">Riwayat Peminjaman</span>
                     </a>
                 </li>
                 <li class="pc-item">
@@ -237,7 +237,7 @@
                                 <use xlink:href="#account-book"></use>
                             </svg>
                         </span>
-                        <span class="pc-mtext">Pelaporan Penggunaan</span>
+                        <span class="pc-mtext">Pelaporan Peminjaman</span>
                     </a>
                 </li>
                 @endif

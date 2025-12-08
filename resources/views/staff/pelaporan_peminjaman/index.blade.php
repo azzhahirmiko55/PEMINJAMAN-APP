@@ -152,7 +152,7 @@
                                                     class="dt-orderable-asc dt-orderable-desc text-center"
                                                     aria-label="Position: Activate to sort" tabindex="0"><span
                                                         class="dt-column-title" role="button">Total
-                                                        Penggunaan</span><span class="dt-column-order"></span>
+                                                        Peminjaman</span><span class="dt-column-order"></span>
                                                 </th>
                                                 <th data-dt-column="2" rowspan="2" colspan="1"
                                                     class="dt-orderable-asc dt-orderable-desc text-center"
@@ -236,7 +236,7 @@
                                                     class="dt-orderable-asc dt-orderable-desc text-center"
                                                     aria-label="Position: Activate to sort" tabindex="0"><span
                                                         class="dt-column-title" role="button">Total
-                                                        Penggunaan</span><span class="dt-column-order"></span>
+                                                        Peminjaman</span><span class="dt-column-order"></span>
                                                 </th>
                                                 <th data-dt-column="2" rowspan="2" colspan="1"
                                                     class="dt-orderable-asc dt-orderable-desc text-center"
@@ -301,7 +301,7 @@
 @push('scripts')
 
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         // initDataTable('table-style-hover-kendaraan');
         // initDataTable('table-style-hover-ruangan');
     });
