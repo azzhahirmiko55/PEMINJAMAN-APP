@@ -158,7 +158,7 @@ function renderDateBadges(calendar) {
     datesWithData = new Set();
 
     const statusByDate = {};
-    const PRIORITY = (s) => ({ "-1": 3, 0: 2, 1: 1 }[String(s)] ?? 0);
+    const PRIORITY = (s) => ({ "-1": 3, 0: 2, 1: 1 })[String(s)] ?? 0;
 
     const STATUS_CLASS = {
         "-1": "bg-danger",
@@ -194,7 +194,7 @@ function renderDateBadges(calendar) {
 
     Object.entries(counts).forEach(([dateStr, { kendaraan, ruangan }]) => {
         const cell = document.querySelector(
-            `.fc-daygrid-day[data-date="${dateStr}"]`
+            `.fc-daygrid-day[data-date="${dateStr}"]`,
         );
         const frame = cell?.querySelector(".fc-daygrid-day-frame");
         if (!frame) return;
@@ -220,8 +220,8 @@ function renderDateBadges(calendar) {
             wrap.appendChild(
                 makeBadge(
                     "bg-warning",
-                    `${ICONS.kendaraan}<span class="badge-label"> Kendaraan</span><sup class="badge-count">${kendaraan}</sup>`
-                )
+                    `${ICONS.kendaraan}<span class="badge-label"> Kendaraan</span><sup class="badge-count">${kendaraan}</sup>`,
+                ),
             );
         }
 
@@ -229,8 +229,8 @@ function renderDateBadges(calendar) {
             wrap.appendChild(
                 makeBadge(
                     "bg-primary",
-                    `${ICONS.ruangan}<span class="badge-label"> Ruangan</span><sup class="badge-count">${ruangan}</sup>`
-                )
+                    `${ICONS.ruangan}<span class="badge-label"> Ruangan</span><sup class="badge-count">${ruangan}</sup>`,
+                ),
             );
         }
 
@@ -311,7 +311,7 @@ function esc(s) {
                 ">": "&gt;",
                 '"': "&quot;",
                 "'": "&#39;",
-            }[m])
+            })[m],
     );
 }
 
@@ -329,8 +329,8 @@ async function showInfoPeminjaman(ds) {
         const rows = Array.isArray(res)
             ? res
             : Array.isArray(res?.events)
-            ? res.events
-            : [];
+              ? res.events
+              : [];
 
         const isPastDate = (() => {
             const t = new Date();
@@ -425,45 +425,45 @@ async function showInfoPeminjaman(ds) {
           ${
               row.extendedProps.no_plat
                   ? `<div><b>Kendaraan</b> : ${esc(
-                        row.extendedProps.no_plat
+                        row.extendedProps.no_plat,
                     )}</div>`
                   : ""
           }
           ${
               row.extendedProps.driver
                   ? `<div><b>Driver</b> : ${esc(
-                        row.extendedProps.driver
+                        row.extendedProps.driver,
                     )}</div>`
                   : ""
           }
           ${
               row.extendedProps.driver
                   ? `<div><b>Keperluan BBM</b> : ${esc(
-                        row.extendedProps.keperluan_bbm
+                        row.extendedProps.keperluan_bbm,
                     )}</div>`
                   : ""
           }
           ${
               row.extendedProps.nama_ruangan
                   ? `<div><b>Ruangan</b> : ${esc(
-                        row.extendedProps.nama_ruangan
+                        row.extendedProps.nama_ruangan,
                     )}</div>`
                   : ""
           }
           <div style="min-height:60px;"><b>Keperluan</b> : ${esc(
-              keperluan
+              keperluan,
           )}</div>
           ${
               row.extendedProps.verikator_nm
                   ? `<div><b>Verifikator</b> : ${esc(
-                        row.extendedProps.verikator_nm
+                        row.extendedProps.verikator_nm,
                     )}</div>`
                   : ""
           }
             ${
                 row.extendedProps.verifikator_tgl
                     ? `<div><b>Tanggal Verifikasi</b> : ${formatTanggalIndonesia(
-                          row.extendedProps.verifikator_tgl
+                          row.extendedProps.verifikator_tgl,
                       )}
                         </div>`
                     : ""
@@ -472,7 +472,7 @@ async function showInfoPeminjaman(ds) {
                 row.extendedProps.verifikator_catatan
                     ? `
                         <div style="min-height:60px;"><b>Catatan</b> : ${esc(
-                            row.extendedProps.verifikator_catatan
+                            row.extendedProps.verifikator_catatan,
                         )}</div>
                         <br><br>
                     `
@@ -481,14 +481,14 @@ async function showInfoPeminjaman(ds) {
             ${
                 row.extendedProps.pengembalian_nm
                     ? `<div><b>Penerima Pengembalian</b> : ${esc(
-                          row.extendedProps.pengembalian_nm
+                          row.extendedProps.pengembalian_nm,
                       )}</div>`
                     : ""
             }
             ${
                 row.extendedProps.pengembalian_tgl
                     ? `<div><b>Tanggal Pengembalian</b> : ${formatTanggalIndonesia(
-                          row.extendedProps.pengembalian_tgl
+                          row.extendedProps.pengembalian_tgl,
                       )}
                         </div>`
                     : ""
@@ -497,7 +497,7 @@ async function showInfoPeminjaman(ds) {
                 row.extendedProps.pengembalian_catatan
                     ? `
                         <div style="min-height:60px;"><b>Catatan</b> : ${esc(
-                            row.extendedProps.pengembalian_catatan
+                            row.extendedProps.pengembalian_catatan,
                         )}</div>
                         <br><br>
                     `
@@ -513,8 +513,8 @@ async function showInfoPeminjaman(ds) {
       <div class="pinjam-col" style="flex:1 1 320px;min-width:260px;">
         <div class="mb-2">
           <span class="badge bg-${cls}${
-            cls === "warning" ? "" : ""
-        } d-inline-flex align-items-start" style="font-size:.75rem;">
+              cls === "warning" ? "" : ""
+          } d-inline-flex align-items-start" style="font-size:.75rem;">
             ${icon} <span style="margin-left:.35rem">${title}</span>
           </span>
         </div>
@@ -533,7 +533,7 @@ async function showInfoPeminjaman(ds) {
             "Proses Verifikasi",
             "warning",
             ICON_RELOAD,
-            groups["0"].join("")
+            groups["0"].join(""),
         )}
         ${col("Disetujui", "success", ICON_CHECK, groups["1"].join(""))}
         ${col("Ditolak", "danger", ICON_X, groups["-1"].join(""))}
@@ -563,7 +563,7 @@ async function showInfoPeminjaman(ds) {
                         card.addEventListener("click", () => {
                             openVerifikasiPeminjaman(id);
                         });
-                    }
+                    },
                 );
             },
         });
@@ -603,6 +603,8 @@ async function openVerifikasiPeminjaman(id) {
     const currentStatus = Number(payload?.status ?? 0);
     const currentNote = payload?.catatan ?? "";
 
+    const isKendaraan = payload.tipe_peminjaman === "kendaraan";
+
     const html = `
     <div style="text-align:left">
         <div class="mb-2">Pilih hasil verifikasi:</div>
@@ -618,12 +620,17 @@ async function openVerifikasiPeminjaman(id) {
             <input class="form-check-input" type="radio" name="verdict" id="ver_tolak" value="-1">
             <label class="form-check-label" for="ver_tolak">Ditolak</label>
         </div>
-        <div class="form-group mt-3">
-            <label class="form-label">Keperluan BBM</label>
-            <textarea class="form-control" id="keperluan_bbm" cols="10"
-                rows="2"></textarea>
-            <div class="text-danger"></div>
-        </div>
+         ${
+             isKendaraan
+                 ? `
+            <div class="form-group mt-3" id="wrap_bbm">
+                <label class="form-label">Keperluan BBM</label>
+                <textarea class="form-control" id="keperluan_bbm" rows="2"></textarea>
+                <div class="text-danger"></div>
+            </div>
+            `
+                 : ""
+         }
         <div class="mt-3">
             <label for="ver_catatan" class="form-label">Catatan (opsional)</label>
             <textarea id="ver_catatan" class="form-control" rows="3" placeholder="Isi alasan/notes jika perlu"></textarea>
@@ -656,11 +663,11 @@ async function openVerifikasiPeminjaman(id) {
                 ?.classList.remove("is-invalid");
 
             const picked = document.querySelector(
-                'input[name="verdict"]:checked'
+                'input[name="verdict"]:checked',
             );
             if (!picked) {
                 Swal.showValidationMessage(
-                    "Pilih hasil verifikasi terlebih dahulu."
+                    "Pilih hasil verifikasi terlebih dahulu.",
                 );
                 return false;
             }
@@ -690,7 +697,7 @@ async function openVerifikasiPeminjaman(id) {
                         ...(errs.catatan || []),
                     ];
                     Swal.showValidationMessage(
-                        msgs.join("<br>") || "Data tidak valid."
+                        msgs.join("<br>") || "Data tidak valid.",
                     );
 
                     if (errs.catatan) {
