@@ -50,7 +50,7 @@
                         </a>
 
                         @if (isset($dPegawaiPeminjamanKendaraan->id_peminjaman))
-                            @if ($dPegawaiPeminjamanKendaraan->pengembalian_st != 1)
+                            @if ( $status != 1)
                                 <span class="badge bg-{{ $badgeColor }}" style="font-size:0.8rem;">
                                     {!! $badgeIcon !!} {{ $badgeText }}
                                 </span>
@@ -259,7 +259,7 @@
                     </a>
 
                     @if (isset($dPegawaiPeminjamanRuangan->id_peminjaman))
-                        @if ($dPegawaiPeminjamanRuangan->pengembalian_st != 1)
+                        @if ($status != 1)
                             <a href="#" class="btn btn-danger btn-sm d-inline-flex align-items-center js-delete"
                                 data-url="{{ route('pegawai-peminjaman.destroy', $dPegawaiPeminjamanRuangan->id_peminjaman) }}">
                                 <svg class="pc-icon me-1">
