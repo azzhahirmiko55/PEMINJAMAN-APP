@@ -19,7 +19,8 @@ class CreateTbPegawai extends Migration
             $table->string('jabatan');
             $table->boolean('jenis_kelamin')->default(1);
             $table->boolean('active_st')->default(1);
-            $table->timestamps();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 

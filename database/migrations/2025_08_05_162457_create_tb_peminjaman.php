@@ -37,7 +37,8 @@ class CreateTbPeminjaman extends Migration
             $table->text('pengembalian_catatan')->nullable();
             $table->text('detail_lokasi')->nullable();
             // $table->text('pengembalian_bukti')->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 
