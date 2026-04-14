@@ -26,8 +26,8 @@ class CreateUsersTable extends Migration
             // 3 => Satpam
             // 4 => Pegawai BPN
             $table->boolean('active_st')->default(1);
-            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 
